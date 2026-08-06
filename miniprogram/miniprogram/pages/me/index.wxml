@@ -1,1 +1,1 @@
-<view class="page"><view class="card placeholder">个人信息</view></view>
+<view class="page"><view class="profile card"><button class="avatar" open-type="chooseAvatar" bind:chooseavatar="chooseAvatar"><image wx:if="{{avatar}}" src="{{avatar}}"/><text wx:else>旅</text></button><view><text class="name">{{name}}</text><text class="hint">个人旅行空间</text></view></view><van-cell-group inset><van-cell title="到访记录" is-link bind:click="openVisits"/><van-cell title="AI 设置" label="系统默认或个人 Token" is-link bind:click="openAI"/></van-cell-group></view>

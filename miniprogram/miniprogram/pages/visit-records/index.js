@@ -1,0 +1,1 @@
+Page({data:{items:[]},onShow(){this.load()},async load(){const data=await getApp().globalData.api.request({path:'/visit-records'});this.setData({items:data.items})},async remove(e){await getApp().globalData.api.request({method:'DELETE',path:`/visit-records/${e.currentTarget.dataset.id}`});this.load()}})

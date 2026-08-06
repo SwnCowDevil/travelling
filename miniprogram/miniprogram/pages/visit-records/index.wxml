@@ -1,0 +1,1 @@
+<view class="page"><van-empty wx:if="{{!items.length}}" description="还没有到访记录"/><view class="card record" wx:for="{{items}}" wx:key="id"><view><text class="date">{{item.visited_on}}</text><text>累计 {{item.visit_count}} 次</text><text wx:if="{{item.note}}">{{item.note}}</text></view><van-button size="mini" plain data-id="{{item.id}}" bind:click="remove">删除</van-button></view></view>

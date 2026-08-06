@@ -1,0 +1,1 @@
+.form{padding:30rpx;display:flex;flex-direction:column;gap:24rpx}.toggle{display:flex;justify-content:space-between;align-items:center}

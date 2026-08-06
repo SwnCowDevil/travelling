@@ -1,1 +1,1 @@
-Page({ data: {} })
+Page({data:{avatar:'',name:'微信用户'},chooseAvatar(e){this.setData({avatar:e.detail.avatarUrl})},openAI(){wx.navigateTo({url:'/pages/ai-settings/index'})},openVisits(){wx.navigateTo({url:'/pages/visit-records/index'})}})

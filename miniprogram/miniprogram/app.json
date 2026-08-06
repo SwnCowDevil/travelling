@@ -3,7 +3,9 @@
     "pages/recommend/index",
     "pages/map/index",
     "pages/me/index",
-    "pages/destination-detail/index"
+    "pages/destination-detail/index",
+    "pages/visit-records/index",
+    "pages/ai-settings/index"
   ],
   "window": {
     "navigationBarTitleText": "去哪里",

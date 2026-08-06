@@ -1,1 +1,1 @@
-.placeholder { padding: 40rpx; }
+.stats,.region{padding:28rpx;margin-bottom:22rpx}.stats{display:flex;align-items:center;gap:20rpx}.big{font-size:54rpx;font-weight:700;color:#16845b}.filters{display:flex;gap:12rpx;overflow:hidden;margin:24rpx 0}.filters text{flex-shrink:0;padding:12rpx 20rpx;border-radius:999rpx;background:#e8f5ee}.region{display:flex;justify-content:space-between}.name{font-weight:700;margin-right:12rpx}.direct,.notice{color:#8a6a18}.notice{padding:20rpx;background:#fff8dc;border-radius:18rpx;margin-bottom:20rpx}
