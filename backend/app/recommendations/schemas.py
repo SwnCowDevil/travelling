@@ -21,6 +21,7 @@ class RecommendationCreate(BaseModel):
 
 
 class RecommendationItem(BaseModel):
+    destination_id: int
     code: str
     name: str
     summary: str

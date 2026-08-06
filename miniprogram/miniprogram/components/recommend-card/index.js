@@ -1,1 +1,1 @@
-Component({properties:{item:Object}})
+Component({properties:{item:Object},methods:{open(){this.triggerEvent('open',{id:this.data.item.destination_id})}}})

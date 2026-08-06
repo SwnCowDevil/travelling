@@ -12,3 +12,16 @@ class DestinationRead(BaseModel):
     region_code: str
     categories: list[str]
     suitable_months: list[int]
+    summary: str
+    season_tags: list[str]
+    crowd_tags: list[str]
+    transport_modes: list[str]
+    climate: dict
+    min_budget: int | None
+    max_budget: int | None
+    min_days: int | None
+    max_days: int | None
+
+
+class DestinationList(BaseModel):
+    items: list[DestinationRead]

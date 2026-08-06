@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.ai.schemas import RerankRequest, RerankResult
 from app.destinations.models import Destination
+from app.footprints.models import DestinationStatus
 from app.recommendations.domain import Candidate, Coordinates, RecommendationQuery
 from app.recommendations.models import RecommendationSession
 from app.recommendations.schemas import (
@@ -101,6 +102,7 @@ def _response_items(
     for place in destinations:
         score = score_candidate(query, _candidate(place))
         items.append(RecommendationItem(
+            destination_id=place.id,
             code=place.code,
             name=place.name,
             summary=place.summary,
@@ -120,7 +122,14 @@ async def create_recommendation(
 ) -> RecommendationResponse:
     query = _query(body)
     destinations = list(session.scalars(select(Destination)).all())
-    allowed = filter_candidates(query, [_candidate(place) for place in destinations], {})
+    status_rows = session.execute(
+        select(Destination.code, DestinationStatus.status)
+        .join(DestinationStatus, DestinationStatus.destination_id == Destination.id)
+        .where(DestinationStatus.user_id == user_id)
+    ).all()
+    allowed = filter_candidates(
+        query, [_candidate(place) for place in destinations], dict(status_rows)
+    )
     allowed_codes = {candidate.code for candidate in allowed}
     eligible = [place for place in destinations if place.code in allowed_codes]
     ordered_codes = _sorted_codes(query, eligible)

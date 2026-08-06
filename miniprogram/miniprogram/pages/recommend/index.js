@@ -12,5 +12,6 @@ Page({
     finally {timers.forEach(clearTimeout);this.setData({loading:false})}
   },
   async next(){const data=await getApp().globalData.api.request({method:'POST',path:`/recommendations/${this.data.sessionId}/next`});this.setData({items:data.items,fallback:data.source==='rules'})},
-  toggleMore(){this.setData({showMore:!this.data.showMore})}
+  toggleMore(){this.setData({showMore:!this.data.showMore})},
+  openDetail(e){wx.navigateTo({url:`/pages/destination-detail/index?id=${e.detail.id}`})}
 })

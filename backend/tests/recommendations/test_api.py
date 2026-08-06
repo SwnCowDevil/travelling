@@ -6,6 +6,7 @@ from app.ai.router import get_current_user_id
 from app.db.session import get_db
 from app.destinations.models import AdministrativeRegion, Destination
 from app.main import create_app
+from app.footprints.models import DestinationStatus
 from app.recommendations.router import get_reranker
 from app.users.models import User
 
@@ -20,6 +21,7 @@ def seed_destinations(db_session) -> None:
         ("near-4", 31.35, 121.52),
         ("near-5", 31.40, 121.55),
         ("near-6", 31.45, 121.58),
+        ("near-7", 31.50, 121.60),
         ("far-away", 39.90, 116.40),
     ]
     for index, (code, latitude, longitude) in enumerate(coordinates, start=1):
@@ -50,6 +52,9 @@ def seed_destinations(db_session) -> None:
 
 def test_recommendation_falls_back_rotates_and_preserves_hard_filters(db_session) -> None:
     seed_destinations(db_session)
+    avoided = db_session.query(Destination).filter_by(code="near-1").one()
+    db_session.add(DestinationStatus(user_id=21, destination_id=avoided.id, status="avoid"))
+    db_session.commit()
 
     async def timed_out_reranker(_request):
         raise TimeoutError("AI timed out")
@@ -82,6 +87,7 @@ def test_recommendation_falls_back_rotates_and_preserves_hard_filters(db_session
     second_codes = {item["code"] for item in second.json()["items"]}
     assert first_codes.isdisjoint(second_codes)
     assert "far-away" not in first_codes | second_codes
+    assert "near-1" not in first_codes | second_codes
     assert history.json()["items"][0]["session_id"] == first.json()["session_id"]
 
 
