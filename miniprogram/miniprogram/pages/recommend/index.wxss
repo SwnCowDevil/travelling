@@ -1,1 +1,1 @@
-.placeholder { padding: 40rpx; }
+.hero{display:flex;flex-direction:column;gap:18rpx;margin:16rpx 0 30rpx}.eyebrow{color:#16845b;font-size:24rpx}.title{font-size:48rpx;font-weight:700}.quick{display:flex;gap:16rpx;overflow:hidden;margin-bottom:28rpx}.quick text{flex-shrink:0;padding:14rpx 22rpx;background:#e8f5ee;border-radius:999rpx;color:#176a4c}.notice{margin:24rpx 0;color:#7a6320;background:#fff8dc;padding:20rpx;border-radius:18rpx}.sheet{padding:40rpx}.page{max-width:750rpx;margin:auto}

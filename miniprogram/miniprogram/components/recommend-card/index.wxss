@@ -1,0 +1,1 @@
+.card{padding:30rpx;margin:24rpx 0;background:#fff;border-radius:26rpx;box-shadow:0 8rpx 28rpx rgba(20,83,61,.08)}.name{font-size:36rpx;font-weight:700}.summary,.meta,.reason{margin-top:14rpx;color:#60756c}.reason{color:#176a4c}

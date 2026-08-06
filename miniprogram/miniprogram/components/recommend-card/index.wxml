@@ -1,0 +1,1 @@
+<view class="card"><view class="name">{{item.name}}</view><view class="summary">{{item.summary}}</view><view class="meta">约 {{item.distance_km}} km · 推荐度 {{item.score}}</view><view wx:if="{{item.reason}}" class="reason">{{item.reason}}</view></view>
