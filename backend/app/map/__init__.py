@@ -1,0 +1,1 @@
+"""Hierarchical China map summaries."""
