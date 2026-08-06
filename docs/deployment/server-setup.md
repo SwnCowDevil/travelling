@@ -2,6 +2,20 @@
 
 第一版不需要 Docker。建议购买一台 Linux 云服务器，用 systemd 管理 FastAPI，由 Caddy 提供 HTTPS。正式发布微信小程序前仍需一个已备案域名；没有域名时可先在开发者工具中关闭合法域名校验进行本地联调，但不能作为正式发布方案。
 
+## 本地微信开发者工具联调
+
+仓库根目录提供三个命令：
+
+```sh
+./scripts/start-local.sh
+./scripts/status-local.sh
+./scripts/stop-local.sh
+```
+
+启动脚本会检查 `backend/.env` 和虚拟环境、升级数据库、在后台运行单进程 FastAPI，并将 PID 与日志保存在忽略提交的 `.local/`。重复启动不会创建第二个进程，重复停止也不会报错。小程序本地配置固定访问 `http://127.0.0.1:8000`。
+
+在微信开发者工具中打开“详情 → 本地设置”，勾选“不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书”。localhost HTTP 配置只用于开发者工具；真机和正式发布必须换成已配置为微信合法域名的 HTTPS 地址。
+
 ## 1. 服务器准备
 
 1. 安装 Python 3.12、Caddy、SQLite、Git。

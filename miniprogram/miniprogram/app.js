@@ -1,8 +1,9 @@
 const { createApiClient } = require('./services/api')
+const localConfig = require('./config/local')
 
 App({
   globalData: {
-    apiBaseUrl: 'https://api.example.com',
+    apiBaseUrl: localConfig.apiBaseUrl,
     api: null
   },
   onLaunch() {
