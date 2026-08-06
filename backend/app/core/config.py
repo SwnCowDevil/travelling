@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     )
 
     database_url: str = "sqlite:///./data/travel.db"
-    jwt_secret: str = "development-only-change-me"
+    jwt_secret: str = "development-only-change-me-before-deploying"
     wechat_app_id: str = ""
     wechat_app_secret: str = ""
     ai_base_url: str = "https://www.packyapi.com/v1"
