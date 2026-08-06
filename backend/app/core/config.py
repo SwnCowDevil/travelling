@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     ai_base_url: str = "https://www.packyapi.com/v1"
     ai_model: str = "deepseek-chat"
     ai_api_key: str | None = None
+    ai_encryption_key: str | None = None
     amap_key: str | None = None
     amap_secret: str | None = None
 

@@ -12,6 +12,7 @@ dependencies = [
   "pydantic-settings>=2.10,<3",
   "sqlalchemy>=2.0,<3",
   "alembic>=1.16,<2",
+  "cryptography>=45,<46",
   "PyJWT>=2.10,<3",
   "uvicorn[standard]>=0.35,<1",
 ]
