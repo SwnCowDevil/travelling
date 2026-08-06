@@ -1,0 +1,7 @@
+{
+  "appid": "touristappid",
+  "projectname": "travel-miniprogram",
+  "miniprogramRoot": "miniprogram/",
+  "setting": {"es6": true, "minified": true, "postcss": true},
+  "compileType": "miniprogram"
+}

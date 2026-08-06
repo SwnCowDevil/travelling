@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "pages/recommend/index",
+    "pages/map/index",
+    "pages/me/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "去哪里",
+    "navigationBarBackgroundColor": "#F6FAF7",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F6FAF7"
+  },
+  "tabBar": {
+    "color": "#708078",
+    "selectedColor": "#16845B",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {"pagePath": "pages/recommend/index", "text": "推荐"},
+      {"pagePath": "pages/map/index", "text": "足迹"},
+      {"pagePath": "pages/me/index", "text": "我的"}
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

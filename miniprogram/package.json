@@ -1,0 +1,6 @@
+{
+  "name": "travel-miniprogram",
+  "private": true,
+  "scripts": {"test": "node --test"},
+  "dependencies": {"@vant/weapp": "^1.11.7"}
+}

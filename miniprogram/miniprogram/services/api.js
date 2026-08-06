@@ -1,0 +1,51 @@
+const TOKEN_KEY = 'travel_access_token'
+
+class ApiError extends Error {
+  constructor(message, code, traceId, statusCode) {
+    super(message)
+    this.code = code
+    this.traceId = traceId
+    this.statusCode = statusCode
+  }
+}
+
+function createApiClient(wxApi, baseUrl) {
+  return {
+    request({ method = 'GET', path, data }) {
+      return new Promise((resolve, reject) => {
+        const token = wxApi.getStorageSync(TOKEN_KEY)
+        const header = { 'Content-Type': 'application/json' }
+        if (token) header.Authorization = `Bearer ${token}`
+        wxApi.request({
+          url: `${baseUrl.replace(/\/$/, '')}${path}`,
+          method,
+          data,
+          header,
+          success(response) {
+            if (response.statusCode >= 200 && response.statusCode < 300) {
+              resolve(response.data)
+              return
+            }
+            if (response.statusCode === 401) {
+              wxApi.removeStorageSync(TOKEN_KEY)
+              reject(new ApiError('登录已过期', 'UNAUTHORIZED', null, 401))
+              return
+            }
+            const detail = response.data && response.data.detail
+            reject(new ApiError(
+              (detail && detail.message) || '请求失败',
+              (detail && detail.code) || 'REQUEST_FAILED',
+              response.data && (response.data.traceId || response.data.trace_id),
+              response.statusCode
+            ))
+          },
+          fail(error) {
+            reject(new ApiError(error.errMsg || '网络不可用', 'NETWORK_ERROR'))
+          }
+        })
+      })
+    }
+  }
+}
+
+module.exports = { ApiError, TOKEN_KEY, createApiClient }

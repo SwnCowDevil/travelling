@@ -1,0 +1,4 @@
+page { background: #f6faf7; color: #17352a; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; }
+.page { min-height: 100vh; box-sizing: border-box; padding: 32rpx; }
+.card { background: #fff; border-radius: 28rpx; box-shadow: 0 10rpx 32rpx rgba(20, 83, 61, .08); }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
