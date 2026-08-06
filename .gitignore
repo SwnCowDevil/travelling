@@ -1,2 +1,9 @@
-# Google App Engine generated folder
-appengine-generated/
+.DS_Store
+.env
+*.sqlite3
+*.db
+__pycache__/
+.pytest_cache/
+node_modules/
+miniprogram_npm/
+
