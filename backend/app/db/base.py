@@ -12,3 +12,4 @@ def import_models() -> None:
     from app.guides import models as guide_models  # noqa: F401
     from app.recommendations import models as recommendation_models  # noqa: F401
     from app.users import models as user_models  # noqa: F401
+    from app.visits import models as visit_models  # noqa: F401
