@@ -1,0 +1,1 @@
+<view class="origin" bindtap="choose"><van-icon name="location-o"/><text>{{value.name || '选择出发地'}}</text></view>
