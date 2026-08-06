@@ -52,3 +52,15 @@ def test_seed_rejects_invalid_month(db_session, tmp_path: Path) -> None:
 
     with pytest.raises(SeedValidationError, match="month"):
         seed_destinations(db_session, seed_path)
+
+
+def test_catalog_has_150_unique_destinations_covering_all_provinces(db_session) -> None:
+    catalog_path = Path(__file__).parents[2] / "data" / "destinations.v1.json"
+
+    result = seed_destinations(db_session, catalog_path)
+    destinations = db_session.query(Destination).all()
+
+    assert result.created == 150
+    assert len(destinations) == 150
+    assert len({item.code for item in destinations}) == 150
+    assert len({item.region_code for item in destinations}) == 34

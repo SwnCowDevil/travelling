@@ -1,102 +1,5481 @@
 {
   "version": "v1",
   "regions": [
-    {"code": "110000", "name": "北京市", "level": "province"},
-    {"code": "310000", "name": "上海市", "level": "province"},
-    {"code": "330000", "name": "浙江省", "level": "province"},
-    {"code": "510000", "name": "四川省", "level": "province"},
-    {"code": "650000", "name": "新疆维吾尔自治区", "level": "province"}
+    {
+      "code": "110000",
+      "name": "北京市",
+      "level": "province"
+    },
+    {
+      "code": "120000",
+      "name": "天津市",
+      "level": "province"
+    },
+    {
+      "code": "130000",
+      "name": "河北省",
+      "level": "province"
+    },
+    {
+      "code": "140000",
+      "name": "山西省",
+      "level": "province"
+    },
+    {
+      "code": "150000",
+      "name": "内蒙古自治区",
+      "level": "province"
+    },
+    {
+      "code": "210000",
+      "name": "辽宁省",
+      "level": "province"
+    },
+    {
+      "code": "220000",
+      "name": "吉林省",
+      "level": "province"
+    },
+    {
+      "code": "230000",
+      "name": "黑龙江省",
+      "level": "province"
+    },
+    {
+      "code": "310000",
+      "name": "上海市",
+      "level": "province"
+    },
+    {
+      "code": "320000",
+      "name": "江苏省",
+      "level": "province"
+    },
+    {
+      "code": "330000",
+      "name": "浙江省",
+      "level": "province"
+    },
+    {
+      "code": "340000",
+      "name": "安徽省",
+      "level": "province"
+    },
+    {
+      "code": "350000",
+      "name": "福建省",
+      "level": "province"
+    },
+    {
+      "code": "360000",
+      "name": "江西省",
+      "level": "province"
+    },
+    {
+      "code": "370000",
+      "name": "山东省",
+      "level": "province"
+    },
+    {
+      "code": "410000",
+      "name": "河南省",
+      "level": "province"
+    },
+    {
+      "code": "420000",
+      "name": "湖北省",
+      "level": "province"
+    },
+    {
+      "code": "430000",
+      "name": "湖南省",
+      "level": "province"
+    },
+    {
+      "code": "440000",
+      "name": "广东省",
+      "level": "province"
+    },
+    {
+      "code": "450000",
+      "name": "广西壮族自治区",
+      "level": "province"
+    },
+    {
+      "code": "460000",
+      "name": "海南省",
+      "level": "province"
+    },
+    {
+      "code": "500000",
+      "name": "重庆市",
+      "level": "province"
+    },
+    {
+      "code": "510000",
+      "name": "四川省",
+      "level": "province"
+    },
+    {
+      "code": "520000",
+      "name": "贵州省",
+      "level": "province"
+    },
+    {
+      "code": "530000",
+      "name": "云南省",
+      "level": "province"
+    },
+    {
+      "code": "540000",
+      "name": "西藏自治区",
+      "level": "province"
+    },
+    {
+      "code": "610000",
+      "name": "陕西省",
+      "level": "province"
+    },
+    {
+      "code": "620000",
+      "name": "甘肃省",
+      "level": "province"
+    },
+    {
+      "code": "630000",
+      "name": "青海省",
+      "level": "province"
+    },
+    {
+      "code": "640000",
+      "name": "宁夏回族自治区",
+      "level": "province"
+    },
+    {
+      "code": "650000",
+      "name": "新疆维吾尔自治区",
+      "level": "province"
+    },
+    {
+      "code": "710000",
+      "name": "台湾省",
+      "level": "province"
+    },
+    {
+      "code": "810000",
+      "name": "香港特别行政区",
+      "level": "province"
+    },
+    {
+      "code": "820000",
+      "name": "澳门特别行政区",
+      "level": "province"
+    }
   ],
   "destinations": [
     {
-      "code": "bj-forbidden-city",
+      "code": "cn-110000-01",
       "name": "北京故宫",
-      "summary": "明清宫殿建筑群与中国古代宫廷文化代表。",
-      "latitude": 39.9163,
-      "longitude": 116.3972,
+      "summary": "北京市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.7442,
+      "longitude": 116.5674,
       "region_code": "110000",
-      "categories": ["城市", "人文"],
-      "suitable_months": [3, 4, 5, 9, 10, 11],
-      "season_tags": ["旺季"],
-      "crowd_tags": ["人多"],
-      "transport_modes": ["高铁", "飞机"],
-      "min_budget": 800,
-      "max_budget": 2500,
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
       "min_days": 2,
       "max_days": 4,
-      "quality_score": 0.94
+      "quality_score": 0.82
     },
     {
-      "code": "shanghai-citywalk",
-      "name": "上海城市漫游",
-      "summary": "外滩、武康路与现代都市景观结合的城市旅行。",
+      "code": "cn-110000-02",
+      "name": "八达岭长城",
+      "summary": "北京市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.8242,
+      "longitude": 116.4874,
+      "region_code": "110000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-110000-03",
+      "name": "颐和园",
+      "summary": "北京市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.9042,
+      "longitude": 116.4074,
+      "region_code": "110000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-110000-04",
+      "name": "天坛公园",
+      "summary": "北京市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.9842,
+      "longitude": 116.3274,
+      "region_code": "110000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-110000-05",
+      "name": "什刹海",
+      "summary": "北京市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 40.0642,
+      "longitude": 116.2474,
+      "region_code": "110000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-120000-01",
+      "name": "天津五大道",
+      "summary": "天津市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.9242,
+      "longitude": 117.3609,
+      "region_code": "120000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-120000-02",
+      "name": "天津古文化街",
+      "summary": "天津市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.0042,
+      "longitude": 117.2809,
+      "region_code": "120000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-120000-03",
+      "name": "盘山风景区",
+      "summary": "天津市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.0842,
+      "longitude": 117.2009,
+      "region_code": "120000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-120000-04",
+      "name": "海河夜景",
+      "summary": "天津市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.1642,
+      "longitude": 117.1209,
+      "region_code": "120000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-120000-05",
+      "name": "意式风情区",
+      "summary": "天津市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 39.2442,
+      "longitude": 117.0409,
+      "region_code": "120000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-130000-01",
+      "name": "承德避暑山庄",
+      "summary": "河北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 37.8828,
+      "longitude": 114.6749,
+      "region_code": "130000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-130000-02",
+      "name": "秦皇岛山海关",
+      "summary": "河北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 37.9628,
+      "longitude": 114.5949,
+      "region_code": "130000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-130000-03",
+      "name": "北戴河",
+      "summary": "河北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.0428,
+      "longitude": 114.5149,
+      "region_code": "130000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-130000-04",
+      "name": "保定白石山",
+      "summary": "河北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.1228,
+      "longitude": 114.4349,
+      "region_code": "130000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-130000-05",
+      "name": "张家口草原天路",
+      "summary": "河北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.2028,
+      "longitude": 114.3549,
+      "region_code": "130000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-140000-01",
+      "name": "平遥古城",
+      "summary": "山西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 37.7106,
+      "longitude": 112.7089,
+      "region_code": "140000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-140000-02",
+      "name": "云冈石窟",
+      "summary": "山西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 37.7906,
+      "longitude": 112.6289,
+      "region_code": "140000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-140000-03",
+      "name": "五台山",
+      "summary": "山西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 37.8706,
+      "longitude": 112.5489,
+      "region_code": "140000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-140000-04",
+      "name": "壶口瀑布山西段",
+      "summary": "山西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 37.9506,
+      "longitude": 112.4689,
+      "region_code": "140000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-140000-05",
+      "name": "晋祠",
+      "summary": "山西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.0306,
+      "longitude": 112.3889,
+      "region_code": "140000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-150000-01",
+      "name": "呼伦贝尔草原",
+      "summary": "内蒙古自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 40.6826,
+      "longitude": 111.9092,
+      "region_code": "150000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-150000-02",
+      "name": "额济纳胡杨林",
+      "summary": "内蒙古自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 40.7626,
+      "longitude": 111.8292,
+      "region_code": "150000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-150000-03",
+      "name": "响沙湾",
+      "summary": "内蒙古自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 40.8426,
+      "longitude": 111.7492,
+      "region_code": "150000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-150000-04",
+      "name": "阿尔山",
+      "summary": "内蒙古自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 40.9226,
+      "longitude": 111.6692,
+      "region_code": "150000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-150000-05",
+      "name": "锡林郭勒草原",
+      "summary": "内蒙古自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 41.0026,
+      "longitude": 111.5892,
+      "region_code": "150000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-210000-01",
+      "name": "沈阳故宫",
+      "summary": "辽宁省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 41.6457,
+      "longitude": 123.5915,
+      "region_code": "210000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-210000-02",
+      "name": "大连滨海路",
+      "summary": "辽宁省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 41.7257,
+      "longitude": 123.5115,
+      "region_code": "210000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-210000-03",
+      "name": "本溪水洞",
+      "summary": "辽宁省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 41.8057,
+      "longitude": 123.4315,
+      "region_code": "210000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-210000-04",
+      "name": "丹东鸭绿江",
+      "summary": "辽宁省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 41.8857,
+      "longitude": 123.3515,
+      "region_code": "210000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-210000-05",
+      "name": "盘锦红海滩",
+      "summary": "辽宁省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 41.9657,
+      "longitude": 123.2715,
+      "region_code": "210000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-220000-01",
+      "name": "长白山",
+      "summary": "吉林省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.6571,
+      "longitude": 125.4835,
+      "region_code": "220000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-220000-02",
+      "name": "吉林雾凇岛",
+      "summary": "吉林省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.7371,
+      "longitude": 125.4035,
+      "region_code": "220000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-220000-03",
+      "name": "长春净月潭",
+      "summary": "吉林省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.8171,
+      "longitude": 125.3235,
+      "region_code": "220000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-220000-04",
+      "name": "延吉民俗园",
+      "summary": "吉林省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.8971,
+      "longitude": 125.2435,
+      "region_code": "220000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-220000-05",
+      "name": "松原查干湖",
+      "summary": "吉林省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.9771,
+      "longitude": 125.1635,
+      "region_code": "220000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-230000-01",
+      "name": "哈尔滨冰雪大世界",
+      "summary": "黑龙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 45.6438,
+      "longitude": 126.6949,
+      "region_code": "230000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-230000-02",
+      "name": "漠河北极村",
+      "summary": "黑龙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 45.7238,
+      "longitude": 126.6149,
+      "region_code": "230000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-230000-03",
+      "name": "伊春森林",
+      "summary": "黑龙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 45.8038,
+      "longitude": 126.5349,
+      "region_code": "230000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-230000-04",
+      "name": "镜泊湖",
+      "summary": "黑龙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 45.8838,
+      "longitude": 126.4549,
+      "region_code": "230000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-230000-05",
+      "name": "五大连池",
+      "summary": "黑龙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 45.9638,
+      "longitude": 126.3749,
+      "region_code": "230000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-310000-01",
+      "name": "上海外滩",
+      "summary": "上海市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.0704,
+      "longitude": 121.6337,
+      "region_code": "310000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-310000-02",
+      "name": "武康路历史街区",
+      "summary": "上海市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.1504,
+      "longitude": 121.5537,
+      "region_code": "310000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-310000-03",
+      "name": "上海迪士尼",
+      "summary": "上海市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
       "latitude": 31.2304,
       "longitude": 121.4737,
       "region_code": "310000",
-      "categories": ["城市", "人文"],
-      "suitable_months": [3, 4, 5, 10, 11],
-      "season_tags": ["旺季"],
-      "crowd_tags": ["人多"],
-      "transport_modes": ["高铁", "飞机"],
-      "min_budget": 800,
-      "max_budget": 3000,
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-310000-04",
+      "name": "朱家角古镇",
+      "summary": "上海市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.3104,
+      "longitude": 121.3937,
+      "region_code": "310000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-310000-05",
+      "name": "崇明岛",
+      "summary": "上海市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.3904,
+      "longitude": 121.3137,
+      "region_code": "310000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-320000-01",
+      "name": "南京明孝陵",
+      "summary": "江苏省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.9003,
+      "longitude": 118.9569,
+      "region_code": "320000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
       "min_days": 2,
       "max_days": 4,
-      "quality_score": 0.88
+      "quality_score": 0.82
     },
     {
-      "code": "zj-hangzhou-west-lake",
-      "name": "杭州西湖",
-      "summary": "湖山景色与宋韵人文相结合的经典目的地。",
-      "latitude": 30.25,
-      "longitude": 120.15,
-      "region_code": "330000",
-      "categories": ["城市", "人文", "景色"],
-      "suitable_months": [3, 4, 5, 9, 10, 11],
-      "season_tags": ["旺季"],
-      "crowd_tags": ["人多"],
-      "transport_modes": ["自驾", "高铁", "飞机"],
-      "min_budget": 600,
-      "max_budget": 2200,
+      "code": "cn-320000-02",
+      "name": "苏州园林",
+      "summary": "江苏省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.9803,
+      "longitude": 118.8769,
+      "region_code": "320000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
       "min_days": 2,
-      "max_days": 3,
-      "quality_score": 0.91
+      "max_days": 5,
+      "quality_score": 0.845
     },
     {
-      "code": "sc-daocheng-yading",
-      "name": "稻城亚丁",
-      "summary": "高海拔雪山、草甸与湖泊组成的自然景区。",
-      "latitude": 28.37,
-      "longitude": 100.35,
-      "region_code": "510000",
-      "categories": ["山川", "景色"],
-      "suitable_months": [5, 6, 9, 10],
-      "season_tags": ["旺季"],
-      "crowd_tags": ["人多"],
-      "transport_modes": ["自驾", "飞机"],
-      "min_budget": 2500,
-      "max_budget": 6000,
-      "min_days": 5,
+      "code": "cn-320000-03",
+      "name": "无锡鼋头渚",
+      "summary": "江苏省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 32.0603,
+      "longitude": 118.7969,
+      "region_code": "320000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-320000-04",
+      "name": "扬州瘦西湖",
+      "summary": "江苏省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 32.1403,
+      "longitude": 118.7169,
+      "region_code": "320000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-320000-05",
+      "name": "连云港花果山",
+      "summary": "江苏省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 32.2203,
+      "longitude": 118.6369,
+      "region_code": "320000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
       "max_days": 8,
-      "quality_score": 0.93
+      "quality_score": 0.92
     },
     {
-      "code": "xj-kanas",
+      "code": "cn-330000-01",
+      "name": "杭州西湖",
+      "summary": "浙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.1141,
+      "longitude": 120.3151,
+      "region_code": "330000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-330000-02",
+      "name": "乌镇",
+      "summary": "浙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.1941,
+      "longitude": 120.2351,
+      "region_code": "330000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-330000-03",
+      "name": "普陀山",
+      "summary": "浙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.2741,
+      "longitude": 120.1551,
+      "region_code": "330000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-330000-04",
+      "name": "千岛湖",
+      "summary": "浙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.3541,
+      "longitude": 120.0751,
+      "region_code": "330000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-330000-05",
+      "name": "雁荡山",
+      "summary": "浙江省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.4341,
+      "longitude": 119.9951,
+      "region_code": "330000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-340000-01",
+      "name": "黄山",
+      "summary": "安徽省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.6606,
+      "longitude": 117.3872,
+      "region_code": "340000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-340000-02",
+      "name": "宏村",
+      "summary": "安徽省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.7406,
+      "longitude": 117.3072,
+      "region_code": "340000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-340000-03",
+      "name": "九华山",
+      "summary": "安徽省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.8206,
+      "longitude": 117.2272,
+      "region_code": "340000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-340000-04",
+      "name": "天柱山",
+      "summary": "安徽省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.9006,
+      "longitude": 117.1472,
+      "region_code": "340000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-340000-05",
+      "name": "宣城查济古村",
+      "summary": "安徽省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 31.9806,
+      "longitude": 117.0672,
+      "region_code": "340000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-350000-01",
+      "name": "厦门鼓浪屿",
+      "summary": "福建省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 25.9145,
+      "longitude": 119.4565,
+      "region_code": "350000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-350000-02",
+      "name": "武夷山",
+      "summary": "福建省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 25.9945,
+      "longitude": 119.3765,
+      "region_code": "350000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-350000-03",
+      "name": "福建土楼",
+      "summary": "福建省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 26.0745,
+      "longitude": 119.2965,
+      "region_code": "350000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-350000-04",
+      "name": "泉州古城",
+      "summary": "福建省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 26.1545,
+      "longitude": 119.2165,
+      "region_code": "350000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-350000-05",
+      "name": "平潭岛",
+      "summary": "福建省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 26.2345,
+      "longitude": 119.1365,
+      "region_code": "350000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-360000-01",
+      "name": "庐山",
+      "summary": "江西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.5229,
+      "longitude": 116.0182,
+      "region_code": "360000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-360000-02",
+      "name": "婺源",
+      "summary": "江西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.6029,
+      "longitude": 115.9382,
+      "region_code": "360000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-360000-03",
+      "name": "三清山",
+      "summary": "江西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.6829,
+      "longitude": 115.8582,
+      "region_code": "360000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-360000-04",
+      "name": "景德镇",
+      "summary": "江西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.7629,
+      "longitude": 115.7782,
+      "region_code": "360000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-360000-05",
+      "name": "井冈山",
+      "summary": "江西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.8429,
+      "longitude": 115.6982,
+      "region_code": "360000",
+      "categories": [
+        "景色",
+        "自然"
+      ],
+      "suitable_months": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 2100,
+      "max_budget": 5600,
+      "min_days": 4,
+      "max_days": 8,
+      "quality_score": 0.92
+    },
+    {
+      "code": "cn-370000-01",
+      "name": "泰山",
+      "summary": "山东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.4912,
+      "longitude": 117.2801,
+      "region_code": "370000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-370000-02",
+      "name": "青岛海滨",
+      "summary": "山东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.5712,
+      "longitude": 117.2001,
+      "region_code": "370000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-370000-03",
+      "name": "曲阜三孔",
+      "summary": "山东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.6512,
+      "longitude": 117.1201,
+      "region_code": "370000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-370000-04",
+      "name": "威海刘公岛",
+      "summary": "山东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.7312,
+      "longitude": 117.0401,
+      "region_code": "370000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-410000-01",
+      "name": "洛阳龙门石窟",
+      "summary": "河南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.5866,
+      "longitude": 113.7854,
+      "region_code": "410000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-410000-02",
+      "name": "嵩山少林寺",
+      "summary": "河南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.6666,
+      "longitude": 113.7054,
+      "region_code": "410000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-410000-03",
+      "name": "开封清明上河园",
+      "summary": "河南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.7466,
+      "longitude": 113.6254,
+      "region_code": "410000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-410000-04",
+      "name": "云台山",
+      "summary": "河南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.8266,
+      "longitude": 113.5454,
+      "region_code": "410000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-420000-01",
+      "name": "武汉东湖",
+      "summary": "湖北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.4328,
+      "longitude": 114.4655,
+      "region_code": "420000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-420000-02",
+      "name": "神农架",
+      "summary": "湖北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.5128,
+      "longitude": 114.3855,
+      "region_code": "420000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-420000-03",
+      "name": "恩施大峡谷",
+      "summary": "湖北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.5928,
+      "longitude": 114.3055,
+      "region_code": "420000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-420000-04",
+      "name": "武当山",
+      "summary": "湖北省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.6728,
+      "longitude": 114.2255,
+      "region_code": "420000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-430000-01",
+      "name": "张家界国家森林公园",
+      "summary": "湖南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.0682,
+      "longitude": 113.0988,
+      "region_code": "430000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-430000-02",
+      "name": "凤凰古城",
+      "summary": "湖南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.1482,
+      "longitude": 113.0188,
+      "region_code": "430000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-430000-03",
+      "name": "长沙岳麓山",
+      "summary": "湖南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.2282,
+      "longitude": 112.9388,
+      "region_code": "430000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-430000-04",
+      "name": "南岳衡山",
+      "summary": "湖南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 28.3082,
+      "longitude": 112.8588,
+      "region_code": "430000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-440000-01",
+      "name": "广州陈家祠",
+      "summary": "广东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.9691,
+      "longitude": 113.4244,
+      "region_code": "440000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-440000-02",
+      "name": "深圳大鹏半岛",
+      "summary": "广东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 23.0491,
+      "longitude": 113.3444,
+      "region_code": "440000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-440000-03",
+      "name": "潮州古城",
+      "summary": "广东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 23.1291,
+      "longitude": 113.2644,
+      "region_code": "440000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-440000-04",
+      "name": "丹霞山",
+      "summary": "广东省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 23.2091,
+      "longitude": 113.1844,
+      "region_code": "440000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-450000-01",
+      "name": "桂林漓江",
+      "summary": "广西壮族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.657,
+      "longitude": 108.5265,
+      "region_code": "450000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-450000-02",
+      "name": "阳朔",
+      "summary": "广西壮族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.737,
+      "longitude": 108.4465,
+      "region_code": "450000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-450000-03",
+      "name": "北海涠洲岛",
+      "summary": "广西壮族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.817,
+      "longitude": 108.3665,
+      "region_code": "450000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-450000-04",
+      "name": "德天瀑布",
+      "summary": "广西壮族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.897,
+      "longitude": 108.2865,
+      "region_code": "450000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-460000-01",
+      "name": "三亚亚龙湾",
+      "summary": "海南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 19.884,
+      "longitude": 110.3599,
+      "region_code": "460000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-460000-02",
+      "name": "蜈支洲岛",
+      "summary": "海南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 19.964,
+      "longitude": 110.2799,
+      "region_code": "460000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-460000-03",
+      "name": "海口骑楼老街",
+      "summary": "海南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 20.044,
+      "longitude": 110.1999,
+      "region_code": "460000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-460000-04",
+      "name": "万宁日月湾",
+      "summary": "海南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 20.124,
+      "longitude": 110.1199,
+      "region_code": "460000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-500000-01",
+      "name": "重庆洪崖洞",
+      "summary": "重庆市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.403,
+      "longitude": 106.7116,
+      "region_code": "500000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-500000-02",
+      "name": "武隆天生三桥",
+      "summary": "重庆市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.483,
+      "longitude": 106.6316,
+      "region_code": "500000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-500000-03",
+      "name": "大足石刻",
+      "summary": "重庆市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.563,
+      "longitude": 106.5516,
+      "region_code": "500000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-500000-04",
+      "name": "巫山小三峡",
+      "summary": "重庆市代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.643,
+      "longitude": 106.4716,
+      "region_code": "500000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-510000-01",
+      "name": "九寨沟",
+      "summary": "四川省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.4128,
+      "longitude": 104.2268,
+      "region_code": "510000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-510000-02",
+      "name": "稻城亚丁",
+      "summary": "四川省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.4928,
+      "longitude": 104.1468,
+      "region_code": "510000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-510000-03",
+      "name": "成都大熊猫基地",
+      "summary": "四川省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.5728,
+      "longitude": 104.0668,
+      "region_code": "510000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-510000-04",
+      "name": "峨眉山",
+      "summary": "四川省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 30.6528,
+      "longitude": 103.9868,
+      "region_code": "510000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-520000-01",
+      "name": "黄果树瀑布",
+      "summary": "贵州省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 26.487,
+      "longitude": 106.7902,
+      "region_code": "520000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-520000-02",
+      "name": "荔波小七孔",
+      "summary": "贵州省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 26.567,
+      "longitude": 106.7102,
+      "region_code": "520000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-520000-03",
+      "name": "西江千户苗寨",
+      "summary": "贵州省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 26.647,
+      "longitude": 106.6302,
+      "region_code": "520000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-520000-04",
+      "name": "梵净山",
+      "summary": "贵州省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 26.727,
+      "longitude": 106.5502,
+      "region_code": "520000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-530000-01",
+      "name": "丽江古城",
+      "summary": "云南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 24.8789,
+      "longitude": 102.8783,
+      "region_code": "530000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-530000-02",
+      "name": "大理洱海",
+      "summary": "云南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 24.9589,
+      "longitude": 102.7983,
+      "region_code": "530000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-530000-03",
+      "name": "香格里拉",
+      "summary": "云南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 25.0389,
+      "longitude": 102.7183,
+      "region_code": "530000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-530000-04",
+      "name": "西双版纳",
+      "summary": "云南省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 25.1189,
+      "longitude": 102.6383,
+      "region_code": "530000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-540000-01",
+      "name": "拉萨布达拉宫",
+      "summary": "西藏自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.492,
+      "longitude": 91.3321,
+      "region_code": "540000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-540000-02",
+      "name": "林芝雅鲁藏布大峡谷",
+      "summary": "西藏自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.572,
+      "longitude": 91.2521,
+      "region_code": "540000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-540000-03",
+      "name": "纳木错",
+      "summary": "西藏自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.652,
+      "longitude": 91.1721,
+      "region_code": "540000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-540000-04",
+      "name": "珠峰大本营",
+      "summary": "西藏自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 29.732,
+      "longitude": 91.0921,
+      "region_code": "540000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-610000-01",
+      "name": "西安兵马俑",
+      "summary": "陕西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.1816,
+      "longitude": 109.0998,
+      "region_code": "610000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-610000-02",
+      "name": "西安城墙",
+      "summary": "陕西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.2616,
+      "longitude": 109.0198,
+      "region_code": "610000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-610000-03",
+      "name": "华山",
+      "summary": "陕西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.3416,
+      "longitude": 108.9398,
+      "region_code": "610000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-610000-04",
+      "name": "延安",
+      "summary": "陕西省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 34.4216,
+      "longitude": 108.8598,
+      "region_code": "610000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-620000-01",
+      "name": "敦煌莫高窟",
+      "summary": "甘肃省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 35.9011,
+      "longitude": 103.9943,
+      "region_code": "620000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-620000-02",
+      "name": "张掖七彩丹霞",
+      "summary": "甘肃省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 35.9811,
+      "longitude": 103.9143,
+      "region_code": "620000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-620000-03",
+      "name": "甘南扎尕那",
+      "summary": "甘肃省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.0611,
+      "longitude": 103.8343,
+      "region_code": "620000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-620000-04",
+      "name": "嘉峪关",
+      "summary": "甘肃省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.1411,
+      "longitude": 103.7543,
+      "region_code": "620000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-630000-01",
+      "name": "青海湖",
+      "summary": "青海省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.4571,
+      "longitude": 101.9382,
+      "region_code": "630000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-630000-02",
+      "name": "茶卡盐湖",
+      "summary": "青海省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.5371,
+      "longitude": 101.8582,
+      "region_code": "630000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-630000-03",
+      "name": "祁连山草原",
+      "summary": "青海省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.6171,
+      "longitude": 101.7782,
+      "region_code": "630000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-630000-04",
+      "name": "翡翠湖",
+      "summary": "青海省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 36.6971,
+      "longitude": 101.6982,
+      "region_code": "630000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-640000-01",
+      "name": "沙坡头",
+      "summary": "宁夏回族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.3272,
+      "longitude": 106.3909,
+      "region_code": "640000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-640000-02",
+      "name": "镇北堡西部影城",
+      "summary": "宁夏回族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.4072,
+      "longitude": 106.3109,
+      "region_code": "640000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-640000-03",
+      "name": "贺兰山岩画",
+      "summary": "宁夏回族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.4872,
+      "longitude": 106.2309,
+      "region_code": "640000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-640000-04",
+      "name": "西夏王陵",
+      "summary": "宁夏回族自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 38.5672,
+      "longitude": 106.1509,
+      "region_code": "640000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-650000-01",
       "name": "喀纳斯",
-      "summary": "阿尔泰山林、湖泊与图瓦村落构成的北疆景观。",
-      "latitude": 48.69,
-      "longitude": 87.04,
+      "summary": "新疆维吾尔自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.6656,
+      "longitude": 87.7768,
       "region_code": "650000",
-      "categories": ["山川", "景色"],
-      "suitable_months": [6, 7, 8, 9],
-      "season_tags": ["旺季"],
-      "crowd_tags": ["人多"],
-      "transport_modes": ["自驾", "飞机"],
-      "min_budget": 3500,
-      "max_budget": 8000,
-      "min_days": 6,
-      "max_days": 10,
-      "quality_score": 0.95
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-650000-02",
+      "name": "赛里木湖",
+      "summary": "新疆维吾尔自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.7456,
+      "longitude": 87.6968,
+      "region_code": "650000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-650000-03",
+      "name": "独库公路",
+      "summary": "新疆维吾尔自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.8256,
+      "longitude": 87.6168,
+      "region_code": "650000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-650000-04",
+      "name": "那拉提草原",
+      "summary": "新疆维吾尔自治区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 43.9056,
+      "longitude": 87.5368,
+      "region_code": "650000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-710000-01",
+      "name": "台北故宫博物院",
+      "summary": "台湾省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 24.873,
+      "longitude": 121.7254,
+      "region_code": "710000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-710000-02",
+      "name": "日月潭",
+      "summary": "台湾省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 24.953,
+      "longitude": 121.6454,
+      "region_code": "710000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-710000-03",
+      "name": "阿里山",
+      "summary": "台湾省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 25.033,
+      "longitude": 121.5654,
+      "region_code": "710000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-710000-04",
+      "name": "垦丁",
+      "summary": "台湾省代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 25.113,
+      "longitude": 121.4854,
+      "region_code": "710000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-810000-01",
+      "name": "香港太平山",
+      "summary": "香港特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.1593,
+      "longitude": 114.3294,
+      "region_code": "810000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-810000-02",
+      "name": "维多利亚港",
+      "summary": "香港特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.2393,
+      "longitude": 114.2494,
+      "region_code": "810000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-810000-03",
+      "name": "大屿山",
+      "summary": "香港特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.3193,
+      "longitude": 114.1694,
+      "region_code": "810000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-810000-04",
+      "name": "西贡地质公园",
+      "summary": "香港特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.3993,
+      "longitude": 114.0894,
+      "region_code": "810000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
+    },
+    {
+      "code": "cn-820000-01",
+      "name": "澳门历史城区",
+      "summary": "澳门特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.0387,
+      "longitude": 113.7039,
+      "region_code": "820000",
+      "categories": [
+        "人文",
+        "城市"
+      ],
+      "suitable_months": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 500,
+      "max_budget": 2000,
+      "min_days": 2,
+      "max_days": 4,
+      "quality_score": 0.82
+    },
+    {
+      "code": "cn-820000-02",
+      "name": "大三巴牌坊",
+      "summary": "澳门特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.1187,
+      "longitude": 113.6239,
+      "region_code": "820000",
+      "categories": [
+        "景色",
+        "山川"
+      ],
+      "suitable_months": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 900,
+      "max_budget": 2900,
+      "min_days": 2,
+      "max_days": 5,
+      "quality_score": 0.845
+    },
+    {
+      "code": "cn-820000-03",
+      "name": "路环岛",
+      "summary": "澳门特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.1987,
+      "longitude": 113.5439,
+      "region_code": "820000",
+      "categories": [
+        "景色",
+        "城市"
+      ],
+      "suitable_months": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "season_tags": [
+        "旺季"
+      ],
+      "crowd_tags": [
+        "人多"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1300,
+      "max_budget": 3800,
+      "min_days": 3,
+      "max_days": 6,
+      "quality_score": 0.87
+    },
+    {
+      "code": "cn-820000-04",
+      "name": "澳门博物馆",
+      "summary": "澳门特别行政区代表性旅行目的地，基础资料用于第一版筛选，详细攻略由后端按需生成。",
+      "latitude": 22.2787,
+      "longitude": 113.4639,
+      "region_code": "820000",
+      "categories": [
+        "人文",
+        "古城"
+      ],
+      "suitable_months": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "season_tags": [
+        "淡季"
+      ],
+      "crowd_tags": [
+        "人少"
+      ],
+      "transport_modes": [
+        "自驾",
+        "高铁",
+        "飞机"
+      ],
+      "min_budget": 1700,
+      "max_budget": 4700,
+      "min_days": 3,
+      "max_days": 7,
+      "quality_score": 0.895
     }
   ]
 }
