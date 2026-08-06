@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- 项目根目录为 `/Users/admin/Desktop/游记`。
+- 项目根目录为 `/Users/admin/Desktop/游记/travelling`。
 - SQLite 开启 WAL；应用进程数固定为 1。
 - `.env`、数据库文件和任何密钥必须加入 `.gitignore`。
 - 代码内不得出现真实 AppSecret 或 AI Token。
@@ -241,4 +241,3 @@ git commit -m "feat: add WeChat login boundary"
 
 Run: `cd backend && python -m pytest -v && alembic upgrade head`
 Expected: 全部通过；`GET /health` 返回 200；种子数据可重复导入。
-
