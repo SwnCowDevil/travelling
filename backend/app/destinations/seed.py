@@ -63,6 +63,8 @@ def seed_destinations(session: Session, path: Path) -> SeedResult:
             "transport_modes": [],
             "climate": {},
             "quality_score": 0.5,
+            "coordinate_verified": False,
+            "coordinate_source": "approximate",
             **item,
             "data_version": version,
         }

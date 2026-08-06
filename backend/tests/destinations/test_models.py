@@ -18,6 +18,7 @@ def test_destination_links_to_region_by_stable_code(db_session) -> None:
 
     assert place.region.name == "四川省"
     assert place.region_code == "510000"
+    assert place.coordinate_verified is False
 
 
 def test_user_openid_is_unique(db_session) -> None:

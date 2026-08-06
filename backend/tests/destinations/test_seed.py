@@ -64,3 +64,7 @@ def test_catalog_has_150_unique_destinations_covering_all_provinces(db_session) 
     assert len(destinations) == 150
     assert len({item.code for item in destinations}) == 150
     assert len({item.region_code for item in destinations}) == 34
+    verified = [item for item in destinations if item.coordinate_verified]
+    unresolved = [item for item in destinations if not item.coordinate_verified]
+    assert len(verified) == 146
+    assert {item.region_code for item in unresolved} == {"710000"}

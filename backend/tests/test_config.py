@@ -7,6 +7,7 @@ def test_settings_have_safe_local_defaults() -> None:
     assert settings.database_url == "sqlite:///./data/travel.db"
     assert settings.ai_base_url == "https://www.packyapi.com/v1"
     assert settings.ai_api_key is None
+    assert settings.amap_key is None
 
 
 def test_settings_read_environment(monkeypatch) -> None:

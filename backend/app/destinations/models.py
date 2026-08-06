@@ -1,6 +1,6 @@
 from typing import Any
 
-from sqlalchemy import Float, ForeignKey, Integer, JSON, String
+from sqlalchemy import Boolean, Float, ForeignKey, Integer, JSON, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -40,5 +40,9 @@ class Destination(Base):
     max_days: Mapped[int | None] = mapped_column(Integer, nullable=True)
     quality_score: Mapped[float] = mapped_column(Float, default=0.5)
     data_version: Mapped[str] = mapped_column(String(32), default="v1")
+    coordinate_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+    coordinate_source: Mapped[str] = mapped_column(String(40), default="approximate")
+    provider_place_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    provider_adcode: Mapped[str | None] = mapped_column(String(12), nullable=True)
 
     region: Mapped[AdministrativeRegion] = relationship()
