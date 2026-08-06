@@ -5,13 +5,14 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from app.core.config import settings
-from app.db.base import Base
+from app.db.base import Base, import_models
 
 config = context.config
 if config.config_file_name:
     fileConfig(config.config_file_name)
 
 config.set_main_option("sqlalchemy.url", settings.database_url)
+import_models()
 target_metadata = Base.metadata
 
 
@@ -47,4 +48,3 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
-
