@@ -1,0 +1,1 @@
+.actions{position:sticky;bottom:20rpx;display:flex;justify-content:space-between;padding:20rpx;background:#fff;border-radius:24rpx;box-shadow:0 8rpx 30rpx rgba(0,0,0,.1)}

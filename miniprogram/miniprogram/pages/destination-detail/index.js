@@ -1,0 +1,2 @@
+const {weatherLabel}=require('./model')
+Page({data:{destination:{},guide:null,weather:null,weatherLabel:'',loadingGuide:true},async onLoad(q){const api=getApp().globalData.api;const id=q.id;const [weather,guide]=await Promise.all([api.request({path:`/weather/${id}`}),api.request({path:`/guides/${id}?month=${new Date().getMonth()+1}&days=2&origin_name=当前位置`})]);this.setData({weather,weatherLabel:weatherLabel(weather),guide,loadingGuide:false})}})

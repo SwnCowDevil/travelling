@@ -1,0 +1,1 @@
+<view class="actions"><van-button size="small" data-status="want" bind:click="setStatus">想去</van-button><van-button size="small" data-status="visited" bind:click="setStatus">去过</van-button><van-button size="small" data-status="revisit" bind:click="setStatus">想再去</van-button><van-button size="small" data-status="avoid" bind:click="setStatus">不想去</van-button></view>

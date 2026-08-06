@@ -1,0 +1,1 @@
+<view class="panel"><text class="label">{{label}}</text><text wx:if="{{value.climate.summary}}">{{value.climate.summary}}</text></view>
