@@ -61,6 +61,24 @@ class AIClient:
         }
         await self._post(payload)
 
+    async def complete_json(self, system_prompt: str, user_payload: str) -> dict[str, Any]:
+        response = await self._post({
+            "model": self.model,
+            "response_format": {"type": "json_object"},
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_payload},
+            ],
+        })
+        try:
+            content = response["choices"][0]["message"]["content"]
+            value = json.loads(content)
+        except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+            raise InvalidAIResponse("AI returned invalid JSON") from exc
+        if not isinstance(value, dict):
+            raise InvalidAIResponse("AI JSON root must be an object")
+        return value
+
     async def _post(self, payload: dict[str, Any]) -> dict[str, Any]:
         headers = {"Authorization": f"Bearer {self.api_key}"}
         if self._http is not None:
