@@ -15,6 +15,9 @@ test('recommend page contains the complete v4 structure', () => {
   for (const marker of markers) assert.match(wxml, new RegExp(marker))
   assert.match(wxml, /旅行推荐/)
   assert.match(wxml, /正在为你推荐/)
+  assert.match(wxml, /bindtap="chooseOrigin"/)
+  assert.match(wxml, /origin\.name/)
+  assert.doesNotMatch(wxml, /<origin-picker/)
 })
 
 test('recommend page uses v4 color tokens and supported animations', () => {

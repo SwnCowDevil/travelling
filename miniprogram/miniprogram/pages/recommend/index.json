@@ -1,1 +1,1 @@
-{"navigationBarTitleText":"旅行推荐","navigationBarBackgroundColor":"#1BB28A","navigationBarTextStyle":"white","usingComponents":{"origin-picker":"/components/origin-picker/index","recommend-card":"/components/recommend-card/index"}}
+{"navigationBarTitleText":"旅行推荐","navigationBarBackgroundColor":"#1BB28A","navigationBarTextStyle":"white","usingComponents":{"recommend-card":"/components/recommend-card/index"}}

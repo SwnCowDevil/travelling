@@ -73,7 +73,7 @@ test('recommendation waits for a missing origin and resumes after selection', as
   const page = {
     data: { origin: {}, filters: defaultFilters(new Date('2026-08-06')) },
     setData(value) { Object.assign(this.data, value) },
-    selectComponent() { return { choose: () => { chooseCount += 1 } } }
+    chooseOrigin() { chooseCount += 1 }
   }
   page.recommend = definition.recommend
   page.closeFilters = definition.closeFilters
@@ -90,6 +90,30 @@ test('recommendation waits for a missing origin and resumes after selection', as
   global.Page = originalPage
   global.wx = originalWx
   global.getApp = originalGetApp
+})
+
+test('page directly assigns and displays the selected origin', async () => {
+  let definition
+  const originalPage = global.Page
+  const originalWx = global.wx
+  global.Page = value => { definition = value }
+  global.wx = {
+    chooseLocation: options => options.success({ name: '天安门', address: '北京市东城区', latitude: 39.9, longitude: 116.4 }),
+    setStorageSync() {}
+  }
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+
+  const page = {
+    data: { origin: {}, pendingRecommend: false },
+    setData(value) { Object.assign(this.data, value) },
+    onOrigin: definition.onOrigin
+  }
+  await definition.chooseOrigin.call(page)
+
+  assert.deepEqual(page.data.origin, { type: 'manual', name: '天安门', latitude: 39.9, longitude: 116.4 })
+  global.Page = originalPage
+  global.wx = originalWx
 })
 
 test('late automatic location cannot overwrite a manual origin', async () => {

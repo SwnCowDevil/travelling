@@ -4,7 +4,12 @@
     <view class="hero-orb hero-orb-two"></view>
     <text class="hero-title">旅行推荐</text>
     <text class="hero-subtitle">按月份和你的位置，一键找到最适合去的地方</text>
-    <origin-picker id="origin" value="{{origin}}" bind:change="onOrigin" bind:cancel="onOriginCancel"/>
+    <view class="origin-row" bindtap="chooseOrigin">
+      <text class="origin-icon">📍</text>
+      <text class="origin-prefix">所在地区：</text>
+      <text class="origin-name">{{origin.name || '请选择'}}</text>
+      <text class="origin-switch">切换定位</text>
+    </view>
   </view>
 
   <view class="filter-wrap">

@@ -1,4 +1,4 @@
-const { createLocationService } = require('../../services/location')
+const { classifyLocationFailure, createLocationService } = require('../../services/location')
 const {
   defaultFilters,
   buildRequest,
@@ -71,6 +71,36 @@ Page({
 
   resetFilters() { this.refreshFilterView(resetOptionalFilters(this.data.filters)) },
 
+  async chooseOrigin() {
+    const service = createLocationService(wx)
+    try {
+      const origin = await service.chooseManualOrigin()
+      await this.onOrigin({ detail: origin })
+    } catch (error) {
+      const reason = classifyLocationFailure(error)
+      if (reason === 'cancel') {
+        this.onOriginCancel()
+        return
+      }
+      if (reason === 'permission') {
+        const confirmed = await new Promise(resolve => {
+          wx.showModal({
+            title: '需要位置权限',
+            content: '请在设置中允许使用位置权限，用于选择出发地和计算距离。',
+            confirmText: '去设置',
+            success: result => resolve(Boolean(result.confirm)),
+            fail: () => resolve(false)
+          })
+        })
+        if (confirmed) await service.requestLocationPermission()
+        this.onOriginCancel()
+        return
+      }
+      wx.showToast({ title: '暂时无法选择地点', icon: 'none' })
+      this.onOriginCancel()
+    }
+  },
+
   async onOrigin({ detail }) {
     this._originVersion = (this._originVersion || 0) + 1
     const shouldRecommend = this.data.pendingRecommend
@@ -84,8 +114,7 @@ Page({
     if (!this.data.origin.latitude) {
       this.setData({ pendingRecommend: true })
       wx.showToast({ title: '请先选择出发地', icon: 'none' })
-      const picker = this.selectComponent('#origin')
-      if (picker) picker.choose()
+      await this.chooseOrigin()
       return
     }
     this.closeFilters()
