@@ -30,8 +30,9 @@ Page({
   },
 
   async onLoad() {
+    const version = this._originVersion || 0
     const origin = await createLocationService(wx).resolveOrigin()
-    this.setData({ origin })
+    if ((this._originVersion || 0) === version) this.setData({ origin })
   },
 
   refreshFilterView(filters) {
@@ -71,6 +72,7 @@ Page({
   resetFilters() { this.refreshFilterView(resetOptionalFilters(this.data.filters)) },
 
   async onOrigin({ detail }) {
+    this._originVersion = (this._originVersion || 0) + 1
     const shouldRecommend = this.data.pendingRecommend
     this.setData({ origin: detail, pendingRecommend: false })
     if (shouldRecommend) await this.recommend()
@@ -93,7 +95,10 @@ Page({
     ))
     try {
       const app = getApp()
-      const authenticated = await app.globalData.authReady
+      let authenticated = await app.globalData.authReady
+      if (authenticated === false && app.ensureAuthenticated) {
+        authenticated = await app.ensureAuthenticated()
+      }
       if (authenticated === false) throw new Error('本地登录失败')
       const data = await app.globalData.api.request({
         method: 'POST',

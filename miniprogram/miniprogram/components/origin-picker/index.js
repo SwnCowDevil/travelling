@@ -7,6 +7,7 @@ Component({
       const service = createLocationService(wx)
       try {
         const origin = await service.chooseManualOrigin()
+        this.setData({ value: origin })
         this.triggerEvent('change', origin)
       } catch (error) {
         const reason = classifyLocationFailure(error)

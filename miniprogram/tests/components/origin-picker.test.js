@@ -1,6 +1,31 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
 
+test('successful manual selection updates the visible value before emitting', async () => {
+  let definition
+  let visible
+  let emitted
+  const originalComponent = global.Component
+  const originalWx = global.wx
+  global.Component = value => { definition = value }
+  global.wx = {
+    chooseLocation: options => options.success({ name: '西湖', address: '杭州市', latitude: 30.2, longitude: 120.1 }),
+    setStorageSync() {}
+  }
+  delete require.cache[require.resolve('../../miniprogram/components/origin-picker/index')]
+  require('../../miniprogram/components/origin-picker/index')
+
+  await definition.methods.choose.call({
+    setData: value => { visible = value.value },
+    triggerEvent: (name, detail) => { emitted = [name, detail] }
+  })
+
+  assert.equal(visible.name, '西湖')
+  assert.deepEqual(emitted, ['change', visible])
+  global.Component = originalComponent
+  global.wx = originalWx
+})
+
 test('cancelling manual location emits cancel without an error toast', async () => {
   let definition
   let toast

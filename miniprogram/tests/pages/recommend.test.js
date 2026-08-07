@@ -91,3 +91,30 @@ test('recommendation waits for a missing origin and resumes after selection', as
   global.wx = originalWx
   global.getApp = originalGetApp
 })
+
+test('late automatic location cannot overwrite a manual origin', async () => {
+  let definition
+  let finishAutoLocation
+  const originalPage = global.Page
+  const originalWx = global.wx
+  global.Page = value => { definition = value }
+  global.wx = {
+    getStorageSync: () => null,
+    getLocation: options => { finishAutoLocation = () => options.success({ latitude: 31.2, longitude: 121.4 }) }
+  }
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+
+  const page = {
+    data: { origin: {}, pendingRecommend: false },
+    setData(value) { Object.assign(this.data, value) }
+  }
+  const loading = definition.onLoad.call(page)
+  await definition.onOrigin.call(page, { detail: { type: 'manual', name: '西湖', latitude: 30.2, longitude: 120.1 } })
+  finishAutoLocation()
+  await loading
+
+  assert.equal(page.data.origin.name, '西湖')
+  global.Page = originalPage
+  global.wx = originalWx
+})
