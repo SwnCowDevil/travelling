@@ -6,10 +6,15 @@ BACKEND_DIR="$PROJECT_ROOT/backend"
 RUNTIME_DIR=${LOCAL_RUNTIME_DIR:-$PROJECT_ROOT/.local}
 UVICORN_BIN=${LOCAL_UVICORN_BIN:-$BACKEND_DIR/.venv/bin/uvicorn}
 PS_BIN=${LOCAL_PS_BIN:-ps}
+LSOF_BIN=${LOCAL_LSOF_BIN:-lsof}
 ALEMBIC_BIN="$BACKEND_DIR/.venv/bin/alembic"
 PID_FILE="$RUNTIME_DIR/backend.pid"
 LOG_FILE="$RUNTIME_DIR/backend.log"
 API_URL="http://127.0.0.1:8000"
+
+port_in_use() {
+    "$LSOF_BIN" -nP -iTCP:8000 -sTCP:LISTEN >/dev/null 2>&1
+}
 
 recorded_pid() {
     test -f "$PID_FILE" || return 1

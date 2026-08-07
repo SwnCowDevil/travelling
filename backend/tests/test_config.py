@@ -16,3 +16,11 @@ def test_settings_read_environment(monkeypatch) -> None:
     settings = Settings(_env_file=None)
 
     assert settings.ai_model == "deepseek-chat"
+
+
+def test_blank_jwt_secret_uses_safe_local_default(monkeypatch) -> None:
+    monkeypatch.setenv("TRAVEL_JWT_SECRET", "")
+
+    settings = Settings(_env_file=None)
+
+    assert settings.jwt_secret == "development-only-change-me-before-deploying"

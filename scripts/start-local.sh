@@ -12,6 +12,12 @@ if is_backend_running; then
 fi
 remove_stale_pid
 
+if port_in_use; then
+    echo "无法启动：端口 8000 已被其他进程占用。" >&2
+    echo "请先关闭占用该端口的旧服务，再重新运行本脚本。" >&2
+    exit 1
+fi
+
 if test ! -x "$UVICORN_BIN" || test ! -x "$ALEMBIC_BIN"; then
     echo "缺少后端虚拟环境，请先在 backend 目录创建 .venv 并安装依赖。" >&2
     exit 1

@@ -8,12 +8,15 @@ export LOCAL_PROJECT_ROOT="$TEST_ROOT/project"
 export LOCAL_RUNTIME_DIR="$TEST_ROOT/runtime"
 export LOCAL_UVICORN_BIN="$TEST_ROOT/fake-uvicorn"
 export LOCAL_PS_BIN="$TEST_ROOT/fake-ps"
+export LOCAL_LSOF_BIN="$TEST_ROOT/fake-lsof"
 mkdir -p "$LOCAL_PROJECT_ROOT" "$LOCAL_RUNTIME_DIR"
 
 printf '%s\n' '#!/bin/sh' "trap 'exit 0' TERM" 'while :; do sleep 1; done' > "$LOCAL_UVICORN_BIN"
 chmod +x "$LOCAL_UVICORN_BIN"
 printf '%s\n' '#!/bin/sh' "echo '$LOCAL_UVICORN_BIN app.main:app'" > "$LOCAL_PS_BIN"
 chmod +x "$LOCAL_PS_BIN"
+printf '%s\n' '#!/bin/sh' 'test "${FAKE_PORT_BUSY:-}" = 1' > "$LOCAL_LSOF_BIN"
+chmod +x "$LOCAL_LSOF_BIN"
 
 # shellcheck source=../local-service-lib.sh
 . "$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)/local-service-lib.sh"
@@ -28,6 +31,13 @@ printf '%s\n' "999999" > "$PID_FILE"
 is_backend_running && { echo "stale PID must not be running" >&2; exit 1; }
 remove_stale_pid
 test ! -f "$PID_FILE" || { echo "stale PID file was not removed" >&2; exit 1; }
+
+FAKE_PORT_BUSY=1
+export FAKE_PORT_BUSY
+port_in_use || { echo "occupied API port was not detected" >&2; exit 1; }
+FAKE_PORT_BUSY=0
+export FAKE_PORT_BUSY
+port_in_use && { echo "free API port was reported as occupied" >&2; exit 1; }
 
 kill "$FAKE_PID"
 wait "$FAKE_PID" 2>/dev/null || true

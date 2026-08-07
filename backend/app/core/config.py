@@ -1,4 +1,8 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+LOCAL_JWT_SECRET = "development-only-change-me-before-deploying"
 
 
 class Settings(BaseSettings):
@@ -10,7 +14,7 @@ class Settings(BaseSettings):
     )
 
     database_url: str = "sqlite:///./data/travel.db"
-    jwt_secret: str = "development-only-change-me-before-deploying"
+    jwt_secret: str = LOCAL_JWT_SECRET
     wechat_app_id: str = ""
     wechat_app_secret: str = ""
     ai_base_url: str = "https://www.packyapi.com/v1"
@@ -20,6 +24,11 @@ class Settings(BaseSettings):
     amap_key: str | None = None
     amap_secret: str | None = None
     enable_dev_auth: bool = False
+
+    @field_validator("jwt_secret", mode="before")
+    @classmethod
+    def default_blank_local_jwt_secret(cls, value: object) -> object:
+        return LOCAL_JWT_SECRET if not str(value or "").strip() else value
 
 
 settings = Settings()
