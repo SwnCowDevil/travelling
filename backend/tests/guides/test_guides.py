@@ -1,7 +1,14 @@
 import pytest
 
 from app.destinations.models import AdministrativeRegion, Destination
-from app.guides.schemas import GuideGenerationRequest, GuidePayload
+from pydantic import ValidationError
+
+from app.guides.schemas import (
+    FoodRecommendation,
+    GuideGenerationRequest,
+    GuidePayload,
+    ItineraryDay,
+)
 from app.guides.service import GuideService
 
 
@@ -41,8 +48,31 @@ def ai_payload() -> GuidePayload:
         packing=["雨伞", "舒适步行鞋"],
         cautions=["节假日提前预约"],
         highlights=["苏堤漫步", "参观浙江省博物馆"],
-        itinerary=["第一天游湖", "第二天逛博物馆与老街"],
+        foods=[
+            FoodRecommendation(name="片儿川", description="笋片与雪菜汤面", area="湖滨", average_price="约25元/人"),
+            FoodRecommendation(name="东坡肉", description="酥香软糯", area="河坊街", average_price="约60元/人"),
+            FoodRecommendation(name="葱包桧", description="酥脆小吃", area="鼓楼", average_price="约10元/人"),
+            FoodRecommendation(name="定胜糕", description="软糯米糕", area="南宋御街", average_price="约12元/人"),
+        ],
+        itinerary=[
+            ItineraryDay(day=1, theme="西湖经典", morning="断桥", afternoon="苏堤", evening="湖滨", transport="步行和公交", caution="穿舒适鞋"),
+            ItineraryDay(day=2, theme="人文老城", morning="灵隐寺", afternoon="河坊街", evening="南宋御街", transport="地铁和公交", caution="寺院保持安静"),
+        ],
     )
+
+
+def test_guide_payload_rejects_too_few_foods() -> None:
+    value = ai_payload().model_dump()
+    value["foods"] = value["foods"][:3]
+    with pytest.raises(ValidationError):
+        GuidePayload.model_validate(value)
+
+
+def test_guide_payload_rejects_non_consecutive_days() -> None:
+    value = ai_payload().model_dump()
+    value["itinerary"][1]["day"] = 1
+    with pytest.raises(ValidationError):
+        GuidePayload.model_validate(value)
 
 
 @pytest.mark.asyncio
@@ -64,7 +94,7 @@ async def test_same_cache_key_reuses_structured_guide(db_session) -> None:
     assert second.cache_hit is True
     assert first.payload.model_dump() == second.payload.model_dump()
     assert set(GuidePayload.model_fields) == {
-        "transport", "weather", "packing", "cautions", "highlights", "itinerary"
+        "transport", "weather", "packing", "cautions", "highlights", "foods", "itinerary"
     }
 
 

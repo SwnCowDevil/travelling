@@ -8,7 +8,13 @@ from sqlalchemy.orm import Session
 
 from app.destinations.models import Destination
 from app.guides.models import GuideCache
-from app.guides.schemas import GuideGenerationRequest, GuidePayload, GuideResponse
+from app.guides.schemas import (
+    FoodRecommendation,
+    GuideGenerationRequest,
+    GuidePayload,
+    GuideResponse,
+    ItineraryDay,
+)
 
 GuideGenerator = Callable[..., Awaitable[GuidePayload]]
 
@@ -78,14 +84,33 @@ class GuideService:
         packing = ["身份证件", "充电设备", "舒适步行鞋"]
         if "雨" in climate:
             packing.append("雨具")
+        highlights = [destination.summary, *destination.categories[:2]]
+        highlights = [value for value in highlights if value] or [destination.name]
         return GuidePayload(
             transport=[f"从{request.origin_name}出发，优先考虑{transports}"],
             weather=[climate, "临行前再次确认逐日天气与预警"],
             packing=packing,
             cautions=["提前确认开放时间和预约要求", "旺季预留排队与交通时间"],
-            highlights=[destination.summary, *destination.categories[:2]],
+            highlights=highlights,
+            foods=[
+                FoodRecommendation(
+                    name=f"{destination.name}特色风味{index}",
+                    description=f"结合当地饮食特色的第{index}项尝鲜选择",
+                    area=f"{destination.name}主要游览区",
+                    average_price="价格以门店现场为准",
+                )
+                for index in range(1, 5)
+            ],
             itinerary=[
-                f"第{day}天：围绕{destination.name}安排游览，注意劳逸结合"
+                ItineraryDay(
+                    day=day,
+                    theme=f"{destination.name}第{day}天探索",
+                    morning=f"上午游览{highlights[(day - 1) % len(highlights)]}",
+                    afternoon=f"下午体验{highlights[day % len(highlights)]}",
+                    evening=f"晚上品尝{destination.name}当地风味并休息",
+                    transport=f"当天优先使用{transports}",
+                    caution="合理安排节奏，提前确认开放时间",
+                )
                 for day in range(1, request.days + 1)
             ],
         )

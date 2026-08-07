@@ -1,6 +1,11 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { displayProfile, saveAfterConnectionTest } = require('../../miniprogram/pages/ai-settings/model')
+const { defaultAIForm, displayProfile, saveAfterConnectionTest } = require('../../miniprogram/pages/ai-settings/model')
+
+test('new AI form defaults to the available DeepSeek Pro model', () => {
+  assert.equal(defaultAIForm().base_url, 'https://www.packyapi.ai/v1')
+  assert.equal(defaultAIForm().model, 'deepseek-v4-pro')
+})
 
 test('profile exposes masked token only', () => {
   const shown = displayProfile({ mode:'personal', masked_token:'****6789', token:'secret' })

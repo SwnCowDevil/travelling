@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class GuideGenerationRequest(BaseModel):
@@ -8,13 +8,38 @@ class GuideGenerationRequest(BaseModel):
     preferences: list[str] = Field(default_factory=list)
 
 
+class FoodRecommendation(BaseModel):
+    name: str = Field(min_length=1, max_length=80)
+    description: str = Field(min_length=1, max_length=300)
+    area: str = Field(min_length=1, max_length=120)
+    average_price: str = Field(min_length=1, max_length=80)
+
+
+class ItineraryDay(BaseModel):
+    day: int = Field(ge=1, le=7)
+    theme: str = Field(min_length=1, max_length=120)
+    morning: str = Field(min_length=1, max_length=500)
+    afternoon: str = Field(min_length=1, max_length=500)
+    evening: str = Field(min_length=1, max_length=500)
+    transport: str = Field(min_length=1, max_length=300)
+    caution: str = Field(min_length=1, max_length=300)
+
+
 class GuidePayload(BaseModel):
     transport: list[str] = Field(min_length=1)
     weather: list[str] = Field(min_length=1)
     packing: list[str] = Field(min_length=1)
     cautions: list[str] = Field(min_length=1)
     highlights: list[str] = Field(min_length=1)
-    itinerary: list[str] = Field(min_length=1)
+    foods: list[FoodRecommendation] = Field(min_length=4, max_length=6)
+    itinerary: list[ItineraryDay] = Field(min_length=1, max_length=7)
+
+    @model_validator(mode="after")
+    def require_consecutive_itinerary_days(self) -> "GuidePayload":
+        days = [item.day for item in self.itinerary]
+        if days != list(range(1, len(days) + 1)):
+            raise ValueError("itinerary days must be consecutive and start at 1")
+        return self
 
 
 class GuideResponse(BaseModel):

@@ -5,7 +5,8 @@ def test_settings_have_safe_local_defaults() -> None:
     settings = Settings(_env_file=None)
 
     assert settings.database_url == "sqlite:///./data/travel.db"
-    assert settings.ai_base_url == "https://www.packyapi.com/v1"
+    assert settings.ai_base_url == "https://www.packyapi.ai/v1"
+    assert settings.ai_model == "deepseek-v4-pro"
     assert settings.ai_api_key is None
     assert settings.amap_key is None
 
