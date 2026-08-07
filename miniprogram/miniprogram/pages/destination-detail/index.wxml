@@ -1,1 +1,16 @@
-<view class="page"><view class="card hero"><text class="title">{{destination.name}}</text><text>{{destination.summary}}</text></view><weather-panel value="{{weather}}" label="{{weatherLabel}}"/><view class="card guide"><van-loading wx:if="{{loadingGuide}}"/><block wx:else><view wx:for="{{guide.payload.itinerary}}" wx:key="*this">{{item}}</view></block></view><status-actions destination-id="{{destination.id}}"/></view>
+<view class="detail-page">
+  <view wx:if="{{loading}}" class="skeleton"><view></view><view></view><view></view></view>
+  <view wx:elif="{{error}}" class="empty">{{error}}</view>
+  <block wx:else>
+    <view class="hero"><text class="emoji">{{view.emoji}}</text><text class="title">{{view.name}}</text><text class="summary">{{view.summary}}</text><text class="rating">{{view.ratingText}} 推荐指数</text></view>
+    <view class="meta"><view><text>最佳季节</text><text class="bold">{{view.bestSeason}}</text></view><view><text>建议天数</text><text class="bold">{{view.daysText}}</text></view><view><text>人均预算</text><text class="bold">{{view.budgetText}}</text></view><view><text>来源</text><text class="bold green">{{view.guideSourceLabel}}</text></view></view>
+    <view class="section"><view class="heading">🚗 怎么去</view><view wx:for="{{view.transport}}" wx:key="*this" class="timeline"><view class="dot"></view><text>{{item}}</text></view></view>
+    <view class="section"><view class="heading">🌤️ 天气 <text class="heading-more">{{view.weatherLabel}}</text></view><scroll-view scroll-x class="weather"><view wx:for="{{view.weatherDays}}" wx:key="date" class="weather-card"><text class="bold">{{item.date}}</text><text>{{item.temperature}}</text><text>{{item.rain}}</text></view></scroll-view><text wx:for="{{view.weatherNotes}}" wx:key="*this" class="line">{{item}}</text></view>
+    <view class="section"><view class="heading">🎒 行李清单</view><view class="chips"><text wx:for="{{view.packing}}" wx:key="*this">{{item}}</text></view></view>
+    <view class="section"><view class="heading">⚠️ 注意事项</view><view wx:for="{{view.cautions}}" wx:key="*this" class="tip"><text class="tip-number">{{index+1}}</text><text>{{item}}</text></view></view>
+    <view class="section"><view class="heading">✨ 推荐玩法</view><view class="chips"><text wx:for="{{view.highlights}}" wx:key="*this">{{item}}</text></view></view>
+    <view class="section"><view class="heading">🍜 当地美食</view><view wx:for="{{view.foods}}" wx:key="name" class="food"><text class="bold">{{item.name}}</text><text>{{item.description}}</text><text class="food-meta">📍 {{item.area}} · {{item.averagePrice}}</text></view><text class="price-note">价格仅供参考</text></view>
+    <view class="section"><view class="heading">🗓️ 按天攻略</view><view wx:for="{{view.itinerary}}" wx:key="day" class="day"><view class="day-title">第{{item.day}}天 · {{item.theme}}</view><text><text class="period">上午</text>{{item.morning}}</text><text><text class="period">下午</text>{{item.afternoon}}</text><text><text class="period">晚上</text>{{item.evening}}</text><text class="day-meta">🚗 {{item.transport}}</text><text class="day-meta warn">⚠️ {{item.caution}}</text></view></view>
+    <status-actions destination-id="{{view.id}}"/>
+  </block>
+</view>
