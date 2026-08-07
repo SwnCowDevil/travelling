@@ -9,6 +9,19 @@ class ApiError extends Error {
   }
 }
 
+function validationErrorMessage(detail) {
+  if (!Array.isArray(detail) || !detail.length) return null
+  const issue = detail[0] || {}
+  const field = Array.isArray(issue.loc) ? issue.loc[issue.loc.length - 1] : ''
+  const labels = {
+    origin_name: '出发地名称',
+    origin_latitude: '出发地纬度',
+    origin_longitude: '出发地经度',
+    month: '出行月份'
+  }
+  return `${labels[field] || '请求参数'}不正确，请重新选择`
+}
+
 function createApiClient(wxApi, baseUrl) {
   return {
     request({ method = 'GET', path, data }) {
@@ -32,8 +45,9 @@ function createApiClient(wxApi, baseUrl) {
               return
             }
             const detail = response.data && response.data.detail
+            const validationMessage = validationErrorMessage(detail)
             reject(new ApiError(
-              (detail && detail.message) || '请求失败',
+              validationMessage || (detail && detail.message) || '请求失败',
               (detail && detail.code) || 'REQUEST_FAILED',
               response.data && (response.data.traceId || response.data.trace_id),
               response.statusCode
@@ -48,4 +62,4 @@ function createApiClient(wxApi, baseUrl) {
   }
 }
 
-module.exports = { ApiError, TOKEN_KEY, createApiClient }
+module.exports = { ApiError, TOKEN_KEY, validationErrorMessage, createApiClient }

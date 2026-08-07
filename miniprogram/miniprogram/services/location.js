@@ -7,6 +7,14 @@ function classifyLocationFailure(error = {}) {
   return 'unavailable'
 }
 
+function manualOriginName(name, address, latitude, longitude) {
+  const provided = String(name || '').trim() || String(address || '').trim()
+  if (provided) return provided
+  const lat = Number(latitude).toFixed(4)
+  const lng = Number(longitude).toFixed(4)
+  return `地图选点 ${lat}, ${lng}`
+}
+
 function createLocationService(wxApi) {
   return {
     resolveOrigin() {
@@ -16,7 +24,21 @@ function createLocationService(wxApi) {
           success: ({ latitude, longitude }) => resolve({
             type: 'gps', name: '当前位置', latitude, longitude
           }),
-          fail: () => resolve(wxApi.getStorageSync(ORIGIN_KEY) || { type: 'manual_required' })
+          fail: () => {
+            const saved = wxApi.getStorageSync(ORIGIN_KEY)
+            if (!saved) {
+              resolve({ type: 'manual_required' })
+              return
+            }
+            const repaired = {
+              ...saved,
+              name: manualOriginName(saved.name, saved.address, saved.latitude, saved.longitude)
+            }
+            if (repaired.name !== saved.name && wxApi.setStorageSync) {
+              wxApi.setStorageSync(ORIGIN_KEY, repaired)
+            }
+            resolve(repaired)
+          }
         })
       })
     },
@@ -24,7 +46,12 @@ function createLocationService(wxApi) {
       return new Promise((resolve, reject) => {
         wxApi.chooseLocation({
           success: ({ name, address, latitude, longitude }) => {
-            const origin = { type: 'manual', name: name || address, latitude, longitude }
+            const origin = {
+              type: 'manual',
+              name: manualOriginName(name, address, latitude, longitude),
+              latitude,
+              longitude
+            }
             wxApi.setStorageSync(ORIGIN_KEY, origin)
             resolve(origin)
           },
@@ -43,4 +70,4 @@ function createLocationService(wxApi) {
   }
 }
 
-module.exports = { ORIGIN_KEY, classifyLocationFailure, createLocationService }
+module.exports = { ORIGIN_KEY, classifyLocationFailure, manualOriginName, createLocationService }

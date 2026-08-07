@@ -41,3 +41,17 @@ test('business errors preserve code and traceId', async () => {
     error => error.code === 'DUPLICATE_VISIT_DATE' && error.traceId === 'trace-1'
   )
 })
+
+test('validation errors expose the invalid field instead of generic failure', async () => {
+  const wx = {
+    getStorageSync: () => 'token',
+    request: value => value.success({
+      statusCode: 422,
+      data: { detail: [{ type: 'string_too_short', loc: ['body', 'origin_name'], msg: 'String should have at least 1 character' }] }
+    })
+  }
+  await assert.rejects(
+    createApiClient(wx, 'https://api.example.com').request({ path: '/recommendations' }),
+    error => error.statusCode === 422 && /出发地/.test(error.message)
+  )
+})

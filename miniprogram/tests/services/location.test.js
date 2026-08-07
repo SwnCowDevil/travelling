@@ -35,3 +35,27 @@ test('recent manual origin can be reused', async () => {
   const result = await createLocationService(wx).resolveOrigin()
   assert.deepEqual(result, saved)
 })
+
+test('manual map selection always supplies a non-empty origin name', async () => {
+  let saved
+  const wx = {
+    chooseLocation: options => options.success({ name: '', address: '  ', latitude: 39.9219, longitude: 116.44355 }),
+    setStorageSync: (_key, value) => { saved = value }
+  }
+  const result = await createLocationService(wx).chooseManualOrigin()
+  assert.equal(result.name, '地图选点 39.9219, 116.4436')
+  assert.deepEqual(saved, result)
+})
+
+test('legacy saved origin with an empty name is repaired when reused', async () => {
+  const legacy = { type: 'manual', name: '', latitude: 39.9219, longitude: 116.44355 }
+  let repaired
+  const wx = {
+    getLocation: options => options.fail({ errMsg: 'getLocation:fail auth deny' }),
+    getStorageSync: () => legacy,
+    setStorageSync: (_key, value) => { repaired = value }
+  }
+  const result = await createLocationService(wx).resolveOrigin()
+  assert.equal(result.name, '地图选点 39.9219, 116.4436')
+  assert.deepEqual(repaired, result)
+})
