@@ -1,1 +1,75 @@
-<view class="page"><view class="hero"><text class="eyebrow">一键发现好去处</text><text class="title">{{filters.month}} 月，从哪里出发？</text><origin-picker id="origin" value="{{origin}}" bind:change="onOrigin"/></view><view class="quick"><text>景色</text><text>人文</text><text>人少</text><text bindtap="toggleMore">更多筛选</text></view><van-button round block color="#16845B" bind:click="recommend">一键推荐</van-button><loading-stage wx:if="{{loading}}" text="{{stage}}"/><view wx:if="{{fallback}}" class="notice">AI 暂不可用，已使用可靠规则推荐</view><recommend-card wx:for="{{items}}" wx:key="code" item="{{item}}" bind:open="openDetail"/><van-button wx:if="{{sessionId && !loading}}" plain round block color="#16845B" bind:click="next">换一批</van-button><van-popup show="{{showMore}}" position="bottom" round custom-style="height:55%"><view class="sheet">距离、预算、天数、淡旺季和交通均可不选</view></van-popup></view>
+<view class="recommend-page">
+  <view class="recommend-hero">
+    <view class="hero-orb hero-orb-one"></view>
+    <view class="hero-orb hero-orb-two"></view>
+    <text class="hero-title">旅行推荐</text>
+    <text class="hero-subtitle">按月份和你的位置，一键找到最适合去的地方</text>
+    <origin-picker id="origin" value="{{origin}}" bind:change="onOrigin" bind:cancel="onOriginCancel"/>
+  </view>
+
+  <view class="filter-wrap">
+    <view class="filter-bar">
+      <view id="filter-month" class="filter-trigger {{activePanel === 'month' ? 'active' : ''}}" data-panel="month" bindtap="togglePanel"><text>{{filters.month}}月</text><text class="arrow">▾</text></view>
+      <view id="filter-season" class="filter-trigger {{activePanel === 'season' ? 'active' : ''}}" data-panel="season" bindtap="togglePanel"><text>季节</text><text class="count" wx:if="{{filters.seasons.length}}">{{filters.seasons.length}}</text><text class="arrow">▾</text></view>
+      <view id="filter-crowd" class="filter-trigger {{activePanel === 'crowd' ? 'active' : ''}}" data-panel="crowd" bindtap="togglePanel"><text>人流</text><text class="count" wx:if="{{filters.crowd.length}}">{{filters.crowd.length}}</text><text class="arrow">▾</text></view>
+      <view id="filter-pref" class="filter-trigger {{activePanel === 'preferences' ? 'active' : ''}}" data-panel="preferences" bindtap="togglePanel"><text>偏好</text><text class="count" wx:if="{{filters.preferences.length}}">{{filters.preferences.length}}</text><text class="arrow">▾</text></view>
+      <view id="filter-more" class="filter-trigger {{activePanel === 'more' ? 'active' : ''}}" data-panel="more" bindtap="togglePanel"><text>更多</text><text class="count" wx:if="{{filters.categories.length || filters.bestOnly}}">{{filters.categories.length + (filters.bestOnly ? 1 : 0)}}</text><text class="arrow">▾</text></view>
+    </view>
+
+    <view class="filter-panel" wx:if="{{activePanel}}">
+      <block wx:if="{{activePanel === 'month'}}">
+        <text class="panel-title">选择出行月份</text>
+        <view class="month-grid">
+          <view wx:for="{{months}}" wx:key="*this" class="month-option {{filters.month === item ? 'selected' : ''}}" data-month="{{item}}" bindtap="selectMonth">{{item}}月</view>
+        </view>
+      </block>
+      <block wx:if="{{activePanel === 'season'}}">
+        <text class="panel-title">季节（可多选）</text>
+        <view class="option-grid"><view wx:for="{{filterOptions.season}}" wx:key="value" class="option {{item.selected ? 'selected' : ''}}" data-group="seasons" data-value="{{item.value}}" bindtap="toggleOption">{{item.value}}</view></view>
+      </block>
+      <block wx:if="{{activePanel === 'crowd'}}">
+        <text class="panel-title">人流（可多选）</text>
+        <view class="option-grid"><view wx:for="{{filterOptions.crowd}}" wx:key="value" class="option {{item.selected ? 'selected' : ''}}" data-group="crowd" data-value="{{item.value}}" bindtap="toggleOption">{{item.value}}</view></view>
+      </block>
+      <block wx:if="{{activePanel === 'preferences'}}">
+        <text class="panel-title">偏好（可多选）</text>
+        <view class="option-grid"><view wx:for="{{filterOptions.preferences}}" wx:key="value" class="option {{item.selected ? 'selected' : ''}}" data-group="preferences" data-value="{{item.value}}" bindtap="toggleOption">{{item.value}}</view></view>
+      </block>
+      <block wx:if="{{activePanel === 'more'}}">
+        <text class="panel-title">最推荐</text>
+        <view class="option-grid"><view class="option best {{filters.bestOnly ? 'selected' : ''}}" bindtap="toggleBest">⭐ 优先好评最高</view></view>
+        <text class="panel-title panel-title-space">分类（可多选）</text>
+        <view class="option-grid"><view wx:for="{{filterOptions.categories}}" wx:key="value" class="option {{item.selected ? 'selected' : ''}}" data-group="categories" data-value="{{item.value}}" bindtap="toggleOption">{{item.value}}</view></view>
+        <text class="advanced-hint">距离、预算、天数与交通条件可继续在此扩展</text>
+        <view class="panel-actions"><button class="reset-button" bindtap="resetFilters">重置</button><button class="confirm-button" bindtap="closeFilters">确定</button></view>
+      </block>
+    </view>
+  </view>
+
+  <view class="filter-mask" wx:if="{{activePanel}}" bindtap="closeFilters"></view>
+
+  <scroll-view id="filter-summary" class="filter-summary" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="summary-row">
+      <view wx:for="{{summaries}}" wx:key="label" class="summary-chip"><text>{{item.label}}</text><text wx:if="{{item.key !== 'month'}}" class="chip-close" data-key="{{item.key}}" data-value="{{item.value}}" bindtap="removeSummary">×</text></view>
+    </view>
+  </scroll-view>
+
+  <view class="cta-wrap">
+    <button id="recommend-cta" class="recommend-cta {{loading ? 'loading' : ''}}" disabled="{{loading}}" bindtap="recommend">
+      <view wx:if="{{loading}}" class="cta-spinner"></view>
+      <text>{{loading ? '正在为你推荐…' : '🚀 一键推荐'}}</text>
+    </button>
+    <text wx:if="{{loading}}" class="loading-stage-copy">{{stage}}</text>
+  </view>
+
+  <view id="recommend-results" class="recommend-results">
+    <view class="results-title"><text>为你推荐</text><text class="results-basis">· 基于 {{filters.month}}月 / {{origin.name || '未选出发地'}}</text></view>
+    <view wx:if="{{fallback}}" class="fallback-notice">AI 暂不可用，已使用可靠规则推荐</view>
+    <view wx:if="{{loading}}" class="skeleton-list"><view class="skeleton-card"></view><view class="skeleton-card"></view><view class="skeleton-card"></view></view>
+    <block wx:else>
+      <recommend-card wx:for="{{items}}" wx:key="code" item="{{item}}" bind:open="openDetail"/>
+      <view wx:if="{{!items.length}}" class="empty-state"><text class="empty-icon">🧭</text><text>选好条件，开始发现下一站</text></view>
+      <button wx:if="{{sessionId && hasMore}}" class="next-button" bindtap="next">换一批</button>
+    </block>
+  </view>
+</view>

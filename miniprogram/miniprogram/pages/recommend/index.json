@@ -1,1 +1,1 @@
-{"navigationBarTitleText":"旅行推荐","usingComponents":{"origin-picker":"/components/origin-picker/index","recommend-card":"/components/recommend-card/index","loading-stage":"/components/loading-stage/index","van-button":"@vant/weapp/button/index","van-popup":"@vant/weapp/popup/index"}}
+{"navigationBarTitleText":"旅行推荐","navigationBarBackgroundColor":"#1BB28A","navigationBarTextStyle":"white","usingComponents":{"origin-picker":"/components/origin-picker/index","recommend-card":"/components/recommend-card/index"}}

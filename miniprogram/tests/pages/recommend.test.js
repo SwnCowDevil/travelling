@@ -1,6 +1,14 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { defaultFilters, buildRequest, loadingStages } = require('../../miniprogram/pages/recommend/model')
+const {
+  defaultFilters,
+  buildRequest,
+  loadingStages,
+  toggleFilter,
+  setMonth,
+  resetOptionalFilters,
+  filterSummary
+} = require('../../miniprogram/pages/recommend/model')
 
 test('defaults to current month and optional filters can be cleared', () => {
   const filters = defaultFilters(new Date('2026-08-06'))
@@ -22,6 +30,33 @@ test('rule result keeps three cards and exposes fallback notice', () => {
   assert.equal(response.source === 'rules', true)
 })
 
+test('optional recommendation filters toggle independently', () => {
+  let filters = defaultFilters(new Date('2026-08-07'))
+  filters = toggleFilter(filters, 'categories', '山川')
+  filters = toggleFilter(filters, 'categories', '古城')
+  filters = toggleFilter(filters, 'preferences', '景色')
+  assert.deepEqual(filters.categories, ['山川', '古城'])
+  assert.deepEqual(filterSummary(filters).map(item => item.label), ['8月', '景色', '山川', '古城'])
+
+  filters = toggleFilter(filters, 'categories', '山川')
+  filters = setMonth(filters, 10)
+  assert.deepEqual(filters.categories, ['古城'])
+  assert.equal(filters.month, 10)
+
+  filters = resetOptionalFilters(filters)
+  assert.equal(filters.month, 10)
+  assert.deepEqual(filters.preferences, [])
+  assert.deepEqual(filters.categories, [])
+})
+
+test('preferences and destination categories share the backend category filter', () => {
+  let filters = defaultFilters(new Date('2026-08-07'))
+  filters = toggleFilter(filters, 'preferences', '人文')
+  filters = toggleFilter(filters, 'categories', '古城')
+  const request = buildRequest(filters, { name: '上海', latitude: 31.2, longitude: 121.4 })
+  assert.deepEqual(request.preferred_categories, ['人文', '古城'])
+})
+
 test('recommendation waits for a missing origin and resumes after selection', async () => {
   let definition
   const originalPage = global.Page
@@ -41,6 +76,7 @@ test('recommendation waits for a missing origin and resumes after selection', as
     selectComponent() { return { choose: () => { chooseCount += 1 } } }
   }
   page.recommend = definition.recommend
+  page.closeFilters = definition.closeFilters
   global.getApp = () => ({ globalData: { api: { request: async () => { requestCount += 1; return { items: [], session_id: 1, source: 'rules' } } } } })
 
   await definition.recommend.call(page)
