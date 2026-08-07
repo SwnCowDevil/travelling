@@ -5,6 +5,7 @@ from app.auth.router import router as auth_router
 from app.destinations.router import router as destinations_router
 from app.guides.router import router as guides_router
 from app.map.router import router as map_router
+from app.locations.router import router as locations_router
 from app.footprints.router import router as footprints_router
 from app.recommendations.router import router as recommendations_router
 from app.weather.router import router as weather_router
@@ -22,6 +23,7 @@ def create_app() -> FastAPI:
     app.include_router(visits_router)
     app.include_router(footprints_router)
     app.include_router(map_router)
+    app.include_router(locations_router)
 
     @app.get("/health")
     def health() -> dict[str, str]:
