@@ -1,1 +1,6 @@
-<view class="origin" bindtap="choose"><van-icon name="location-o"/><text>{{value.name || '选择出发地'}}</text></view>
+<view class="origin" bindtap="choose">
+  <van-icon name="location-o" size="18px" color="#ffffff"/>
+  <text class="prefix">所在地区：</text>
+  <text class="name">{{value.name || '请选择'}}</text>
+  <text class="switch">切换定位</text>
+</view>

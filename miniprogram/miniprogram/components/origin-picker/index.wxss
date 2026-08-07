@@ -1,1 +1,5 @@
-.origin { display:flex; align-items:center; gap:12rpx; min-height:72rpx; color:#176a4c; font-weight:600; }
+.origin{display:flex;align-items:center;min-height:76rpx;padding:0 20rpx;border-radius:24rpx;background:rgba(255,255,255,.18);color:#fff;font-size:27rpx;box-sizing:border-box}
+.prefix{margin-left:10rpx;opacity:.94}
+.name{font-weight:700;max-width:240rpx;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.switch{margin-left:auto;padding:8rpx 18rpx;border-radius:999rpx;background:rgba(255,255,255,.24);font-size:23rpx;white-space:nowrap}
+.origin:active .switch{transform:scale(.95)}

@@ -1,5 +1,12 @@
 const ORIGIN_KEY = 'travel_recent_origin'
 
+function classifyLocationFailure(error = {}) {
+  const message = String(error.errMsg || error.message || '').toLowerCase()
+  if (message.includes('cancel')) return 'cancel'
+  if (message.includes('auth deny') || message.includes('authorize') || message.includes('permission')) return 'permission'
+  return 'unavailable'
+}
+
 function createLocationService(wxApi) {
   return {
     resolveOrigin() {
@@ -24,8 +31,16 @@ function createLocationService(wxApi) {
           fail: reject
         })
       })
+    },
+    requestLocationPermission() {
+      return new Promise(resolve => {
+        wxApi.openSetting({
+          success: result => resolve(Boolean(result.authSetting && result.authSetting['scope.userLocation'])),
+          fail: () => resolve(false)
+        })
+      })
     }
   }
 }
 
-module.exports = { ORIGIN_KEY, createLocationService }
+module.exports = { ORIGIN_KEY, classifyLocationFailure, createLocationService }

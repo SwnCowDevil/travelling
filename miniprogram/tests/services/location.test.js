@@ -1,6 +1,18 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { createLocationService } = require('../../miniprogram/services/location')
+const { classifyLocationFailure, createLocationService } = require('../../miniprogram/services/location')
+
+test('location failures distinguish cancellation from permission denial', () => {
+  assert.equal(classifyLocationFailure({ errMsg: 'chooseLocation:fail cancel' }), 'cancel')
+  assert.equal(classifyLocationFailure({ errMsg: 'getLocation:fail auth deny' }), 'permission')
+  assert.equal(classifyLocationFailure({ errMsg: 'chooseLocation:fail system error' }), 'unavailable')
+})
+
+test('location permission can be reopened from settings', async () => {
+  const wx = { openSetting: options => options.success({ authSetting: { 'scope.userLocation': true } }) }
+  const result = await createLocationService(wx).requestLocationPermission()
+  assert.equal(result, true)
+})
 
 test('location success returns coordinates', async () => {
   const wx = { getLocation: options => options.success({ latitude: 31.2, longitude: 121.4 }) }

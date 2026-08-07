@@ -13,6 +13,12 @@
     "navigationBarTextStyle": "black",
     "backgroundColor": "#F6FAF7"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置将用于选择出发地和计算旅行距离"
+    }
+  },
+  "requiredPrivateInfos": ["getLocation", "chooseLocation"],
   "tabBar": {
     "color": "#708078",
     "selectedColor": "#16845B",
