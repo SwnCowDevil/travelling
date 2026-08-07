@@ -75,10 +75,14 @@ function filterOptions(filters) {
 function buildRequest(filters, origin) {
   const crowds = Array.isArray(filters.crowd) ? filters.crowd : (filters.crowd ? [filters.crowd] : [])
   const categories = [...new Set([...(filters.preferences || []), ...(filters.categories || [])])]
+  const coordinateLabel = `地图选点 ${Number(origin.latitude).toFixed(4)}, ${Number(origin.longitude).toFixed(4)}`
+  const originName = [origin.name, origin.address, origin.regionName]
+    .map(value => String(value || '').trim())
+    .find(Boolean) || coordinateLabel
   const value = {
     origin_latitude: origin.latitude,
     origin_longitude: origin.longitude,
-    origin_name: origin.name,
+    origin_name: originName,
     month: filters.month,
     preferred_categories: categories,
     preferred_seasons: filters.seasons || [],

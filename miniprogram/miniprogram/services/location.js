@@ -15,6 +15,41 @@ function manualOriginName(name, address, latitude, longitude) {
   return `地图选点 ${lat}, ${lng}`
 }
 
+function saveOrigin(wxApi, origin) {
+  wxApi.setStorageSync(ORIGIN_KEY, origin)
+  return origin
+}
+
+async function resolveSelectedOrigin(api, selected) {
+  const fallback = {
+    type: 'manual',
+    name: manualOriginName(selected.name, selected.address, selected.latitude, selected.longitude),
+    regionName: '',
+    address: String(selected.address || '').trim(),
+    latitude: selected.latitude,
+    longitude: selected.longitude,
+    source: 'wechat'
+  }
+  try {
+    const latitude = encodeURIComponent(selected.latitude)
+    const longitude = encodeURIComponent(selected.longitude)
+    const result = await api.request({
+      path: `/locations/reverse-geocode?latitude=${latitude}&longitude=${longitude}`
+    })
+    return {
+      type: 'manual',
+      name: String(result.name || '').trim() || fallback.name,
+      regionName: String(result.region_name || '').trim(),
+      address: String(result.address || '').trim(),
+      latitude: result.latitude,
+      longitude: result.longitude,
+      source: result.source || 'amap'
+    }
+  } catch (_error) {
+    return fallback
+  }
+}
+
 function createLocationService(wxApi) {
   return {
     resolveOrigin() {
@@ -49,10 +84,10 @@ function createLocationService(wxApi) {
             const origin = {
               type: 'manual',
               name: manualOriginName(name, address, latitude, longitude),
+              address: String(address || '').trim(),
               latitude,
               longitude
             }
-            wxApi.setStorageSync(ORIGIN_KEY, origin)
             resolve(origin)
           },
           fail: reject
@@ -70,4 +105,11 @@ function createLocationService(wxApi) {
   }
 }
 
-module.exports = { ORIGIN_KEY, classifyLocationFailure, manualOriginName, createLocationService }
+module.exports = {
+  ORIGIN_KEY,
+  classifyLocationFailure,
+  manualOriginName,
+  resolveSelectedOrigin,
+  saveOrigin,
+  createLocationService
+}

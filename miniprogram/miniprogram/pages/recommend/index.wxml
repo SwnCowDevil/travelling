@@ -7,8 +7,8 @@
     <view class="origin-row" bindtap="chooseOrigin">
       <text class="origin-icon">📍</text>
       <text class="origin-prefix">所在地区：</text>
-      <text class="origin-name">{{origin.name || '请选择'}}</text>
-      <text class="origin-switch">切换定位</text>
+      <text class="origin-name">{{resolvingOrigin ? '正在识别地点…' : (origin.name || '请选择')}}</text>
+      <text class="origin-switch">{{resolvingOrigin ? '请稍候' : '切换定位'}}</text>
     </view>
   </view>
 

@@ -1,4 +1,9 @@
-const { classifyLocationFailure, createLocationService } = require('../../services/location')
+const {
+  classifyLocationFailure,
+  createLocationService,
+  resolveSelectedOrigin,
+  saveOrigin
+} = require('../../services/location')
 const {
   defaultFilters,
   buildRequest,
@@ -26,7 +31,8 @@ Page({
     sessionId: null,
     hasMore: false,
     fallback: false,
-    pendingRecommend: false
+    pendingRecommend: false,
+    resolvingOrigin: false
   },
 
   async onLoad() {
@@ -74,7 +80,15 @@ Page({
   async chooseOrigin() {
     const service = createLocationService(wx)
     try {
-      const origin = await service.chooseManualOrigin()
+      const selected = await service.chooseManualOrigin()
+      this.setData({ resolvingOrigin: true })
+      const app = getApp()
+      let authenticated = await app.globalData.authReady
+      if (authenticated === false && app.ensureAuthenticated) {
+        authenticated = await app.ensureAuthenticated()
+      }
+      const origin = await resolveSelectedOrigin(app.globalData.api, selected)
+      saveOrigin(wx, origin)
       await this.onOrigin({ detail: origin })
     } catch (error) {
       const reason = classifyLocationFailure(error)
@@ -98,6 +112,8 @@ Page({
       }
       wx.showToast({ title: '暂时无法选择地点', icon: 'none' })
       this.onOriginCancel()
+    } finally {
+      this.setData({ resolvingOrigin: false })
     }
   },
 

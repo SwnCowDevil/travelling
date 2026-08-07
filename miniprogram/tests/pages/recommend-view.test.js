@@ -17,6 +17,7 @@ test('recommend page contains the complete v4 structure', () => {
   assert.match(wxml, /正在为你推荐/)
   assert.match(wxml, /bindtap="chooseOrigin"/)
   assert.match(wxml, /origin\.name/)
+  assert.match(wxml, /正在识别地点/)
   assert.doesNotMatch(wxml, /<origin-picker/)
 })
 

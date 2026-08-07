@@ -57,6 +57,14 @@ test('preferences and destination categories share the backend category filter',
   assert.deepEqual(request.preferred_categories, ['人文', '古城'])
 })
 
+test('request uses address when the selected origin name is blank', () => {
+  const request = buildRequest(defaultFilters(new Date('2026-08-07')), {
+    name: '  ', address: '北京市东城区东长安街', regionName: '北京市东城区',
+    latitude: 39.9, longitude: 116.4
+  })
+  assert.equal(request.origin_name, '北京市东城区东长安街')
+})
+
 test('recommendation waits for a missing origin and resumes after selection', async () => {
   let definition
   const originalPage = global.Page
@@ -96,11 +104,19 @@ test('page directly assigns and displays the selected origin', async () => {
   let definition
   const originalPage = global.Page
   const originalWx = global.wx
+  const originalGetApp = global.getApp
   global.Page = value => { definition = value }
   global.wx = {
-    chooseLocation: options => options.success({ name: '天安门', address: '北京市东城区', latitude: 39.9, longitude: 116.4 }),
+    chooseLocation: options => options.success({ name: '', address: '', latitude: 39.9, longitude: 116.4 }),
     setStorageSync() {}
   }
+  global.getApp = () => ({ globalData: {
+    authReady: Promise.resolve(true),
+    api: { request: async () => ({
+      name: '天安门', region_name: '北京市东城区', address: '北京市东城区东长安街',
+      latitude: 39.9, longitude: 116.4, source: 'amap'
+    }) }
+  } })
   delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
   require('../../miniprogram/pages/recommend/index')
 
@@ -111,9 +127,13 @@ test('page directly assigns and displays the selected origin', async () => {
   }
   await definition.chooseOrigin.call(page)
 
-  assert.deepEqual(page.data.origin, { type: 'manual', name: '天安门', latitude: 39.9, longitude: 116.4 })
+  assert.deepEqual(page.data.origin, {
+    type: 'manual', name: '天安门', regionName: '北京市东城区',
+    address: '北京市东城区东长安街', latitude: 39.9, longitude: 116.4, source: 'amap'
+  })
   global.Page = originalPage
   global.wx = originalWx
+  global.getApp = originalGetApp
 })
 
 test('late automatic location cannot overwrite a manual origin', async () => {
