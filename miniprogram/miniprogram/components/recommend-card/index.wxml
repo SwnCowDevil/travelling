@@ -1,1 +1,24 @@
-<view class="card" bindtap="open"><view class="name">{{item.name}}</view><view class="summary">{{item.summary}}</view><view class="meta">约 {{item.distance_km}} km · 推荐度 {{item.score}}</view><view wx:if="{{item.reason}}" class="reason">{{item.reason}}</view></view>
+<view class="recommend-card {{view.selectedStatus ? 'marked' : ''}}">
+  <view class="card-main" bindtap="open">
+    <view class="card-top">
+      <view class="card-thumb" style="background:{{view.gradient}}">{{view.emoji}}</view>
+      <view class="card-heading">
+        <text class="card-name">{{view.name}}</text>
+        <view class="rating-row"><text class="stars">{{view.ratingText}}</text><text class="score">{{view.scoreText}}</text></view>
+        <view class="tag-row"><text wx:for="{{view.tags}}" wx:key="label" class="tag {{item.warning ? 'warning' : ''}}">{{item.label}}</text></view>
+      </view>
+      <text wx:if="{{view.badge}}" class="best-badge">{{view.badge}}</text>
+    </view>
+    <text class="card-summary">{{view.summary}}</text>
+    <view class="detail-grid">
+      <view class="detail-column"><text class="detail-label">怎么去</text><text class="detail-value">{{view.transport}}</text></view>
+      <view class="detail-column"><text class="detail-label">天气</text><text class="detail-value">{{view.weather}}</text></view>
+      <view class="detail-column"><text class="detail-label">注意</text><text class="detail-value">{{view.note}}</text></view>
+    </view>
+  </view>
+  <view class="card-actions">
+    <button class="status-button visited {{view.selectedStatus === 'visited' ? 'selected' : ''}}" data-status="visited" catchtap="setStatus">标记去过</button>
+    <button class="status-button want {{view.selectedStatus === 'want' ? 'selected' : ''}}" data-status="want" catchtap="setStatus">想去</button>
+    <button class="status-button avoid {{view.selectedStatus === 'avoid' ? 'selected' : ''}}" data-status="avoid" catchtap="setStatus">不想去</button>
+  </view>
+</view>

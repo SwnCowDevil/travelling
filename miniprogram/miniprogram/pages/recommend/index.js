@@ -129,6 +129,28 @@ Page({
     }
   },
 
+  async onCardStatus(event) {
+    const { destinationId, status } = event.detail
+    try {
+      await getApp().globalData.api.request({
+        method: 'PUT',
+        path: `/destination-statuses/${destinationId}`,
+        data: { status }
+      })
+      const items = this.data.items.map(item => (
+        item.destination_id === destinationId ? { ...item, selectedStatus: status } : item
+      ))
+      this.setData({ items })
+      wx.showToast({ title: '已保存' })
+    } catch (error) {
+      if (error.code === 'REVISIT_REQUIRES_VISIT') {
+        wx.showModal({ title: '先补充到访记录', content: '“想再去”需要至少一条到访记录。' })
+        return
+      }
+      wx.showToast({ title: error.message || '保存失败', icon: 'none' })
+    }
+  },
+
   openDetail(event) {
     wx.navigateTo({ url: `/pages/destination-detail/index?id=${event.detail.id}` })
   }

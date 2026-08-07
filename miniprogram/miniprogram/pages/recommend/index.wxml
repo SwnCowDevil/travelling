@@ -67,7 +67,7 @@
     <view wx:if="{{fallback}}" class="fallback-notice">AI 暂不可用，已使用可靠规则推荐</view>
     <view wx:if="{{loading}}" class="skeleton-list"><view class="skeleton-card"></view><view class="skeleton-card"></view><view class="skeleton-card"></view></view>
     <block wx:else>
-      <recommend-card wx:for="{{items}}" wx:key="code" item="{{item}}" bind:open="openDetail"/>
+      <recommend-card wx:for="{{items}}" wx:key="code" item="{{item}}" bind:open="openDetail" bind:status="onCardStatus"/>
       <view wx:if="{{!items.length}}" class="empty-state"><text class="empty-icon">🧭</text><text>选好条件，开始发现下一站</text></view>
       <button wx:if="{{sessionId && hasMore}}" class="next-button" bindtap="next">换一批</button>
     </block>
