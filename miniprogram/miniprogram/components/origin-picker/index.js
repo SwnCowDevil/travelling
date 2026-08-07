@@ -7,7 +7,9 @@ Component({
       try {
         const origin = await createLocationService(wx).chooseManualOrigin()
         this.triggerEvent('change', origin)
-      } catch (_) {}
+      } catch (_) {
+        wx.showToast({ title: '未选择出发地', icon: 'none' })
+      }
     }
   }
 })

@@ -21,3 +21,37 @@ test('rule result keeps three cards and exposes fallback notice', () => {
   assert.equal(response.items.length, 3)
   assert.equal(response.source === 'rules', true)
 })
+
+test('recommendation waits for a missing origin and resumes after selection', async () => {
+  let definition
+  const originalPage = global.Page
+  const originalWx = global.wx
+  const originalGetApp = global.getApp
+  global.Page = value => { definition = value }
+  global.wx = { showToast() {} }
+  global.getApp = () => ({ globalData: { api: { request: async () => ({ items: [], session_id: 1, source: 'rules' }) } } })
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+
+  let chooseCount = 0
+  let requestCount = 0
+  const page = {
+    data: { origin: {}, filters: defaultFilters(new Date('2026-08-06')) },
+    setData(value) { Object.assign(this.data, value) },
+    selectComponent() { return { choose: () => { chooseCount += 1 } } }
+  }
+  page.recommend = definition.recommend
+  global.getApp = () => ({ globalData: { api: { request: async () => { requestCount += 1; return { items: [], session_id: 1, source: 'rules' } } } } })
+
+  await definition.recommend.call(page)
+  assert.equal(chooseCount, 1)
+  assert.equal(requestCount, 0)
+  assert.equal(page.data.pendingRecommend, true)
+
+  await definition.onOrigin.call(page, { detail: { name: '杭州', latitude: 30.2, longitude: 120.2 } })
+  assert.equal(requestCount, 1)
+
+  global.Page = originalPage
+  global.wx = originalWx
+  global.getApp = originalGetApp
+})

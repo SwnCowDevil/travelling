@@ -27,7 +27,7 @@ echo "正在升级本地数据库..."
 echo "正在启动 FastAPI..."
 ORIGINAL_DIR=$(pwd)
 cd "$BACKEND_DIR"
-nohup "$UVICORN_BIN" app.main:app --host 127.0.0.1 --port 8000 --workers 1 > "$LOG_FILE" 2>&1 &
+TRAVEL_ENABLE_DEV_AUTH=true nohup "$UVICORN_BIN" app.main:app --host 127.0.0.1 --port 8000 --workers 1 > "$LOG_FILE" 2>&1 &
 server_pid=$!
 cd "$ORIGINAL_DIR"
 printf '%s\n' "$server_pid" > "$PID_FILE"

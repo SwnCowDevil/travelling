@@ -32,3 +32,15 @@ async def login_with_wechat(
     return AccessTokenResponse(
         access_token=create_access_token(user.id, settings.jwt_secret)
     )
+
+
+@router.post("/dev", response_model=AccessTokenResponse)
+def login_for_local_development(
+    session: Session = Depends(get_db),
+) -> AccessTokenResponse:
+    if not settings.enable_dev_auth:
+        raise HTTPException(status_code=404, detail="Not Found")
+    user = get_or_create_user(session, "local-development-user")
+    return AccessTokenResponse(
+        access_token=create_access_token(user.id, settings.jwt_secret)
+    )

@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     ai_encryption_key: str | None = None
     amap_key: str | None = None
     amap_secret: str | None = None
+    enable_dev_auth: bool = False
 
 
 settings = Settings()

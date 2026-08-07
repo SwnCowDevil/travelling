@@ -1,6 +1,11 @@
 const { TOKEN_KEY } = require('./api')
 
-function login(wxApi, api) {
+async function login(wxApi, api, options = {}) {
+  if (options.useDevAuth) {
+    const session = await api.request({ method: 'POST', path: '/auth/dev' })
+    wxApi.setStorageSync(TOKEN_KEY, session.access_token)
+    return session
+  }
   return new Promise((resolve, reject) => {
     wxApi.login({
       success: async ({ code }) => {
