@@ -10,6 +10,9 @@ from app.map.models import RegionBoundary
 from app.map.schemas import RegionMapSummary
 from app.visits.models import VisitRecord
 
+MAX_MAP_PATHS_PER_REGION = 4
+MAX_MAP_POINTS_PER_REGION = 80
+
 
 @dataclass(frozen=True)
 class SyncResult:
@@ -101,6 +104,38 @@ def resolve_map_status(direct_status: str | None, status_counts: dict[str, int])
     return None
 
 
+def _polygon_area(path: list[list[float]]) -> float:
+    return abs(sum(
+        point[0] * path[(index + 1) % len(path)][1]
+        - path[(index + 1) % len(path)][0] * point[1]
+        for index, point in enumerate(path)
+    ))
+
+
+def _sample_path(path: list[list[float]], maximum: int) -> list[list[float]]:
+    if len(path) <= maximum:
+        return path
+    return [path[round(index * (len(path) - 1) / (maximum - 1))] for index in range(maximum)]
+
+
+def simplify_map_polygons(polygons: list[list[list[float]]]) -> list[list[list[float]]]:
+    valid = [path for path in polygons if len(path) >= 3]
+    selected = sorted(valid, key=_polygon_area, reverse=True)[:MAX_MAP_PATHS_PER_REGION]
+    if not selected:
+        return []
+    base_points = 3 * len(selected)
+    remaining = MAX_MAP_POINTS_PER_REGION - base_points
+    excess_total = sum(max(0, len(path) - 3) for path in selected)
+    return [
+        _sample_path(
+            path,
+            min(len(path), 3 + int(remaining * max(0, len(path) - 3) / excess_total))
+            if excess_total else len(path),
+        )
+        for path in selected
+    ]
+
+
 def build_map_summary(
     session: Session,
     user_id: int,
@@ -161,7 +196,7 @@ def build_map_summary(
             direct_status=direct_status, status_counts=counts,
             visit_count=visits_by_region.get(region.code, 0),
             center=[boundary.center_longitude, boundary.center_latitude] if boundary else None,
-            polygons=boundary.polygons if boundary else [],
+            polygons=[],
             map_status=resolve_map_status(direct_status, counts),
         ))
     if status:

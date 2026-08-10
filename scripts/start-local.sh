@@ -30,6 +30,9 @@ fi
 echo "正在升级本地数据库..."
 (cd "$BACKEND_DIR" && "$ALEMBIC_BIN" upgrade head)
 
+echo "正在生成离线足迹地图包..."
+(cd "$BACKEND_DIR" && "$BACKEND_DIR/.venv/bin/python" -m scripts.build_map_pack)
+
 echo "正在启动 FastAPI..."
 ORIGINAL_DIR=$(pwd)
 cd "$BACKEND_DIR"

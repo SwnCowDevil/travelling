@@ -28,6 +28,7 @@
 
 ```sh
 .venv/bin/python -m scripts.sync_map_regions --all-provinces
+.venv/bin/python -m scripts.build_map_pack
 ```
 
 该命令只使用服务器环境文件中的 `TRAVEL_AMAP_KEY`，可安全重复执行；首次会调用高德 Web 服务缓存省级和市级边界，并按已有目的地的高德行政区编码（缺失时按坐标反查）匹配市级归属。为避免限流，请让命令自行完成，不要并行执行多次。不要将实际 Key 写进命令、日志或仓库。

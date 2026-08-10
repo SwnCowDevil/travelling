@@ -9,5 +9,6 @@ __pycache__/
 node_modules/
 miniprogram_npm/
 .local/
+/backend/data/map-packs/
 /project.config.json
 **/project.private.config.json

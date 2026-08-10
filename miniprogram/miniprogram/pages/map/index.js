@@ -1,9 +1,10 @@
 const {filterItems,projectMapItems,hitRegion,visibleMapItems}=require('./model')
+const {ensureMapPack,mergeMapGeometry}=require('./pack')
 
 Page({
   data:{
-    items:[],visible:[],projected:[],parentCode:null,status:null,mode:'map',
-    mapAvailable:true,geometryAvailable:false,canvasReady:false,
+    items:[],summaryItems:[],visible:[],projected:[],parentCode:null,status:null,mode:'list',
+    mapAvailable:true,geometryAvailable:false,canvasReady:false,mapDownloading:false,mapProgress:0,
     statuses:[{key:null,label:'全部'},{key:'want',label:'想去'},{key:'visited',label:'去过'},{key:'revisit',label:'想再去'},{key:'avoid',label:'不想去'}]
   },
   onShow(){this.load()},
@@ -12,10 +13,11 @@ Page({
     try{
       const query=this.data.parentCode?`?parent_code=${this.data.parentCode}`:''
       const data=await getApp().globalData.api.request({path:`/map/summary${query}`})
-      const visible=filterItems(data.items||[],this.data.status)
-      const geometryAvailable=Boolean(data.geometry_available)
-      const mode=geometryAvailable?this.data.mode:'list'
-      this.setData({items:data.items||[],visible,geometryAvailable,mapAvailable:geometryAvailable,mode})
+      const summaryItems=data.items||[]
+      const items=this.mapPack?mergeMapGeometry(summaryItems,this.mapPack.regions):summaryItems
+      const visible=filterItems(items,this.data.status)
+      const mode=this.data.mode
+      this.setData({summaryItems,items,visible,geometryAvailable:Boolean(this.mapPack),mapAvailable:true,mode})
       if(mode==='map')this.drawMap()
     }catch(_){this.setData({mapAvailable:false,geometryAvailable:false,mode:'list'})}
   },
@@ -62,10 +64,18 @@ Page({
     this.setData({projected})
   },
   toggleMode(){
-    const mode=this.data.mode==='map'?'list':this.data.geometryAvailable?'map':'list'
-    this.setData({mode},()=>{
-      if(mode==='map')this.initCanvas()
-    })
+    if(this.data.mode==='map'){this.setData({mode:'list'});return}
+    this.requestMapMode()
+  },
+  requestMapMode(){
+    const open=()=>{this.setData({mode:'map',geometryAvailable:true,items:mergeMapGeometry(this.data.summaryItems,this.mapPack.regions),visible:filterItems(mergeMapGeometry(this.data.summaryItems,this.mapPack.regions),this.data.status)},()=>this.initCanvas())}
+    if(this.mapPack){open();return}
+    wx.showModal({title:'下载离线地图包',content:'下载一次后可离线查看中国地图，是否继续？',success:async result=>{
+      if(!result.confirm)return
+      this.setData({mapDownloading:true,mapProgress:0})
+      try{const api=getApp().globalData.api,metadata=await api.request({path:'/map/pack'});this.mapPack=await ensureMapPack(wx,getApp().globalData.apiBaseUrl,metadata,progress=>this.setData({mapProgress:progress}));this.setData({mapDownloading:false});open()}
+      catch(_){this.setData({mapDownloading:false,mode:'list'});wx.showToast({title:'地图包下载失败，可稍后重试',icon:'none'})}
+    }})
   },
   filter(e){
     const status=e.currentTarget.dataset.status||null

@@ -4,7 +4,7 @@ from app.destinations.models import AdministrativeRegion, Destination
 from app.footprints.schemas import FootprintStatus
 from app.footprints.service import set_destination_status, set_region_status
 from app.map.models import RegionBoundary
-from app.map.service import build_map_summary
+from app.map.service import build_map_summary, simplify_map_polygons
 from app.users.models import User
 from app.visits.service import create_visit
 
@@ -43,7 +43,7 @@ def test_destination_rolls_up_ancestors_without_overwriting_direct_status(db_ses
     assert city[0].direct_status is None
 
 
-def test_summary_returns_cached_geometry_and_rolls_city_status_up_to_province(db_session) -> None:
+def test_summary_returns_lightweight_status_and_rolls_city_status_up_to_province(db_session) -> None:
     db_session.add(User(id=62, openid="map-city-user"))
     db_session.add_all([
         AdministrativeRegion(code="330000", name="浙江", level="province"),
@@ -66,7 +66,21 @@ def test_summary_returns_cached_geometry_and_rolls_city_status_up_to_province(db
 
     assert province[0].map_status == "want"
     assert province[0].center == [120.1, 29.1]
-    assert province[0].polygons
+    assert province[0].polygons == []
     assert city[0].region_code == "330100"
     assert city[0].map_status == "want"
-    assert city[0].polygons
+    assert city[0].polygons == []
+
+
+def test_simplify_map_polygons_limits_geometry_without_mutating_source() -> None:
+    long_outline = [[float(index), float(index % 11)] for index in range(900)]
+    islands = [
+        [[120.0 + index, 20.0], [120.4 + index, 20.0], [120.2 + index, 20.4]]
+        for index in range(16)
+    ]
+    item = simplify_map_polygons([long_outline, *islands])
+
+    assert len(item) <= 4
+    assert sum(len(path) for path in item) <= 80
+    assert item[0][0] == long_outline[0]
+    assert item[0][-1] == long_outline[-1]

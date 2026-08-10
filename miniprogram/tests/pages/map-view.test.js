@@ -19,7 +19,7 @@ test('mode switching keeps the selected hierarchy and filter',()=>{
   global.Page=value=>{definition=value}
   delete require.cache[require.resolve('../../miniprogram/pages/map/index')]
   require('../../miniprogram/pages/map/index')
-  const page={data:{mode:'map',parentCode:'510000',status:'visited',geometryAvailable:true},setData(value){Object.assign(this.data,value)},drawMap(){}}
+  const page={data:{mode:'map',parentCode:'510000',status:'visited',geometryAvailable:true},setData(value){Object.assign(this.data,value)},drawMap(){},requestMapMode(){this.setData({mode:'map'})}}
   definition.toggleMode.call(page)
   assert.deepEqual(page.data,{mode:'list',parentCode:'510000',status:'visited',geometryAvailable:true})
   definition.toggleMode.call(page)
@@ -37,7 +37,7 @@ test('returning to map mode reinitializes its Canvas node',()=>{
   const page={
     data:{mode:'list',geometryAvailable:true},
     setData(value,done){Object.assign(this.data,value);if(done)done()},
-    initCanvas(){initializations++},
+    initCanvas(){initializations++},requestMapMode(){this.initCanvas();this.setData({mode:'map'})},
     drawMap(){throw new Error('the previous Canvas context must not be reused')},
   }
   definition.toggleMode.call(page)
