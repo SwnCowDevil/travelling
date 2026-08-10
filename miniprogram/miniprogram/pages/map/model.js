@@ -1,3 +1,11 @@
+const colors={visited:'#20d8cf',revisit:'#159c9a',want:'#83d9cb',avoid:'#1b3440',default:'#294451'}
 function nextParent(item){return item.region_code}
-function filterItems(items,status){if(!status)return items;return items.filter(item=>item.direct_status===status||(item.status_counts&&item.status_counts[status]>0))}
-module.exports={nextParent,filterItems}
+function statusOf(item){if(item.map_status)return item.map_status;if(item.direct_status)return item.direct_status;for(const status of ['visited','revisit','want','avoid'])if(item.status_counts&&item.status_counts[status])return status;return null}
+function filterItems(items,status){if(!status)return items;return items.filter(item=>statusOf(item)===status||(item.status_counts&&item.status_counts[status]>0))}
+function mapColor(item){return colors[statusOf(item)]||colors.default}
+function validPath(path){return Array.isArray(path)&&path.length>=3&&path.every(point=>Array.isArray(point)&&Number.isFinite(point[0])&&Number.isFinite(point[1]))}
+function projectMapItems(items,width,height,padding=16){const source=items.map(item=>({...item,polygons:(item.polygons||[]).filter(validPath)})).filter(item=>item.polygons.length);const points=source.flatMap(item=>item.polygons.flat());if(!points.length||width<=padding*2||height<=padding*2)return[];const longitudes=points.map(point=>point[0]),latitudes=points.map(point=>point[1]);const minLng=Math.min(...longitudes),maxLng=Math.max(...longitudes),minLat=Math.min(...latitudes),maxLat=Math.max(...latitudes);const scale=Math.min((width-padding*2)/Math.max(maxLng-minLng,.0001),(height-padding*2)/Math.max(maxLat-minLat,.0001));const offsetX=(width-(maxLng-minLng)*scale)/2-minLng*scale,offsetY=(height-(maxLat-minLat)*scale)/2+maxLat*scale;return source.map(item=>({...item,paths:item.polygons.map(path=>path.map(([longitude,latitude])=>({x:longitude*scale+offsetX,y:-latitude*scale+offsetY}))),color:mapColor(item)}))}
+function pointInPath(path,x,y){let inside=false;for(let index=0,previous=path.length-1;index<path.length;previous=index++){const a=path[index],b=path[previous];const crosses=(a.y>y)!==(b.y>y)&&x<(b.x-a.x)*(y-a.y)/(b.y-a.y)+a.x;if(crosses)inside=!inside}return inside}
+function hitRegion(items,x,y){for(const item of [...items].reverse())if(item.paths.some(path=>pointInPath(path,x,y)))return item;return null}
+function visibleMapItems(items,status){return filterItems(items,status).filter(item=>(item.polygons||[]).some(validPath))}
+module.exports={nextParent,filterItems,mapColor,projectMapItems,hitRegion,visibleMapItems}
