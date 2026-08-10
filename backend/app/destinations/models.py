@@ -28,6 +28,9 @@ class Destination(Base):
     latitude: Mapped[float] = mapped_column(Float)
     longitude: Mapped[float] = mapped_column(Float)
     region_code: Mapped[str] = mapped_column(ForeignKey("administrative_regions.code"))
+    city_region_code: Mapped[str | None] = mapped_column(
+        ForeignKey("administrative_regions.code"), nullable=True
+    )
     categories: Mapped[list[str]] = mapped_column(JSON, default=list)
     suitable_months: Mapped[list[int]] = mapped_column(JSON, default=list)
     season_tags: Mapped[list[str]] = mapped_column(JSON, default=list)
@@ -45,4 +48,4 @@ class Destination(Base):
     provider_place_id: Mapped[str | None] = mapped_column(String(100), nullable=True)
     provider_adcode: Mapped[str | None] = mapped_column(String(12), nullable=True)
 
-    region: Mapped[AdministrativeRegion] = relationship()
+    region: Mapped[AdministrativeRegion] = relationship(foreign_keys=[region_code])
