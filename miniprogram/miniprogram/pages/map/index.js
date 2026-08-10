@@ -81,6 +81,11 @@ Page({
     this.setData({parentCode:code})
     this.load()
   },
+  backToCountry(){
+    if(!this.data.parentCode)return
+    this.setData({parentCode:null})
+    this.load()
+  },
   tapMap(e){
     const point=e.detail||{}
     const item=hitRegion(this.data.projected,point.x,point.y)

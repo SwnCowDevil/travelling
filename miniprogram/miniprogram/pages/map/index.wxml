@@ -5,7 +5,7 @@
   </view>
   <view class="filters"><text wx:for="{{statuses}}" wx:key="label" class="filter {{status === item.key ? 'active' : ''}}" data-status="{{item.key}}" bindtap="filter">{{item.label}}</text></view>
   <view wx:if="{{mode === 'map'}}" class="map-mode">
-    <view class="map-title"><text>{{parentCode ? '省内城市足迹' : '中国旅行足迹'}}</text><text>{{parentCode ? '点击城市查看列表' : '点击省份下钻到城市'}}</text></view>
+    <view class="map-title"><view><text wx:if="{{parentCode}}" class="back-country" bindtap="backToCountry">‹ 全国</text><text>{{parentCode ? '省内城市足迹' : '中国旅行足迹'}}</text></view><text>{{parentCode ? '点击城市查看列表' : '点击省份下钻到城市'}}</text></view>
     <view class="map-stage"><canvas type="2d" id="footprint-canvas" canvas-id="footprint-canvas" bindtap="tapMap"></canvas><view class="map-legend"><text>● 去过</text><text>● 想再去</text><text>● 想去</text></view></view>
   </view>
   <view wx:else class="list-mode">

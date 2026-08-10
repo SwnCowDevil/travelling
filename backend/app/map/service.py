@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.destinations.models import AdministrativeRegion, Destination
 from app.footprints.models import DestinationStatus, RegionStatus
-from app.map.amap import AmapDistrictClient
+from app.map.amap import AmapDistrictClient, AmapDistrictError
 from app.map.models import RegionBoundary
 from app.map.schemas import RegionMapSummary
 from app.visits.models import VisitRecord
@@ -15,6 +15,7 @@ from app.visits.models import VisitRecord
 class SyncResult:
     regions_created: int = 0
     boundaries_cached: int = 0
+    failures: int = 0
 
 
 def _save_boundary(session: Session, code: str, longitude: float, latitude: float, polygons: list[list[list[float]]]) -> bool:
@@ -38,30 +39,48 @@ def sync_region_layer(
     ])
     regions_created = 0
     boundaries_cached = 0
+    failures = 0
     for code in parent_codes:
-        region = client.fetch_region(code)
-        boundaries_cached += int(_save_boundary(
-            session, region.code, region.center_longitude, region.center_latitude, region.polygons
-        ))
-        for child in region.children:
-            if child.level != "city" or session.get(AdministrativeRegion, child.code):
+        known_cities = list(session.scalars(select(AdministrativeRegion).where(
+            AdministrativeRegion.parent_code == code,
+            AdministrativeRegion.level == "city",
+        )))
+        if session.get(RegionBoundary, code) is None or not known_cities:
+            try:
+                region = client.fetch_region(code)
+            except AmapDistrictError:
+                failures += 1
                 continue
-            session.add(AdministrativeRegion(
-                code=child.code, name=child.name, level=child.level, parent_code=region.code
+            boundaries_cached += int(_save_boundary(
+                session, region.code, region.center_longitude, region.center_latitude, region.polygons
             ))
-            regions_created += 1
+            for child in region.children:
+                if child.level != "city" or session.get(AdministrativeRegion, child.code):
+                    continue
+                session.add(AdministrativeRegion(
+                    code=child.code, name=child.name, level=child.level, parent_code=region.code
+                ))
+                regions_created += 1
     session.commit()
     if parent_code:
         for child in session.scalars(select(AdministrativeRegion).where(
             AdministrativeRegion.parent_code == parent_code,
             AdministrativeRegion.level == "city",
         )):
-            region = client.fetch_region(child.code)
+            if session.get(RegionBoundary, child.code) is not None:
+                continue
+            try:
+                region = client.fetch_region(child.code)
+            except AmapDistrictError:
+                failures += 1
+                continue
             boundaries_cached += int(_save_boundary(
                 session, region.code, region.center_longitude, region.center_latitude, region.polygons
             ))
         session.commit()
-    return SyncResult(regions_created=regions_created, boundaries_cached=boundaries_cached)
+    return SyncResult(
+        regions_created=regions_created, boundaries_cached=boundaries_cached, failures=failures
+    )
 
 
 def resolve_map_status(direct_status: str | None, status_counts: dict[str, int]) -> str | None:

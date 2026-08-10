@@ -42,3 +42,23 @@ test('touching a province drills down but a city remains the final map level',()
   assert.equal(events.length,1)
   global.Page=originalPage
 })
+
+test('returning to the country map clears only the selected hierarchy',()=>{
+  let definition
+  const originalPage=global.Page
+  global.Page=value=>{definition=value}
+  delete require.cache[require.resolve('../../miniprogram/pages/map/index')]
+  require('../../miniprogram/pages/map/index')
+  let loads=0
+  const page={
+    data:{parentCode:'510000',status:'visited',mode:'map'},
+    setData(value){Object.assign(this.data,value)},
+    load(){loads++},
+  }
+  definition.backToCountry.call(page)
+  assert.equal(page.data.parentCode,null)
+  assert.equal(page.data.status,'visited')
+  assert.equal(page.data.mode,'map')
+  assert.equal(loads,1)
+  global.Page=originalPage
+})
