@@ -15,11 +15,19 @@ from app.guides.service import GuideGenerationError, GuideService
 router = APIRouter(prefix="/guides", tags=["guides"])
 
 
-def guide_timeout_seconds(profile: AIProfile | None) -> int:
+def guide_timeout_seconds(profile: AIProfile | None, mode: str = "deep") -> int:
     return max(
         profile.timeout_seconds if profile is not None else 0,
-        settings.ai_guide_timeout_seconds,
+        settings.ai_fast_guide_timeout_seconds
+        if mode == "fast"
+        else settings.ai_guide_timeout_seconds,
     )
+
+
+def guide_model_for_mode(profile: AIProfile | None, mode: str) -> str:
+    if mode == "fast":
+        return settings.ai_fast_model
+    return profile.model if profile is not None else settings.ai_model
 
 
 def get_guide_service(
@@ -27,37 +35,49 @@ def get_guide_service(
     session: Session = Depends(get_db),
 ) -> GuideService:
     profile = session.scalar(select(AIProfile).where(AIProfile.user_id == user_id))
-    client: AIClient | None = None
-    model: str | None = None
+    base_url: str | None = None
+    token: str | None = None
     if profile is not None and settings.ai_encryption_key:
         try:
             token = TokenCipher.from_base64(settings.ai_encryption_key).decrypt(
                 profile.encrypted_token
             )
-            client = AIClient(
-                profile.base_url,
-                token,
-                profile.model,
-                timeout_seconds=guide_timeout_seconds(profile),
-            )
-            model = profile.model
+            base_url = profile.base_url
         except Exception:
-            client = None
+            token = None
     elif settings.ai_api_key:
-        client = AIClient(
-            settings.ai_base_url,
-            settings.ai_api_key,
-            settings.ai_model,
-            timeout_seconds=guide_timeout_seconds(None),
-        )
-        model = settings.ai_model
+        base_url = settings.ai_base_url
+        token = settings.ai_api_key
 
-    if client is None:
+    if base_url is None or token is None:
         return GuideService()
 
     async def generate(*, destination: Destination, request: GuideGenerationRequest) -> GuidePayload:
+        client = AIClient(
+            base_url,
+            token,
+            guide_model_for_mode(profile, request.generation_mode),
+            timeout_seconds=guide_timeout_seconds(profile, request.generation_mode),
+        )
         payload = await client.complete_json(
-            (
+            _guide_prompt(request.generation_mode),
+            request.model_dump_json(exclude={"force_refresh"})
+            + f"\n目的地：{destination.name}\n简介：{destination.summary}",
+        )
+        return GuidePayload.model_validate(payload)
+
+    return GuideService(generator=generate, model=guide_model_for_mode(profile, "deep"))
+
+
+def _guide_prompt(mode: str) -> str:
+    if mode == "fast":
+        return (
+            "你是中国境内旅行规划师。只返回 JSON 对象，不要 Markdown。"
+            "字段为 transport、weather、packing、cautions、highlights、foods、itinerary。"
+            "所有字段必须符合用户 days；行程写真实点位和顺路安排，美食必须是真实当地美食。"
+            "避免编造精确票价和开放时间，信息不确定时提示用户以官方渠道为准。"
+        )
+    return (
                 "你是严谨的中国境内旅行规划师。只返回 JSON 对象，不要 Markdown。"
                 "transport、weather、packing、cautions、highlights 都是非空字符串数组；"
                 "packing 按证件/电子/衣物/天气/目的地特殊装备组织，共8至14项；"
@@ -69,13 +89,7 @@ def get_guide_service(
                 "day、theme、morning、afternoon、evening、transport、caution。早中晚写真实点位、"
                 "建议时长、顺序和衔接，路线应可执行。不要编造精确票价、开放时间或临时政策，"
                 "不确定的信息提醒用户出发前以官方信息为准。"
-            ),
-            request.model_dump_json()
-            + f"\n目的地：{destination.name}\n简介：{destination.summary}",
-        )
-        return GuidePayload.model_validate(payload)
-
-    return GuideService(generator=generate, model=model)
+    )
 
 
 def _destination_or_404(session: Session, destination_id: int) -> Destination:
@@ -94,6 +108,7 @@ async def get_guide(
     month: int = Query(ge=1, le=12),
     days: int = Query(default=2, ge=1, le=7),
     origin_name: str = Query(min_length=1, max_length=100),
+    generation_mode: str = Query(default="fast", pattern="^(fast|deep)$"),
     session: Session = Depends(get_db),
     service: GuideService = Depends(get_guide_service),
 ) -> GuideResponse:
@@ -102,7 +117,12 @@ async def get_guide(
         return await service.generate(
             session,
             destination,
-            GuideGenerationRequest(month=month, days=days, origin_name=origin_name),
+            GuideGenerationRequest(
+                month=month,
+                days=days,
+                origin_name=origin_name,
+                generation_mode=generation_mode,
+            ),
         )
     except GuideGenerationError as exc:
         raise HTTPException(

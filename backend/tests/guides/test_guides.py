@@ -105,6 +105,37 @@ async def test_same_cache_key_reuses_structured_guide(db_session) -> None:
 
 
 @pytest.mark.asyncio
+async def test_fast_and_deep_guides_do_not_share_a_cache_entry(db_session) -> None:
+    destination = seed_destination(db_session)
+    calls = 0
+
+    async def generator(**_kwargs) -> GuidePayload:
+        nonlocal calls
+        calls += 1
+        return ai_payload()
+
+    service = GuideService(generator=generator)
+    fast = await service.generate(
+        db_session,
+        destination,
+        GuideGenerationRequest(
+            month=4, days=2, origin_name="上海", generation_mode="fast"
+        ),
+    )
+    deep = await service.generate(
+        db_session,
+        destination,
+        GuideGenerationRequest(
+            month=4, days=2, origin_name="上海", generation_mode="deep"
+        ),
+    )
+
+    assert calls == 2
+    assert fast.cache_hit is False
+    assert deep.cache_hit is False
+
+
+@pytest.mark.asyncio
 async def test_data_version_change_invalidates_cache(db_session) -> None:
     destination = seed_destination(db_session)
     calls = 0

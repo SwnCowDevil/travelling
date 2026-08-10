@@ -19,8 +19,10 @@ class Settings(BaseSettings):
     wechat_app_secret: str = ""
     ai_base_url: str = "https://www.packyapi.ai/v1"
     ai_model: str = "deepseek-v4-pro"
+    ai_fast_model: str = "deepseek-v4-flash"
     ai_api_key: str | None = None
     ai_guide_timeout_seconds: int = 90
+    ai_fast_guide_timeout_seconds: int = 45
     ai_encryption_key: str | None = None
     amap_key: str | None = None
     amap_secret: str | None = None

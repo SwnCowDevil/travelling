@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field, model_validator
 
 
@@ -6,6 +8,7 @@ class GuideGenerationRequest(BaseModel):
     days: int = Field(default=2, ge=1, le=7)
     origin_name: str = Field(min_length=1, max_length=100)
     preferences: list[str] = Field(default_factory=list)
+    generation_mode: Literal["fast", "deep"] = "fast"
     force_refresh: bool = False
 
 
