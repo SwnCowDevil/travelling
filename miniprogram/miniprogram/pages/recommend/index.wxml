@@ -61,11 +61,15 @@
 
   <view class="cta-wrap">
     <view class="custom-guide-card"><text class="custom-title">🧭 想去哪里？</text><view class="custom-input-row"><input placeholder="输入景点、城市或目的地" value="{{customKeyword}}" bindinput="inputCustomDestination"/><button loading="{{searchingCustom}}" bindtap="searchCustomDestination">生成攻略</button></view><view wx:for="{{customCandidates}}" wx:key="amap_poi_id" class="custom-candidate" bindtap="selectCustomDestination" data-item="{{item}}"><text>{{item.name}}</text><text>{{item.region_name}} {{item.address}}</text></view><text wx:if="{{customSearchMessage}}" class="custom-message">{{customSearchMessage}}</text></view>
-    <button id="recommend-cta" class="recommend-cta {{loading ? 'loading' : ''}}" disabled="{{loading}}" bindtap="recommend">
-      <view wx:if="{{loading}}" class="cta-spinner"></view>
-      <text>{{loading ? '正在为你推荐…' : '🚀 一键推荐'}}</text>
-    </button>
-    <text wx:if="{{loading}}" class="loading-stage-copy">{{stage}}</text>
+    <view class="quick-recommend-card">
+      <text class="quick-recommend-title">✨ 一键推荐</text>
+      <text class="quick-recommend-hint">不知道去哪？试试一键推荐</text>
+      <button id="recommend-cta" class="recommend-cta {{loading ? 'loading' : ''}}" disabled="{{loading}}" bindtap="recommend">
+        <view wx:if="{{loading}}" class="cta-spinner"></view>
+        <text>{{loading ? '正在推荐' : '🚀 一键推荐'}}</text>
+      </button>
+      <text wx:if="{{loading}}" class="loading-stage-copy">{{stage}}</text>
+    </view>
   </view>
 
   <view id="recommend-results" class="recommend-results">

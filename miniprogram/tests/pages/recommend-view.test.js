@@ -14,7 +14,10 @@ test('recommend page contains the complete v4 structure', () => {
   ]
   for (const marker of markers) assert.match(wxml, new RegExp(marker))
   assert.match(wxml, /旅行推荐/)
-  assert.match(wxml, /正在为你推荐/)
+  for (const marker of ['custom-guide-card', 'quick-recommend-card', '不知道去哪？试试一键推荐', '正在推荐']) {
+    assert.match(wxml, new RegExp(marker))
+  }
+  assert.doesNotMatch(wxml, /正在为你推荐/)
   assert.match(wxml, /bindtap="chooseOrigin"/)
   assert.match(wxml, /origin\.name/)
   assert.match(wxml, /正在识别地点/)
@@ -28,4 +31,12 @@ test('recommend page uses v4 color tokens and supported animations', () => {
   assert.match(wxss, /#ff9f43/i)
   assert.match(wxss, /@keyframes/)
   assert.doesNotMatch(wxss, /prefers-reduced-motion/)
+})
+
+test('recommend entry cards share a white card treatment and compact loading state', () => {
+  const wxss = fs.readFileSync(path.join(pageDir, 'index.wxss'), 'utf8')
+  assert.match(wxss, /\.custom-guide-card,\.quick-recommend-card\{[^}]*background:#fff/)
+  assert.match(wxss, /\.custom-guide-card,\.quick-recommend-card\{[^}]*border-radius:/)
+  assert.match(wxss, /\.custom-guide-card,\.quick-recommend-card\{[^}]*box-shadow/)
+  assert.match(wxss, /\.recommend-cta\.loading\{[^}]*letter-spacing:0/)
 })
