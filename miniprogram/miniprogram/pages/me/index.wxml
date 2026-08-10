@@ -20,6 +20,7 @@
   <view class="menu-group">
     <view class="menu-item" bindtap="openMap"><text class="menu-icon">🗺️</text><text class="menu-title">我的旅行地图</text><text class="menu-arrow">›</text></view>
     <view class="menu-item" bindtap="openVisits"><text class="menu-icon">📍</text><text class="menu-title">到访记录</text><text class="menu-arrow">›</text></view>
+    <view class="menu-item" bindtap="openFavorites"><text class="menu-icon">🔖</text><view class="menu-copy"><text class="menu-title">收藏攻略</text><text class="menu-description">{{stats.favorites}} 份可编辑旅行计划</text></view><text class="menu-arrow">›</text></view>
     <view class="menu-item" bindtap="openAI"><text class="menu-icon">✨</text><view class="menu-copy"><text class="menu-title">AI 设置</text><text class="menu-description">系统默认或个人 Token</text></view><text class="menu-arrow">›</text></view>
   </view>
 

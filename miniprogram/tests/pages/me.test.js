@@ -7,8 +7,8 @@ test('profile counters aggregate map summary statuses safely', () => {
     { status_counts: { visited: 2, revisit: 1, want: 3, avoid: 1 } },
     { status_counts: { visited: 1, want: 2, avoid: 1 } }
   ] }
-  assert.deepEqual(toProfileStats(summary), { visited: 4, want: 5, avoid: 2 })
-  assert.deepEqual(toProfileStats({}), { visited: 0, want: 0, avoid: 0 })
+  assert.deepEqual(toProfileStats(summary), { visited: 4, want: 5, avoid: 2, favorites: 0 })
+  assert.deepEqual(toProfileStats({}, 3), { visited: 0, want: 0, avoid: 0, favorites: 3 })
 })
 
 test('profile navigation uses tab and page routes correctly', () => {
@@ -27,12 +27,14 @@ test('profile navigation uses tab and page routes correctly', () => {
 
   definition.openMap()
   definition.openVisits()
+  definition.openFavorites()
   definition.openAI()
   definition.showComingSoon()
 
   assert.deepEqual(calls, [
     ['tab', '/pages/map/index'],
     ['page', '/pages/visit-records/index'],
+    ['page', '/pages/favorite-guides/index'],
     ['page', '/pages/ai-settings/index'],
     ['toast', '敬请期待']
   ])

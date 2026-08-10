@@ -5,7 +5,9 @@
     "pages/me/index",
     "pages/destination-detail/index",
     "pages/visit-records/index",
-    "pages/ai-settings/index"
+    "pages/ai-settings/index",
+    "pages/favorite-guides/index",
+    "pages/favorite-guide-detail/index"
   ],
   "window": {
     "navigationBarTitleText": "去哪里",
