@@ -2,18 +2,18 @@ const {buildDetailView}=require('./model')
 Page({
   data:{view:{weatherDays:[],transport:[],weatherNotes:[],packing:[],cautions:[],highlights:[],foods:[],itinerary:[]},loading:true,regenerating:false,savingFavorite:false,favoriteId:0,generationMode:'fast',error:''},
   async onLoad(q){
-    const api=getApp().globalData.api,id=q.id,month=Math.min(12,Math.max(1,Number(q.month)||new Date().getMonth()+1)),days=Math.min(7,Math.max(1,Number(q.days)||2)),originName=decodeURIComponent(q.origin_name||'当前位置')
+    const api=getApp().globalData.api,isCustom=Boolean(q.custom_id),id=isCustom?q.custom_id:q.id,month=Math.min(12,Math.max(1,Number(q.month)||new Date().getMonth()+1)),days=Math.min(7,Math.max(1,Number(q.days)||2)),originName=decodeURIComponent(q.origin_name||'当前位置')
     let preferences=[];try{preferences=JSON.parse(decodeURIComponent(q.preferences||'[]'))}catch(_){preferences=[]}
-    this.guideContext={api,id,month,days,originName,preferences}
+    this.guideContext={api,id,isCustom,month,days,originName,preferences}
     try{
       const [destination,weather,guide,favorites]=await Promise.all([
-        api.request({path:`/destinations/${id}`}),api.request({path:`/weather/${id}`}),
-        api.request({method:'POST',path:`/guides/${id}`,timeout:60000,data:{month,days,origin_name:originName,preferences,generation_mode:'fast'}}),
+        api.request({path:isCustom?`/custom-destinations/${id}`:`/destinations/${id}`}),api.request({path:isCustom?`/weather/custom/${id}`:`/weather/${id}`}),
+        api.request({method:'POST',path:isCustom?`/custom-guides/${id}`:`/guides/${id}`,timeout:60000,data:{month,days,origin_name:originName,preferences,generation_mode:'fast'}}),
         api.request({path:'/favorite-guides'})
       ])
       this.detailSource={destination,weather}
       this.guideResponse=guide
-      const existing=(favorites.items||[]).find(item=>item.destination_id===Number(id))
+      const existing=(favorites.items||[]).find(item=>isCustom?item.custom_destination_id===Number(id):item.destination_id===Number(id))
       this.setData({view:buildDetailView(destination,weather,guide,{days}),favoriteId:existing?existing.id:0,generationMode:'fast',loading:false})
     }catch(error){this.setData({loading:false,error:error.message||'详情加载失败'})}
   },
@@ -21,10 +21,10 @@ Page({
   async generateGuide(mode='fast'){
     mode=typeof mode==='string'?mode:mode.currentTarget.dataset.mode
     if(this.data.regenerating||!this.guideContext||!this.detailSource)return
-    const {api,id,month,days,originName,preferences}=this.guideContext
+    const {api,id,isCustom,month,days,originName,preferences}=this.guideContext
     this.setData({regenerating:true})
     try{
-      const guide=await api.request({method:'POST',path:`/guides/${id}`,timeout:mode==='deep'?120000:60000,data:{month,days,origin_name:originName,preferences,generation_mode:mode,force_refresh:true}})
+      const guide=await api.request({method:'POST',path:isCustom?`/custom-guides/${id}`:`/guides/${id}`,timeout:mode==='deep'?120000:60000,data:{month,days,origin_name:originName,preferences,generation_mode:mode,force_refresh:true}})
       const {destination,weather}=this.detailSource
       this.guideResponse=guide
       this.setData({view:buildDetailView(destination,weather,guide,{days}),generationMode:mode})
@@ -41,7 +41,8 @@ Page({
     }
     this.setData({savingFavorite:true})
     try{
-      const favorite=await this.guideContext.api.request({method:'POST',path:'/favorite-guides',data:{destination_id:this.guideContext.id,generation_mode:this.data.generationMode,payload:this.guideResponse.payload}})
+      const target=this.guideContext.isCustom?{custom_destination_id:Number(this.guideContext.id)}:{destination_id:Number(this.guideContext.id)}
+      const favorite=await this.guideContext.api.request({method:'POST',path:'/favorite-guides',data:{...target,generation_mode:this.data.generationMode,payload:this.guideResponse.payload}})
       this.setData({favoriteId:favorite.id})
       wx.showToast({title:'攻略已收藏'})
     }catch(error){

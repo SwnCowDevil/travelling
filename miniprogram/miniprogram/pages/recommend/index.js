@@ -32,7 +32,7 @@ Page({
     hasMore: false,
     fallback: false,
     pendingRecommend: false,
-    resolvingOrigin: false
+    resolvingOrigin: false, customKeyword:'', customCandidates:[], searchingCustom:false, customSearchMessage:''
   },
 
   async onLoad() {
@@ -76,6 +76,9 @@ Page({
   },
 
   resetFilters() { this.refreshFilterView(resetOptionalFilters(this.data.filters)) },
+  inputCustomDestination(e){this.setData({customKeyword:e.detail.value,customCandidates:[],customSearchMessage:''})},
+  async searchCustomDestination(){const keyword=this.data.customKeyword.trim();if(keyword.length<2){wx.showToast({title:'请至少输入 2 个字',icon:'none'});return}this.setData({searchingCustom:true});try{const v=await getApp().globalData.api.request({path:`/custom-destinations/search?keyword=${encodeURIComponent(keyword)}`});this.setData({customCandidates:v.items||[],customSearchMessage:(v.items||[]).length?'':'未找到具体地点，请换一个更完整的名称'})}catch(e){this.setData({customSearchMessage:e.message||'地点搜索暂不可用'})}finally{this.setData({searchingCustom:false})}},
+  async selectCustomDestination(e){try{const item=e.currentTarget.dataset.item,custom=await getApp().globalData.api.request({method:'POST',path:'/custom-destinations',data:item}),f=this.data.filters,o=this.data.origin;wx.navigateTo({url:`/pages/destination-detail/index?custom_id=${custom.id}&month=${f.month}&days=${f.days||2}&origin_name=${encodeURIComponent(o.name||'当前位置')}&preferences=${encodeURIComponent(JSON.stringify(f.preferences||[]))}`})}catch(error){wx.showToast({title:error.message||'创建地点失败',icon:'none'})}},
 
   async chooseOrigin() {
     const service = createLocationService(wx)
