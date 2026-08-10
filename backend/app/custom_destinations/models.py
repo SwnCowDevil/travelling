@@ -19,3 +19,7 @@ class CustomDestination(Base):
     longitude: Mapped[float] = mapped_column(Float)
     created_at: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now(), onupdate=func.now())
+
+    @property
+    def climate(self) -> dict:
+        return {}
