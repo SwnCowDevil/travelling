@@ -82,11 +82,20 @@ class AmapDistrictClient:
         last_error: AmapDistrictError | None = None
         for attempt in range(self.max_attempts):
             self._wait_for_request_slot()
+            retryable = False
             try:
                 response = self.http.get(endpoint, params=params)
                 response.raise_for_status()
                 payload = response.json()
-            except (httpx.HTTPError, ValueError) as exc:
+            except httpx.HTTPStatusError as exc:
+                last_error = AmapDistrictError(f"Amap {subject} request failed")
+                last_error.__cause__ = exc
+                retryable = exc.response.status_code == 429 or exc.response.status_code >= 500
+            except (httpx.TimeoutException, httpx.NetworkError) as exc:
+                last_error = AmapDistrictError(f"Amap {subject} request failed")
+                last_error.__cause__ = exc
+                retryable = True
+            except ValueError as exc:
                 last_error = AmapDistrictError(f"Amap {subject} request failed")
                 last_error.__cause__ = exc
             else:
@@ -97,6 +106,12 @@ class AmapDistrictClient:
                 else:
                     info = str(payload.get("info") or payload.get("infocode") or "unknown")
                     last_error = AmapDistrictError(f"Amap rejected {subject} request: {info}")
+                    retryable = (
+                        info == "CUQPS_HAS_EXCEEDED_THE_LIMIT"
+                        or str(payload.get("infocode") or "") == "10003"
+                    )
+            if not retryable:
+                raise last_error
             if attempt < self.max_attempts - 1:
                 time.sleep(self.retry_delay_seconds * (2 ** attempt))
         assert last_error is not None

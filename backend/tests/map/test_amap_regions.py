@@ -99,6 +99,23 @@ def test_fetch_region_retries_a_temporary_amap_rejection() -> None:
     assert attempts == 2
 
 
+def test_fetch_region_does_not_retry_an_invalid_amap_key() -> None:
+    attempts = 0
+
+    def handler(_: httpx.Request) -> httpx.Response:
+        nonlocal attempts
+        attempts += 1
+        return httpx.Response(200, json={"status": "0", "info": "INVALID_USER_KEY", "infocode": "10001"})
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+        client = AmapDistrictClient("bad-key", http=http)
+        client.retry_delay_seconds = 0
+        with pytest.raises(AmapDistrictError, match="INVALID_USER_KEY"):
+            client.fetch_region("510000")
+
+    assert attempts == 1
+
+
 def test_fetch_region_rejects_a_success_response_without_a_boundary() -> None:
     payload = {"status": "1", "districts": [{
         "adcode": "510000", "name": "四川", "level": "province", "center": "102,30",
