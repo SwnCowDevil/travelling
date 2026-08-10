@@ -1,1 +1,16 @@
-<view class="page"><view class="stats card"><text class="big">{{items.length}}</text><text>个区域已点亮</text><van-button size="small" bind:click="openVisits">到访记录</van-button></view><view class="filters"><text wx:for="{{statuses}}" wx:key="label" data-status="{{item.key}}" bindtap="filter">{{item.label}}</text></view><view wx:if="{{!mapAvailable}}" class="notice">地图暂不可用，仍可通过列表管理足迹</view><view class="region card" wx:for="{{visible}}" wx:key="region_code" data-code="{{item.region_code}}" bindtap="drill"><view><text class="name">{{item.name}}</text><text class="direct" wx:if="{{item.direct_status}}">{{item.direct_status}}</text></view><text>{{item.visit_count}} 次到访</text></view></view>
+<view class="page">
+  <view class="topbar">
+    <view class="stats"><text class="big">{{items.length}}</text><text>个区域已点亮</text></view>
+    <view class="mode-switch"><text class="mode-option {{mode === 'map' ? 'active' : ''}}" bindtap="toggleMode">地图</text><text class="mode-option {{mode === 'list' ? 'active' : ''}}" bindtap="toggleMode">列表</text></view>
+  </view>
+  <view class="filters"><text wx:for="{{statuses}}" wx:key="label" class="filter {{status === item.key ? 'active' : ''}}" data-status="{{item.key}}" bindtap="filter">{{item.label}}</text></view>
+  <view wx:if="{{mode === 'map'}}" class="map-mode">
+    <view class="map-title"><text>{{parentCode ? '省内城市足迹' : '中国旅行足迹'}}</text><text>{{parentCode ? '点击城市查看列表' : '点击省份下钻到城市'}}</text></view>
+    <view class="map-stage"><canvas type="2d" id="footprint-canvas" canvas-id="footprint-canvas" bindtap="tapMap"></canvas><view class="map-legend"><text>● 去过</text><text>● 想再去</text><text>● 想去</text></view></view>
+  </view>
+  <view wx:else class="list-mode">
+    <view wx:if="{{!mapAvailable}}" class="notice">地图数据暂不可用，已切换为列表模式</view>
+    <view class="region card" wx:for="{{visible}}" wx:key="region_code" data-code="{{item.region_code}}" data-level="{{item.level}}" bindtap="drill"><view><text class="name">{{item.name}}</text><text class="direct" wx:if="{{item.direct_status}}">{{item.direct_status}}</text></view><text>{{item.visit_count}} 次到访</text></view>
+  </view>
+  <view class="visit-entry" bindtap="openVisits"><text>🗓️ 到访记录</text><text>›</text></view>
+</view>
