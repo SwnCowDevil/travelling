@@ -7,6 +7,7 @@ class Base(DeclarativeBase):
 
 def import_models() -> None:
     from app.ai import models as ai_models  # noqa: F401
+    from app.custom_destinations import models as custom_destination_models  # noqa: F401
     from app.destinations import models as destination_models  # noqa: F401
     from app.footprints import models as footprint_models  # noqa: F401
     from app.favorites import models as favorite_models  # noqa: F401
