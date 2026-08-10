@@ -27,6 +27,31 @@ test('mode switching keeps the selected hierarchy and filter',()=>{
   global.Page=originalPage
 })
 
+test('returning to map mode reinitializes its Canvas node',()=>{
+  let definition
+  const originalPage=global.Page
+  global.Page=value=>{definition=value}
+  delete require.cache[require.resolve('../../miniprogram/pages/map/index')]
+  require('../../miniprogram/pages/map/index')
+  let initializations=0
+  const page={
+    data:{mode:'list',geometryAvailable:true},
+    setData(value,done){Object.assign(this.data,value);if(done)done()},
+    initCanvas(){initializations++},
+    drawMap(){throw new Error('the previous Canvas context must not be reused')},
+  }
+  definition.toggleMode.call(page)
+  assert.equal(page.data.mode,'map')
+  assert.equal(initializations,1)
+  global.Page=originalPage
+})
+
+test('hierarchy title and return action remain available in list mode',()=>{
+  const wxml=fs.readFileSync(path.join(dir,'index.wxml'),'utf8')
+  assert.ok(wxml.indexOf('class="map-title"') < wxml.indexOf('class="map-mode"'))
+  assert.match(wxml,/bindtap="backToCountry"/)
+})
+
 test('touching a province drills down but a city remains the final map level',()=>{
   let definition
   const originalPage=global.Page

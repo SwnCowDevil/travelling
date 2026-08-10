@@ -20,13 +20,24 @@ class SyncResult:
 
 def _save_boundary(session: Session, code: str, longitude: float, latitude: float, polygons: list[list[list[float]]]) -> bool:
     boundary = session.get(RegionBoundary, code)
-    if boundary is not None:
+    if boundary is not None and boundary.polygons:
         return False
+    if boundary is not None:
+        boundary.center_longitude = longitude
+        boundary.center_latitude = latitude
+        boundary.polygons = polygons
+        boundary.source = "amap"
+        return True
     session.add(RegionBoundary(
         region_code=code, center_longitude=longitude, center_latitude=latitude,
         polygons=polygons, source="amap",
     ))
     return True
+
+
+def _has_usable_boundary(session: Session, code: str) -> bool:
+    boundary = session.get(RegionBoundary, code)
+    return bool(boundary and boundary.polygons)
 
 
 def sync_region_layer(
@@ -45,7 +56,7 @@ def sync_region_layer(
             AdministrativeRegion.parent_code == code,
             AdministrativeRegion.level == "city",
         )))
-        if session.get(RegionBoundary, code) is None or not known_cities:
+        if not _has_usable_boundary(session, code) or not known_cities:
             try:
                 region = client.fetch_region(code)
             except AmapDistrictError:
@@ -67,7 +78,7 @@ def sync_region_layer(
             AdministrativeRegion.parent_code == parent_code,
             AdministrativeRegion.level == "city",
         )):
-            if session.get(RegionBoundary, child.code) is not None:
+            if _has_usable_boundary(session, child.code):
                 continue
             try:
                 region = client.fetch_region(child.code)

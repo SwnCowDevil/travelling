@@ -63,8 +63,9 @@ Page({
   },
   toggleMode(){
     const mode=this.data.mode==='map'?'list':this.data.geometryAvailable?'map':'list'
-    this.setData({mode})
-    if(mode==='map')this.drawMap()
+    this.setData({mode},()=>{
+      if(mode==='map')this.initCanvas()
+    })
   },
   filter(e){
     const status=e.currentTarget.dataset.status||null
