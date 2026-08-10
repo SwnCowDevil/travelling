@@ -3,6 +3,16 @@ const assert = require('node:assert/strict')
 
 const { createApiClient } = require('../../miniprogram/services/api')
 
+test('request forwards an explicit longer timeout for AI generation', async () => {
+  let received
+  const wx = {
+    getStorageSync() { return '' },
+    request(options) { received = options; options.success({ statusCode: 200, data: {} }) }
+  }
+  await createApiClient(wx, 'https://api.example.com').request({ path: '/guides/7', timeout: 120000 })
+  assert.equal(received.timeout, 120000)
+})
+
 test('request carries bearer token', async () => {
   let options
   const wx = {

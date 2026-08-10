@@ -1,4 +1,5 @@
 import pytest
+from types import SimpleNamespace
 
 from app.destinations.models import AdministrativeRegion, Destination
 from pydantic import ValidationError
@@ -10,6 +11,7 @@ from app.guides.schemas import (
     ItineraryDay,
 )
 from app.guides.service import GuideGenerationError, GuideService
+from app.guides.router import guide_timeout_seconds
 
 
 def seed_destination(db_session) -> Destination:
@@ -73,6 +75,10 @@ def test_guide_payload_rejects_non_consecutive_days() -> None:
     value["itinerary"][1]["day"] = 1
     with pytest.raises(ValidationError):
         GuidePayload.model_validate(value)
+
+
+def test_personal_profile_timeout_is_extended_only_for_guides() -> None:
+    assert guide_timeout_seconds(SimpleNamespace(timeout_seconds=20)) == 90
 
 
 @pytest.mark.asyncio

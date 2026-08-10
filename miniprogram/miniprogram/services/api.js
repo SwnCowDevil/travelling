@@ -24,7 +24,7 @@ function validationErrorMessage(detail) {
 
 function createApiClient(wxApi, baseUrl) {
   return {
-    request({ method = 'GET', path, data }) {
+    request({ method = 'GET', path, data, timeout }) {
       return new Promise((resolve, reject) => {
         const token = wxApi.getStorageSync(TOKEN_KEY)
         const header = { 'Content-Type': 'application/json' }
@@ -34,6 +34,7 @@ function createApiClient(wxApi, baseUrl) {
           method,
           data,
           header,
+          ...(timeout ? { timeout } : {}),
           success(response) {
             if (response.statusCode >= 200 && response.statusCode < 300) {
               resolve(response.data)

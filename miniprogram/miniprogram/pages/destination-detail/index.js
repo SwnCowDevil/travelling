@@ -8,7 +8,7 @@ Page({
     try{
       const [destination,weather,guide]=await Promise.all([
         api.request({path:`/destinations/${id}`}),api.request({path:`/weather/${id}`}),
-        api.request({method:'POST',path:`/guides/${id}`,data:{month,days,origin_name:originName,preferences}})
+        api.request({method:'POST',path:`/guides/${id}`,timeout:120000,data:{month,days,origin_name:originName,preferences}})
       ])
       this.detailSource={destination,weather}
       this.setData({view:buildDetailView(destination,weather,guide,{days}),loading:false})
@@ -19,7 +19,7 @@ Page({
     const {api,id,month,days,originName,preferences}=this.guideContext
     this.setData({regenerating:true})
     try{
-      const guide=await api.request({method:'POST',path:`/guides/${id}`,data:{month,days,origin_name:originName,preferences,force_refresh:true}})
+      const guide=await api.request({method:'POST',path:`/guides/${id}`,timeout:120000,data:{month,days,origin_name:originName,preferences,force_refresh:true}})
       const {destination,weather}=this.detailSource
       this.setData({view:buildDetailView(destination,weather,guide,{days})})
       wx.showToast({title:'攻略已重新生成'})

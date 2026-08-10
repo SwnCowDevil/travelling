@@ -15,6 +15,13 @@ from app.guides.service import GuideGenerationError, GuideService
 router = APIRouter(prefix="/guides", tags=["guides"])
 
 
+def guide_timeout_seconds(profile: AIProfile | None) -> int:
+    return max(
+        profile.timeout_seconds if profile is not None else 0,
+        settings.ai_guide_timeout_seconds,
+    )
+
+
 def get_guide_service(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_db),
@@ -31,13 +38,18 @@ def get_guide_service(
                 profile.base_url,
                 token,
                 profile.model,
-                timeout_seconds=profile.timeout_seconds,
+                timeout_seconds=guide_timeout_seconds(profile),
             )
             model = profile.model
         except Exception:
             client = None
     elif settings.ai_api_key:
-        client = AIClient(settings.ai_base_url, settings.ai_api_key, settings.ai_model)
+        client = AIClient(
+            settings.ai_base_url,
+            settings.ai_api_key,
+            settings.ai_model,
+            timeout_seconds=guide_timeout_seconds(None),
+        )
         model = settings.ai_model
 
     if client is None:

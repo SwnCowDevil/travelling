@@ -27,6 +27,16 @@ def test_personal_profile_rejects_insecure_provider_url() -> None:
         )
 
 
+def test_personal_profile_keeps_normal_request_timeout_limit() -> None:
+    with pytest.raises(ValidationError):
+        AIProfileUpdate(
+            token="sk-test",
+            base_url="https://provider.example/v1",
+            model="model",
+            timeout_seconds=90,
+        )
+
+
 @pytest.mark.asyncio
 async def test_failed_connection_does_not_replace_existing_profile(db_session) -> None:
     cipher = TokenCipher(b"0123456789abcdef0123456789abcdef")

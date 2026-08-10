@@ -42,6 +42,7 @@ test('regenerate sends force_refresh and replaces the displayed guide', async ()
 
   assert.equal(sent.data.force_refresh, true)
   assert.equal(sent.data.days, 2)
+  assert.equal(sent.timeout, 120000)
   assert.equal(page.data.view.guideSourceLabel, 'AI 攻略')
   assert.equal(page.data.regenerating, false)
 })
