@@ -42,7 +42,7 @@ test('regenerate sends force_refresh and replaces the displayed guide', async ()
 
   assert.equal(sent.data.force_refresh, true)
   assert.equal(sent.data.days, 2)
-  assert.equal(sent.timeout, 120000)
+  assert.equal(sent.timeout, 60000)
   assert.equal(page.data.view.guideSourceLabel, 'AI 攻略')
   assert.equal(page.data.regenerating, false)
 })
@@ -60,4 +60,39 @@ test('failed regenerate keeps the old guide and restores the button', async () =
   assert.equal(page.data.regenerating, false)
   assert.equal(toast.icon, 'none')
   assert.match(toast.title, /AI unavailable/)
+})
+
+test('deep generation sends deep mode with the longer timeout', async () => {
+  let sent
+  const page = createPage(async request => {
+    sent = request
+    return { source: 'ai', payload: { transport: ['高铁'], weather: ['晴'], packing: [], cautions: [], highlights: [], foods: [], itinerary: [] } }
+  })
+  const originalWx = global.wx
+  global.wx = { showToast() {} }
+  await page.generateGuide('deep')
+  global.wx = originalWx
+
+  assert.equal(sent.data.generation_mode, 'deep')
+  assert.equal(sent.data.force_refresh, true)
+  assert.equal(sent.timeout, 120000)
+})
+
+test('favorite saves the current guide payload and records the favorite id', async () => {
+  let sent
+  const page = createPage(async request => {
+    sent = request
+    return { id: 18 }
+  })
+  page.guideResponse = { source: 'ai', payload: { transport: ['高铁'], weather: ['晴'] } }
+  const originalWx = global.wx
+  global.wx = { showToast() {} }
+  await page.saveFavorite()
+  global.wx = originalWx
+
+  assert.equal(sent.path, '/favorite-guides')
+  assert.equal(sent.data.destination_id, 7)
+  assert.equal(sent.data.generation_mode, 'fast')
+  assert.deepEqual(sent.data.payload, page.guideResponse.payload)
+  assert.equal(page.data.favoriteId, 18)
 })
