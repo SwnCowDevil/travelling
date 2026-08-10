@@ -1,0 +1,61 @@
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.destinations.models import Destination
+from app.favorites.models import FavoriteGuide
+from app.guides.schemas import GuidePayload
+
+
+def save_favorite(
+    session: Session, user_id: int, destination: Destination, payload: GuidePayload, generation_mode: str
+) -> tuple[FavoriteGuide, bool]:
+    existing = session.scalar(select(FavoriteGuide).where(
+        FavoriteGuide.user_id == user_id, FavoriteGuide.destination_id == destination.id
+    ))
+    if existing is not None:
+        return existing, False
+    favorite = FavoriteGuide(
+        user_id=user_id,
+        destination_id=destination.id,
+        generation_mode=generation_mode,
+        payload=payload.model_dump(mode="json"),
+        destination_snapshot={"name": destination.name, "summary": destination.summary, "emoji": "🏞️"},
+    )
+    session.add(favorite)
+    session.commit()
+    session.refresh(favorite)
+    return favorite, True
+
+
+def get_favorite(session: Session, user_id: int, favorite_id: int) -> FavoriteGuide | None:
+    return session.scalar(select(FavoriteGuide).where(
+        FavoriteGuide.id == favorite_id, FavoriteGuide.user_id == user_id
+    ))
+
+
+def list_favorites(session: Session, user_id: int) -> list[FavoriteGuide]:
+    return list(session.scalars(select(FavoriteGuide).where(
+        FavoriteGuide.user_id == user_id
+    ).order_by(FavoriteGuide.updated_at.desc(), FavoriteGuide.id.desc())).all())
+
+
+def update_favorite(
+    session: Session, user_id: int, favorite_id: int, payload: GuidePayload, generation_mode: str
+) -> FavoriteGuide | None:
+    favorite = get_favorite(session, user_id, favorite_id)
+    if favorite is None:
+        return None
+    favorite.payload = payload.model_dump(mode="json")
+    favorite.generation_mode = generation_mode
+    session.commit()
+    session.refresh(favorite)
+    return favorite
+
+
+def delete_favorite(session: Session, user_id: int, favorite_id: int) -> bool:
+    favorite = get_favorite(session, user_id, favorite_id)
+    if favorite is None:
+        return False
+    session.delete(favorite)
+    session.commit()
+    return True

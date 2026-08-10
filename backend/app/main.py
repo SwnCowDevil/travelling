@@ -7,6 +7,7 @@ from app.guides.router import router as guides_router
 from app.map.router import router as map_router
 from app.locations.router import router as locations_router
 from app.footprints.router import router as footprints_router
+from app.favorites.router import router as favorites_router
 from app.recommendations.router import router as recommendations_router
 from app.weather.router import router as weather_router
 from app.visits.router import router as visits_router
@@ -20,6 +21,7 @@ def create_app() -> FastAPI:
     app.include_router(recommendations_router)
     app.include_router(weather_router)
     app.include_router(guides_router)
+    app.include_router(favorites_router)
     app.include_router(visits_router)
     app.include_router(footprints_router)
     app.include_router(map_router)
