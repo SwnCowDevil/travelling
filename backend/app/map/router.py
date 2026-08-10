@@ -17,9 +17,13 @@ def map_summary(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_db),
 ) -> MapSummaryResponse:
-    return MapSummaryResponse(items=build_map_summary(
+    items = build_map_summary(
         session,
         user_id,
         parent_code=parent_code,
         status=status.value if status else None,
-    ))
+    )
+    return MapSummaryResponse(
+        items=items,
+        geometry_available=any(bool(item.polygons) for item in items),
+    )

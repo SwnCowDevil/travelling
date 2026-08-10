@@ -1,10 +1,74 @@
 from sqlalchemy import func, select
+from dataclasses import dataclass
+
 from sqlalchemy.orm import Session
 
 from app.destinations.models import AdministrativeRegion, Destination
 from app.footprints.models import DestinationStatus, RegionStatus
+from app.map.amap import AmapDistrictClient
+from app.map.models import RegionBoundary
 from app.map.schemas import RegionMapSummary
 from app.visits.models import VisitRecord
+
+
+@dataclass(frozen=True)
+class SyncResult:
+    regions_created: int = 0
+    boundaries_cached: int = 0
+
+
+def _save_boundary(session: Session, code: str, longitude: float, latitude: float, polygons: list[list[list[float]]]) -> bool:
+    boundary = session.get(RegionBoundary, code)
+    if boundary is not None:
+        return False
+    session.add(RegionBoundary(
+        region_code=code, center_longitude=longitude, center_latitude=latitude,
+        polygons=polygons, source="amap",
+    ))
+    return True
+
+
+def sync_region_layer(
+    session: Session, client: AmapDistrictClient, parent_code: str | None
+) -> SyncResult:
+    parent_codes = ([parent_code] if parent_code else [
+        region.code for region in session.scalars(
+            select(AdministrativeRegion).where(AdministrativeRegion.level == "province")
+        )
+    ])
+    regions_created = 0
+    boundaries_cached = 0
+    for code in parent_codes:
+        region = client.fetch_region(code)
+        boundaries_cached += int(_save_boundary(
+            session, region.code, region.center_longitude, region.center_latitude, region.polygons
+        ))
+        for child in region.children:
+            if child.level != "city" or session.get(AdministrativeRegion, child.code):
+                continue
+            session.add(AdministrativeRegion(
+                code=child.code, name=child.name, level=child.level, parent_code=region.code
+            ))
+            regions_created += 1
+    session.commit()
+    if parent_code:
+        for child in session.scalars(select(AdministrativeRegion).where(
+            AdministrativeRegion.parent_code == parent_code,
+            AdministrativeRegion.level == "city",
+        )):
+            region = client.fetch_region(child.code)
+            boundaries_cached += int(_save_boundary(
+                session, region.code, region.center_longitude, region.center_latitude, region.polygons
+            ))
+        session.commit()
+    return SyncResult(regions_created=regions_created, boundaries_cached=boundaries_cached)
+
+
+def resolve_map_status(direct_status: str | None, status_counts: dict[str, int]) -> str | None:
+    for status in ("visited", "revisit", "want", "avoid"):
+        if direct_status == status or status_counts.get(status, 0) > 0:
+            return status
+    return None
 
 
 def build_map_summary(
@@ -17,9 +81,12 @@ def build_map_summary(
     regions = list(session.scalars(select(AdministrativeRegion)).all())
     by_code = {region.code: region for region in regions}
     children = [region for region in regions if region.parent_code == parent_code]
-    destination_regions = dict(session.execute(
-        select(Destination.id, Destination.region_code)
-    ).all())
+    destination_regions = {
+        destination_id: (province_code, city_code)
+        for destination_id, province_code, city_code in session.execute(
+            select(Destination.id, Destination.region_code, Destination.city_region_code)
+        ).all()
+    }
     statuses = session.execute(
         select(DestinationStatus.destination_id, DestinationStatus.status).where(
             DestinationStatus.user_id == user_id
@@ -39,7 +106,8 @@ def build_map_summary(
     aggregates: dict[str, dict[str, int]] = {}
     visits_by_region: dict[str, int] = {}
     for destination_id, footprint_status in statuses:
-        region_code = destination_regions.get(destination_id)
+        region_codes = destination_regions.get(destination_id)
+        region_code = region_codes[1] or region_codes[0] if region_codes else None
         while region_code:
             counts = aggregates.setdefault(region_code, {})
             counts[footprint_status] = counts.get(footprint_status, 0) + 1
@@ -49,14 +117,23 @@ def build_map_summary(
             region = by_code.get(region_code)
             region_code = region.parent_code if region else None
 
-    result = [RegionMapSummary(
-        region_code=region.code,
-        name=region.name,
-        level=region.level,
-        direct_status=direct.get(region.code),
-        status_counts=aggregates.get(region.code, {}),
-        visit_count=visits_by_region.get(region.code, 0),
-    ) for region in children]
+    boundaries = {
+        boundary.region_code: boundary
+        for boundary in session.scalars(select(RegionBoundary)).all()
+    }
+    result = []
+    for region in children:
+        boundary = boundaries.get(region.code)
+        counts = aggregates.get(region.code, {})
+        direct_status = direct.get(region.code)
+        result.append(RegionMapSummary(
+            region_code=region.code, name=region.name, level=region.level,
+            direct_status=direct_status, status_counts=counts,
+            visit_count=visits_by_region.get(region.code, 0),
+            center=[boundary.center_longitude, boundary.center_latitude] if boundary else None,
+            polygons=boundary.polygons if boundary else [],
+            map_status=resolve_map_status(direct_status, counts),
+        ))
     if status:
         result = [
             item for item in result
