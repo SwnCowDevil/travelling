@@ -1,4 +1,5 @@
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.destinations.models import Destination
@@ -22,7 +23,16 @@ def save_favorite(
         destination_snapshot={"name": destination.name, "summary": destination.summary, "emoji": "🏞️"},
     )
     session.add(favorite)
-    session.commit()
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+        existing = session.scalar(select(FavoriteGuide).where(
+            FavoriteGuide.user_id == user_id, FavoriteGuide.destination_id == destination.id
+        ))
+        if existing is not None:
+            return existing, False
+        raise
     session.refresh(favorite)
     return favorite, True
 

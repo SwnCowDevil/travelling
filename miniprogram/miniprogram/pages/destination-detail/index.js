@@ -6,13 +6,15 @@ Page({
     let preferences=[];try{preferences=JSON.parse(decodeURIComponent(q.preferences||'[]'))}catch(_){preferences=[]}
     this.guideContext={api,id,month,days,originName,preferences}
     try{
-      const [destination,weather,guide]=await Promise.all([
+      const [destination,weather,guide,favorites]=await Promise.all([
         api.request({path:`/destinations/${id}`}),api.request({path:`/weather/${id}`}),
-        api.request({method:'POST',path:`/guides/${id}`,timeout:60000,data:{month,days,origin_name:originName,preferences,generation_mode:'fast'}})
+        api.request({method:'POST',path:`/guides/${id}`,timeout:60000,data:{month,days,origin_name:originName,preferences,generation_mode:'fast'}}),
+        api.request({path:'/favorite-guides'})
       ])
       this.detailSource={destination,weather}
       this.guideResponse=guide
-      this.setData({view:buildDetailView(destination,weather,guide,{days}),generationMode:'fast',loading:false})
+      const existing=(favorites.items||[]).find(item=>item.destination_id===Number(id))
+      this.setData({view:buildDetailView(destination,weather,guide,{days}),favoriteId:existing?existing.id:0,generationMode:'fast',loading:false})
     }catch(error){this.setData({loading:false,error:error.message||'详情加载失败'})}
   },
   async regenerateGuide(){ return this.generateGuide(this.data.generationMode) },

@@ -23,9 +23,10 @@ class GuideGenerationError(RuntimeError):
 
 
 class GuideService:
-    def __init__(self, generator: GuideGenerator | None = None, model: str | None = None) -> None:
+    def __init__(self, generator: GuideGenerator | None = None, model: str | None = None, cache_scope: str = "system") -> None:
         self.generator = generator
         self.model = model
+        self.cache_scope = cache_scope
 
     async def generate(
         self,
@@ -34,7 +35,7 @@ class GuideService:
         request: GuideGenerationRequest,
     ) -> GuideResponse:
         conditions = request.model_dump(mode="json", exclude={"force_refresh"})
-        cache_key = self._cache_key(destination, conditions)
+        cache_key = self._cache_key(destination, conditions, self.cache_scope)
         cached = session.scalar(select(GuideCache).where(GuideCache.cache_key == cache_key))
         now = datetime.now(timezone.utc)
         if (
@@ -71,12 +72,13 @@ class GuideService:
         return self._response(destination, cache, cache_hit=False)
 
     @staticmethod
-    def _cache_key(destination: Destination, conditions: dict) -> str:
+    def _cache_key(destination: Destination, conditions: dict, cache_scope: str = "system") -> str:
         raw = json.dumps(
             {
                 "destination_id": destination.id,
                 "data_version": destination.data_version,
                 "guide_content_version": GUIDE_CONTENT_VERSION,
+                "cache_scope": cache_scope,
                 "conditions": conditions,
             },
             ensure_ascii=False,

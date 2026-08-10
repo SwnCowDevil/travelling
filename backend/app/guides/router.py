@@ -66,15 +66,22 @@ def get_guide_service(
         )
         return GuidePayload.model_validate(payload)
 
-    return GuideService(generator=generate, model=guide_model_for_mode(profile, "deep"))
+    cache_scope = (
+        f"user:{user_id}:model:{profile.model}"
+        if profile is not None
+        else f"system:deep:{settings.ai_model}:fast:{settings.ai_fast_model}"
+    )
+    return GuideService(generator=generate, model=guide_model_for_mode(profile, "deep"), cache_scope=cache_scope)
 
 
 def _guide_prompt(mode: str) -> str:
     if mode == "fast":
         return (
             "你是中国境内旅行规划师。只返回 JSON 对象，不要 Markdown。"
-            "字段为 transport、weather、packing、cautions、highlights、foods、itinerary。"
-            "所有字段必须符合用户 days；行程写真实点位和顺路安排，美食必须是真实当地美食。"
+            "transport、weather 是非空字符串数组；packing 必须8至14项，cautions 和 highlights 各5至8项。"
+            "foods 必须4至6个对象，每个含 name、description、area、average_price。"
+            "itinerary 必须正好等于用户 days 天，从 day=1 连续编号；每项含 day、theme、morning、afternoon、evening、transport、caution。"
+            "行程写真实点位和顺路安排，美食必须是真实当地美食。"
             "避免编造精确票价和开放时间，信息不确定时提示用户以官方渠道为准。"
         )
     return (

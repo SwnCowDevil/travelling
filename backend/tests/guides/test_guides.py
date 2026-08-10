@@ -136,6 +136,24 @@ async def test_fast_and_deep_guides_do_not_share_a_cache_entry(db_session) -> No
 
 
 @pytest.mark.asyncio
+async def test_personal_guide_cache_scope_does_not_cross_users(db_session) -> None:
+    destination = seed_destination(db_session)
+    calls = 0
+
+    async def generator(**_kwargs) -> GuidePayload:
+        nonlocal calls
+        calls += 1
+        return ai_payload()
+
+    request = GuideGenerationRequest(month=4, days=2, origin_name="上海", generation_mode="deep")
+    await GuideService(generator=generator, cache_scope="user:1:model:pro").generate(db_session, destination, request)
+    second = await GuideService(generator=generator, cache_scope="user:2:model:pro").generate(db_session, destination, request)
+
+    assert calls == 2
+    assert second.cache_hit is False
+
+
+@pytest.mark.asyncio
 async def test_data_version_change_invalidates_cache(db_session) -> None:
     destination = seed_destination(db_session)
     calls = 0
