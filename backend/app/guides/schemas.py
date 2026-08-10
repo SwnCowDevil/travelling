@@ -3,9 +3,10 @@ from pydantic import BaseModel, Field, model_validator
 
 class GuideGenerationRequest(BaseModel):
     month: int = Field(ge=1, le=12)
-    days: int = Field(default=2, ge=1, le=30)
+    days: int = Field(default=2, ge=1, le=7)
     origin_name: str = Field(min_length=1, max_length=100)
     preferences: list[str] = Field(default_factory=list)
+    force_refresh: bool = False
 
 
 class FoodRecommendation(BaseModel):
@@ -28,9 +29,9 @@ class ItineraryDay(BaseModel):
 class GuidePayload(BaseModel):
     transport: list[str] = Field(min_length=1)
     weather: list[str] = Field(min_length=1)
-    packing: list[str] = Field(min_length=1)
-    cautions: list[str] = Field(min_length=1)
-    highlights: list[str] = Field(min_length=1)
+    packing: list[str] = Field(min_length=8, max_length=14)
+    cautions: list[str] = Field(min_length=5, max_length=8)
+    highlights: list[str] = Field(min_length=5, max_length=8)
     foods: list[FoodRecommendation] = Field(min_length=4, max_length=6)
     itinerary: list[ItineraryDay] = Field(min_length=1, max_length=7)
 

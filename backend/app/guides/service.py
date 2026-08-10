@@ -9,14 +9,17 @@ from sqlalchemy.orm import Session
 from app.destinations.models import Destination
 from app.guides.models import GuideCache
 from app.guides.schemas import (
-    FoodRecommendation,
     GuideGenerationRequest,
     GuidePayload,
     GuideResponse,
-    ItineraryDay,
 )
 
 GuideGenerator = Callable[..., Awaitable[GuidePayload]]
+GUIDE_CONTENT_VERSION = "rich-v2"
+
+
+class GuideGenerationError(RuntimeError):
+    """Raised when an explicit AI regeneration cannot be completed."""
 
 
 class GuideService:
@@ -30,33 +33,39 @@ class GuideService:
         destination: Destination,
         request: GuideGenerationRequest,
     ) -> GuideResponse:
-        conditions = request.model_dump(mode="json")
+        conditions = request.model_dump(mode="json", exclude={"force_refresh"})
         cache_key = self._cache_key(destination, conditions)
         cached = session.scalar(select(GuideCache).where(GuideCache.cache_key == cache_key))
         now = datetime.now(timezone.utc)
-        if cached is not None and _as_utc(cached.expires_at) > now:
-            return self._response(destination, cached, cache_hit=True)
-
-        source = "rules"
-        payload = self._basic_guide(destination, request)
-        if self.generator is not None:
+        if (
+            not request.force_refresh
+            and cached is not None
+            and _as_utc(cached.expires_at) > now
+        ):
             try:
-                payload = await self.generator(destination=destination, request=request)
-                source = "ai"
-            except Exception:
+                return self._response(destination, cached, cache_hit=True)
+            except ValueError:
+                # Ignore caches created with an older payload schema.
                 pass
 
-        cache = GuideCache(
-            destination_id=destination.id,
-            cache_key=cache_key,
-            conditions=conditions,
-            payload=payload.model_dump(mode="json"),
-            source=source,
-            model=self.model if source == "ai" else None,
-            data_version=destination.data_version,
-            expires_at=(now + timedelta(days=30)).replace(tzinfo=None),
-        )
-        session.add(cache)
+        if self.generator is None:
+            raise GuideGenerationError("未配置可用的 AI，请先在我的页面完成 AI 设置")
+        try:
+            payload = await self.generator(destination=destination, request=request)
+            if len(payload.itinerary) != request.days:
+                raise ValueError("AI itinerary length does not match requested days")
+        except Exception as exc:
+            raise GuideGenerationError("AI 攻略生成失败，请稍后重试") from exc
+
+        cache = cached or GuideCache(destination_id=destination.id, cache_key=cache_key)
+        cache.conditions = conditions
+        cache.payload = payload.model_dump(mode="json")
+        cache.source = "ai"
+        cache.model = self.model
+        cache.data_version = destination.data_version
+        cache.expires_at = (now + timedelta(days=30)).replace(tzinfo=None)
+        if cached is None:
+            session.add(cache)
         session.commit()
         session.refresh(cache)
         return self._response(destination, cache, cache_hit=False)
@@ -67,6 +76,7 @@ class GuideService:
             {
                 "destination_id": destination.id,
                 "data_version": destination.data_version,
+                "guide_content_version": GUIDE_CONTENT_VERSION,
                 "conditions": conditions,
             },
             ensure_ascii=False,
@@ -74,46 +84,6 @@ class GuideService:
             separators=(",", ":"),
         )
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
-
-    @staticmethod
-    def _basic_guide(
-        destination: Destination, request: GuideGenerationRequest
-    ) -> GuidePayload:
-        transports = "、".join(destination.transport_modes) or "公共交通"
-        climate = destination.climate.get("summary", "出发前查看最新天气预报")
-        packing = ["身份证件", "充电设备", "舒适步行鞋"]
-        if "雨" in climate:
-            packing.append("雨具")
-        highlights = [destination.summary, *destination.categories[:2]]
-        highlights = [value for value in highlights if value] or [destination.name]
-        return GuidePayload(
-            transport=[f"从{request.origin_name}出发，优先考虑{transports}"],
-            weather=[climate, "临行前再次确认逐日天气与预警"],
-            packing=packing,
-            cautions=["提前确认开放时间和预约要求", "旺季预留排队与交通时间"],
-            highlights=highlights,
-            foods=[
-                FoodRecommendation(
-                    name=f"{destination.name}特色风味{index}",
-                    description=f"结合当地饮食特色的第{index}项尝鲜选择",
-                    area=f"{destination.name}主要游览区",
-                    average_price="价格以门店现场为准",
-                )
-                for index in range(1, 5)
-            ],
-            itinerary=[
-                ItineraryDay(
-                    day=day,
-                    theme=f"{destination.name}第{day}天探索",
-                    morning=f"上午游览{highlights[(day - 1) % len(highlights)]}",
-                    afternoon=f"下午体验{highlights[day % len(highlights)]}",
-                    evening=f"晚上品尝{destination.name}当地风味并休息",
-                    transport=f"当天优先使用{transports}",
-                    caution="合理安排节奏，提前确认开放时间",
-                )
-                for day in range(1, request.days + 1)
-            ],
-        )
 
     @staticmethod
     def _response(

@@ -1,4 +1,4 @@
 const test=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path')
 const dir=path.resolve(__dirname,'../../miniprogram/pages/destination-detail')
-test('detail page contains all approved rich sections',()=>{const w=fs.readFileSync(path.join(dir,'index.wxml'),'utf8');for(const text of ['怎么去','天气','行李清单','注意事项','推荐玩法','当地美食','按天攻略'])assert.match(w,new RegExp(text));assert.doesNotMatch(w,/guide\.payload\.itinerary/)})
+test('detail page contains all approved rich sections and regenerate action',()=>{const w=fs.readFileSync(path.join(dir,'index.wxml'),'utf8');for(const text of ['怎么去','天气','行李清单','注意事项','推荐玩法','当地美食','按天攻略','重新生成攻略'])assert.match(w,new RegExp(text));assert.match(w,/bindtap="regenerateGuide"/);assert.doesNotMatch(w,/guide\.payload\.itinerary/)})
 test('detail page carries v4 cards gradients and motion',()=>{const s=fs.readFileSync(path.join(dir,'index.wxss'),'utf8');assert.match(s,/#1bb28a/i);assert.match(s,/linear-gradient/);assert.match(s,/@keyframes/);assert.match(s,/border-radius/)})

@@ -9,7 +9,7 @@ from app.guides.schemas import (
     GuidePayload,
     ItineraryDay,
 )
-from app.guides.service import GuideService
+from app.guides.service import GuideGenerationError, GuideService
 
 
 def seed_destination(db_session) -> Destination:
@@ -45,9 +45,9 @@ def ai_payload() -> GuidePayload:
     return GuidePayload(
         transport=["乘高铁到杭州东站，再换乘地铁"],
         weather=["出发前查看逐日降雨概率"],
-        packing=["雨伞", "舒适步行鞋"],
-        cautions=["节假日提前预约"],
-        highlights=["苏堤漫步", "参观浙江省博物馆"],
+        packing=["身份证", "雨伞", "舒适步行鞋", "充电器", "充电宝", "防晒霜", "水杯", "常用药"],
+        cautions=["节假日提前预约", "确认末班车", "关注降雨", "保管证件", "以官方公告为准"],
+        highlights=["苏堤漫步", "参观浙江省博物馆", "曲院风荷", "北山街夜景", "河坊街访古"],
         foods=[
             FoodRecommendation(name="片儿川", description="笋片与雪菜汤面", area="湖滨", average_price="约25元/人"),
             FoodRecommendation(name="东坡肉", description="酥香软糯", area="河坊街", average_price="约60元/人"),
@@ -119,22 +119,126 @@ async def test_data_version_change_invalidates_cache(db_session) -> None:
 
 
 @pytest.mark.asyncio
-async def test_ai_failure_returns_complete_basic_guide(db_session) -> None:
+async def test_ai_failure_is_not_silently_replaced_with_rules(db_session) -> None:
     destination = seed_destination(db_session)
 
     async def generator(**_kwargs) -> GuidePayload:
         raise TimeoutError("AI unavailable")
 
-    result = await GuideService(generator=generator).generate(
+    with pytest.raises(GuideGenerationError):
+        await GuideService(generator=generator).generate(
+            db_session,
+            destination,
+            GuideGenerationRequest(month=4, days=2, origin_name="上海"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_force_refresh_bypasses_cache_and_replaces_it(db_session) -> None:
+    destination = seed_destination(db_session)
+    calls = 0
+
+    async def generator(**_kwargs) -> GuidePayload:
+        nonlocal calls
+        calls += 1
+        payload = ai_payload()
+        payload.highlights[0] = f"第{calls}次生成的西湖玩法"
+        return payload
+
+    service = GuideService(generator=generator)
+    request = GuideGenerationRequest(month=4, days=2, origin_name="上海")
+    first = await service.generate(db_session, destination, request)
+    refreshed = await service.generate(
         db_session,
         destination,
-        GuideGenerationRequest(month=4, days=2, origin_name="上海"),
+        GuideGenerationRequest(
+            month=4, days=2, origin_name="上海", force_refresh=True
+        ),
     )
+    cached = await service.generate(db_session, destination, request)
 
-    assert result.source == "rules"
-    assert result.payload.transport
-    assert result.payload.weather
-    assert result.payload.packing
-    assert result.payload.cautions
-    assert result.payload.highlights
-    assert len(result.payload.itinerary) == 2
+    assert calls == 2
+    assert first.payload.highlights[0] == "第1次生成的西湖玩法"
+    assert refreshed.cache_hit is False
+    assert refreshed.payload.highlights[0] == "第2次生成的西湖玩法"
+    assert cached.cache_hit is True
+    assert cached.payload.highlights[0] == "第2次生成的西湖玩法"
+
+
+@pytest.mark.asyncio
+async def test_force_refresh_ai_failure_preserves_cached_guide(db_session) -> None:
+    destination = seed_destination(db_session)
+
+    async def success(**_kwargs) -> GuidePayload:
+        return ai_payload()
+
+    request = GuideGenerationRequest(month=4, days=2, origin_name="上海")
+    await GuideService(generator=success).generate(db_session, destination, request)
+
+    async def failure(**_kwargs) -> GuidePayload:
+        raise TimeoutError("AI unavailable")
+
+    with pytest.raises(GuideGenerationError):
+        await GuideService(generator=failure).generate(
+            db_session,
+            destination,
+            GuideGenerationRequest(
+                month=4, days=2, origin_name="上海", force_refresh=True
+            ),
+        )
+
+    cached = await GuideService(generator=success).generate(
+        db_session, destination, request
+    )
+    assert cached.cache_hit is True
+    assert cached.payload.highlights == ai_payload().highlights
+
+
+@pytest.mark.asyncio
+async def test_force_refresh_without_ai_preserves_cached_guide(db_session) -> None:
+    destination = seed_destination(db_session)
+
+    async def success(**_kwargs) -> GuidePayload:
+        return ai_payload()
+
+    request = GuideGenerationRequest(month=4, days=2, origin_name="上海")
+    await GuideService(generator=success).generate(db_session, destination, request)
+
+    with pytest.raises(GuideGenerationError):
+        await GuideService().generate(
+            db_session,
+            destination,
+            GuideGenerationRequest(month=4, days=2, origin_name="上海", force_refresh=True),
+        )
+
+    cached = await GuideService(generator=success).generate(db_session, destination, request)
+    assert cached.cache_hit is True
+    assert cached.source == "ai"
+
+
+@pytest.mark.asyncio
+async def test_initial_load_without_ai_fails_instead_of_returning_generic_food(db_session) -> None:
+    destination = seed_destination(db_session)
+    with pytest.raises(GuideGenerationError):
+        await GuideService().generate(
+            db_session,
+            destination,
+            GuideGenerationRequest(month=4, days=2, origin_name="上海"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_ai_itinerary_must_match_requested_days(db_session) -> None:
+    destination = seed_destination(db_session)
+
+    async def incomplete(**_kwargs) -> GuidePayload:
+        payload = ai_payload()
+        payload.itinerary = payload.itinerary[:1]
+        return payload
+
+    with pytest.raises(GuideGenerationError):
+        await GuideService(generator=incomplete).generate(
+            db_session,
+            destination,
+            GuideGenerationRequest(month=4, days=2, origin_name="上海"),
+        )

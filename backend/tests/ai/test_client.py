@@ -1,10 +1,56 @@
 import json
+import asyncio
 
 import httpx
 import pytest
 
 from app.ai.client import AIClient, InvalidAIResponse
 from app.ai.schemas import RerankRequest
+
+
+@pytest.mark.asyncio
+async def test_temporary_503_is_retried_once(monkeypatch) -> None:
+    calls = 0
+    async def handler(_request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return httpx.Response(503, json={"error": {"code": "upstream_busy"}})
+        return httpx.Response(200, json={"choices": [{"message": {"content": "ok"}}]})
+    async def no_sleep(_seconds): pass
+    monkeypatch.setattr(asyncio, "sleep", no_sleep)
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+        await AIClient("https://provider.example/v1", "sk-test", "model", http=http).test_connection()
+    assert calls == 2
+
+
+@pytest.mark.asyncio
+async def test_non_json_503_is_retried_once(monkeypatch) -> None:
+    calls = 0
+    async def handler(_request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return httpx.Response(503, text="temporarily unavailable")
+        return httpx.Response(200, json={"choices": [{"message": {"content": "ok"}}]})
+    async def no_sleep(_seconds): pass
+    monkeypatch.setattr(asyncio, "sleep", no_sleep)
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+        await AIClient("https://provider.example/v1", "sk-test", "model", http=http).test_connection()
+    assert calls == 2
+
+
+@pytest.mark.asyncio
+async def test_model_not_found_is_not_retried() -> None:
+    calls = 0
+    async def handler(_request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        return httpx.Response(503, json={"error": {"code": "model_not_found"}})
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+        with pytest.raises(httpx.HTTPStatusError):
+            await AIClient("https://provider.example/v1", "sk-test", "model", http=http).test_connection()
+    assert calls == 1
 
 
 def rerank_request() -> RerankRequest:

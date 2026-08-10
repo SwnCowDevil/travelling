@@ -1,3 +1,4 @@
+import asyncio
 import json
 from typing import Any
 
@@ -81,14 +82,40 @@ class AIClient:
 
     async def _post(self, payload: dict[str, Any]) -> dict[str, Any]:
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        if self._http is not None:
-            response = await self._http.post(
-                f"{self.base_url}/chat/completions", headers=headers, json=payload
-            )
-        else:
-            async with httpx.AsyncClient(timeout=self.timeout_seconds) as http:
-                response = await http.post(
-                    f"{self.base_url}/chat/completions", headers=headers, json=payload
+        for attempt in range(2):
+            try:
+                if self._http is not None:
+                    response = await self._http.post(
+                        f"{self.base_url}/chat/completions", headers=headers, json=payload
+                    )
+                else:
+                    async with httpx.AsyncClient(timeout=self.timeout_seconds) as http:
+                        response = await http.post(
+                            f"{self.base_url}/chat/completions", headers=headers, json=payload
+                        )
+                if response.status_code == 503:
+                    try:
+                        if response.json().get("error", {}).get("code") == "model_not_found":
+                            response.raise_for_status()
+                    except (TypeError, ValueError, AttributeError):
+                        pass
+                response.raise_for_status()
+                return response.json()
+            except (httpx.TimeoutException, httpx.HTTPStatusError) as exc:
+                error_code = None
+                if isinstance(exc, httpx.HTTPStatusError):
+                    try:
+                        error = exc.response.json().get("error")
+                        if isinstance(error, dict):
+                            error_code = error.get("code")
+                    except (TypeError, ValueError, AttributeError):
+                        pass
+                retryable = isinstance(exc, httpx.TimeoutException) or (
+                    isinstance(exc, httpx.HTTPStatusError)
+                    and exc.response.status_code in {500, 502, 503, 504}
+                    and not (exc.response.status_code == 503 and error_code == "model_not_found")
                 )
-        response.raise_for_status()
-        return response.json()
+                if attempt == 1 or not retryable:
+                    raise
+                await asyncio.sleep(0.5)
+        raise RuntimeError("unreachable")
