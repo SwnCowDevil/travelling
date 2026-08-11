@@ -18,7 +18,7 @@
       <view id="filter-season" class="filter-trigger {{activePanel === 'season' ? 'active' : ''}}" data-panel="season" bindtap="togglePanel"><text>季节</text><text class="count" wx:if="{{filters.seasons.length}}">{{filters.seasons.length}}</text><text class="arrow">▾</text></view>
       <view id="filter-crowd" class="filter-trigger {{activePanel === 'crowd' ? 'active' : ''}}" data-panel="crowd" bindtap="togglePanel"><text>人流</text><text class="count" wx:if="{{filters.crowd.length}}">{{filters.crowd.length}}</text><text class="arrow">▾</text></view>
       <view id="filter-pref" class="filter-trigger {{activePanel === 'preferences' ? 'active' : ''}}" data-panel="preferences" bindtap="togglePanel"><text>偏好</text><text class="count" wx:if="{{filters.preferences.length}}">{{filters.preferences.length}}</text><text class="arrow">▾</text></view>
-      <view id="filter-more" class="filter-trigger {{activePanel === 'more' ? 'active' : ''}}" data-panel="more" bindtap="togglePanel"><text>更多</text><text class="count" wx:if="{{filters.categories.length || filters.bestOnly}}">{{filters.categories.length + (filters.bestOnly ? 1 : 0)}}</text><text class="arrow">▾</text></view>
+      <view id="filter-more" class="filter-trigger {{activePanel === 'more' ? 'active' : ''}}" data-panel="more" bindtap="togglePanel"><text>更多</text><text class="count" wx:if="{{filters.categories.length || filters.bestOnly || filters.distanceRange}}">{{filters.categories.length + (filters.bestOnly ? 1 : 0) + (filters.distanceRange ? 1 : 0)}}</text><text class="arrow">▾</text></view>
     </view>
 
     <view class="filter-panel" wx:if="{{activePanel}}">
@@ -41,11 +41,13 @@
         <view class="option-grid"><view wx:for="{{filterOptions.preferences}}" wx:key="value" class="option {{item.selected ? 'selected' : ''}}" data-group="preferences" data-value="{{item.value}}" bindtap="toggleOption">{{item.value}}</view></view>
       </block>
       <block wx:if="{{activePanel === 'more'}}">
-        <text class="panel-title">最推荐</text>
+        <text class="panel-title">距离所在地区</text>
+        <view class="option-grid"><view wx:for="{{filterOptions.distance}}" wx:key="label" class="option {{item.selected ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectDistanceRange">{{item.label}}</view></view>
+        <text class="panel-title panel-title-space">最推荐</text>
         <view class="option-grid"><view class="option best {{filters.bestOnly ? 'selected' : ''}}" bindtap="toggleBest">⭐ 优先好评最高</view></view>
         <text class="panel-title panel-title-space">分类（可多选）</text>
         <view class="option-grid"><view wx:for="{{filterOptions.categories}}" wx:key="value" class="option {{item.selected ? 'selected' : ''}}" data-group="categories" data-value="{{item.value}}" bindtap="toggleOption">{{item.value}}</view></view>
-        <text class="advanced-hint">距离、预算、天数与交通条件可继续在此扩展</text>
+        <text class="advanced-hint">预算、天数与交通条件可继续在此扩展</text>
         <view class="panel-actions"><button class="reset-button" bindtap="resetFilters">重置</button><button class="confirm-button" bindtap="closeFilters">确定</button></view>
       </block>
     </view>

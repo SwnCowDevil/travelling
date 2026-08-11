@@ -45,3 +45,11 @@ test('recommend entry cards share a white card treatment and compact loading sta
   assert.match(wxss, /\.custom-guide-card,\.quick-recommend-card\{[^}]*box-shadow/)
   assert.match(wxss, /\.recommend-cta\.loading\{[^}]*letter-spacing:0/)
 })
+
+test('recommend more panel exposes the fixed distance range controls', () => {
+  const wxml = fs.readFileSync(path.join(pageDir, 'index.wxml'), 'utf8')
+  assert.match(wxml, /距离所在地区/)
+  assert.match(wxml, /wx:for="\{\{filterOptions\.distance\}\}"/)
+  assert.match(wxml, /data-value="\{\{item\.value\}\}" bindtap="selectDistanceRange"/)
+  assert.match(wxml, /filters\.distanceRange/)
+})

@@ -90,6 +90,27 @@ test('request uses address when the selected origin name is blank', () => {
   assert.equal(request.origin_name, '北京市东城区东长安街')
 })
 
+test('page selects and clears the distance range filter', () => {
+  let definition
+  const originalPage = global.Page
+  global.Page = value => { definition = value }
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+  let refreshed
+  const page = {
+    data: { filters: defaultFilters(new Date('2026-08-07')) },
+    refreshFilterView(filters) { refreshed = filters }
+  }
+
+  definition.selectDistanceRange.call(page, { currentTarget: { dataset: { value: '100-200' } } })
+  assert.equal(refreshed.distanceRange, '100-200')
+
+  page.data.filters = refreshed
+  definition.removeSummary.call(page, { currentTarget: { dataset: { key: 'distanceRange', value: '100-200' } } })
+  assert.equal(refreshed.distanceRange, null)
+  global.Page = originalPage
+})
+
 test('recommendation waits for a missing origin and resumes after selection', async () => {
   let definition
   const originalPage = global.Page

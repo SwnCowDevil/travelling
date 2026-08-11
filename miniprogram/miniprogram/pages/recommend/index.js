@@ -10,6 +10,7 @@ const {
   loadingStages,
   toggleFilter,
   setMonth,
+  setDistanceRange,
   resetOptionalFilters,
   filterSummary,
   filterOptions
@@ -61,6 +62,10 @@ Page({
     this.refreshFilterView(toggleFilter(this.data.filters, group, value))
   },
 
+  selectDistanceRange(event) {
+    this.refreshFilterView(setDistanceRange(this.data.filters, event.currentTarget.dataset.value || null))
+  },
+
   toggleBest() {
     this.refreshFilterView({ ...this.data.filters, bestOnly: !this.data.filters.bestOnly })
   },
@@ -70,6 +75,10 @@ Page({
     if (key === 'month') return
     if (key === 'bestOnly') {
       this.refreshFilterView({ ...this.data.filters, bestOnly: false })
+      return
+    }
+    if (key === 'distanceRange') {
+      this.refreshFilterView(setDistanceRange(this.data.filters, null))
       return
     }
     this.refreshFilterView(toggleFilter(this.data.filters, key, value))
