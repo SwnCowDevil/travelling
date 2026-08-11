@@ -6,8 +6,10 @@ const {
   loadingStages,
   toggleFilter,
   setMonth,
+  setDistanceRange,
   resetOptionalFilters,
-  filterSummary
+  filterSummary,
+  filterOptions
 } = require('../../miniprogram/pages/recommend/model')
 
 test('defaults to current month and optional filters can be cleared', () => {
@@ -47,6 +49,29 @@ test('optional recommendation filters toggle independently', () => {
   assert.equal(filters.month, 10)
   assert.deepEqual(filters.preferences, [])
   assert.deepEqual(filters.categories, [])
+})
+
+test('distance range is single-select, summarized, and mapped to exact bounds', () => {
+  let filters = defaultFilters(new Date('2026-08-07'))
+  filters = setDistanceRange(filters, '100-200')
+  const request = buildRequest(filters, { name: '上海', latitude: 31.2, longitude: 121.4 })
+
+  assert.equal(filters.distanceRange, '100-200')
+  assert.equal(request.min_distance_km, 100)
+  assert.equal(request.max_distance_km, 200)
+  assert.deepEqual(filterSummary(filters).map(item => item.label), ['8月', '100–200km'])
+  assert.deepEqual(
+    filterOptions(filters).distance.filter(item => item.selected).map(item => item.value),
+    ['100-200']
+  )
+
+  filters = setDistanceRange(filters, null)
+  const unlimited = buildRequest(filters, { name: '上海', latitude: 31.2, longitude: 121.4 })
+  assert.equal(unlimited.min_distance_km, undefined)
+  assert.equal(unlimited.max_distance_km, undefined)
+
+  filters = resetOptionalFilters(setDistanceRange(filters, 'over-500'))
+  assert.equal(filters.distanceRange, null)
 })
 
 test('preferences and destination categories share the backend category filter', () => {
