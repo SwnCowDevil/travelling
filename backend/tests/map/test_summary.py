@@ -1,5 +1,7 @@
 from datetime import date
 
+from sqlalchemy import event
+
 from app.destinations.models import AdministrativeRegion, Destination
 from app.footprints.schemas import FootprintStatus
 from app.footprints.service import set_destination_status, set_region_status
@@ -65,7 +67,7 @@ def test_summary_returns_lightweight_status_and_rolls_city_status_up_to_province
     city = build_map_summary(db_session, 62, parent_code="330000")
 
     assert province[0].map_status == "want"
-    assert province[0].center == [120.1, 29.1]
+    assert province[0].center is None
     assert province[0].polygons == []
     assert city[0].region_code == "330100"
     assert city[0].map_status == "want"
@@ -84,3 +86,26 @@ def test_simplify_map_polygons_limits_geometry_without_mutating_source() -> None
     assert sum(len(path) for path in item) <= 80
     assert item[0][0] == long_outline[0]
     assert item[0][-1] == long_outline[-1]
+
+
+def test_list_summary_does_not_query_region_boundary_payloads(db_session) -> None:
+    db_session.add_all([
+        User(id=64, openid="list-only-map-user"),
+        AdministrativeRegion(code="110000", name="北京", level="province"),
+        RegionBoundary(region_code="110000", center_longitude=116.4, center_latitude=39.9,
+                       polygons=[[[116.0, 39.5], [117.0, 39.5], [116.5, 40.5]]], source="amap"),
+    ])
+    db_session.commit()
+    statements = []
+
+    def record_statement(_conn, _cursor, statement, _params, _context, _executemany):
+        statements.append(statement.lower())
+
+    event.listen(db_session.bind, "before_cursor_execute", record_statement)
+    try:
+        result = build_map_summary(db_session, 64, parent_code=None)
+    finally:
+        event.remove(db_session.bind, "before_cursor_execute", record_statement)
+
+    assert result[0].center is None
+    assert not any("region_boundaries" in statement for statement in statements)

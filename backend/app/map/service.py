@@ -182,20 +182,15 @@ def build_map_summary(
             region = by_code.get(region_code)
             region_code = region.parent_code if region else None
 
-    boundaries = {
-        boundary.region_code: boundary
-        for boundary in session.scalars(select(RegionBoundary)).all()
-    }
     result = []
     for region in children:
-        boundary = boundaries.get(region.code)
         counts = aggregates.get(region.code, {})
         direct_status = direct.get(region.code)
         result.append(RegionMapSummary(
             region_code=region.code, name=region.name, level=region.level,
             direct_status=direct_status, status_counts=counts,
             visit_count=visits_by_region.get(region.code, 0),
-            center=[boundary.center_longitude, boundary.center_latitude] if boundary else None,
+            center=None,
             polygons=[],
             map_status=resolve_map_status(direct_status, counts),
         ))

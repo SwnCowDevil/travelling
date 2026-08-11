@@ -30,8 +30,7 @@ fi
 echo "正在升级本地数据库..."
 (cd "$BACKEND_DIR" && "$ALEMBIC_BIN" upgrade head)
 
-echo "正在生成离线足迹地图包..."
-(cd "$BACKEND_DIR" && "$BACKEND_DIR/.venv/bin/python" -m scripts.build_map_pack)
+# 足迹地图暂时停用。保留地图包生成脚本，重新启用地图模式时再恢复此步骤。
 
 echo "正在启动 FastAPI..."
 ORIGINAL_DIR=$(pwd)
