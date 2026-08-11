@@ -34,7 +34,12 @@ test('recommend page uses v4 color tokens and supported animations', () => {
 })
 
 test('recommend entry cards share a white card treatment and compact loading state', () => {
+  const config = JSON.parse(fs.readFileSync(path.join(pageDir, 'index.json'), 'utf8'))
+  const wxml = fs.readFileSync(path.join(pageDir, 'index.wxml'), 'utf8')
   const wxss = fs.readFileSync(path.join(pageDir, 'index.wxss'), 'utf8')
+  assert.equal(config.usingComponents['loading-stage'], '/components/loading-stage/index')
+  assert.match(wxml, /<loading-stage wx:if="\{\{loading\}\}" text="\{\{stage\}\}"\/>/)
+  assert.match(wxml, /loading="\{\{searchingCustom\}\}"/)
   assert.match(wxss, /\.custom-guide-card,\.quick-recommend-card\{[^}]*background:#fff/)
   assert.match(wxss, /\.custom-guide-card,\.quick-recommend-card\{[^}]*border-radius:/)
   assert.match(wxss, /\.custom-guide-card,\.quick-recommend-card\{[^}]*box-shadow/)

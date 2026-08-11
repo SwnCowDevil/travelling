@@ -1,1 +1,1 @@
-{"navigationBarTitleText":"目的地详情","usingComponents":{"weather-panel":"/components/weather-panel/index","status-actions":"/components/status-actions/index","van-loading":"@vant/weapp/loading/index"}}
+{"navigationBarTitleText":"目的地详情","usingComponents":{"weather-panel":"/components/weather-panel/index","status-actions":"/components/status-actions/index","van-loading":"@vant/weapp/loading/index","loading-stage":"/components/loading-stage/index"}}
