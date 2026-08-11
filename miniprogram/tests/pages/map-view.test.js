@@ -5,12 +5,11 @@ const path=require('node:path')
 
 const dir=path.resolve(__dirname,'../../miniprogram/pages/map')
 
-test('footprint page exposes a default canvas map and map list switch',()=>{
+test('footprint page temporarily exposes list-only mode without map download controls',()=>{
   const wxml=fs.readFileSync(path.join(dir,'index.wxml'),'utf8')
-  const wxss=fs.readFileSync(path.join(dir,'index.wxss'),'utf8')
-  for(const marker of ['footprint-canvas',"mode === 'map'",'bindtap="toggleMode"','地图','列表','bindtap="tapMap"'])assert.match(wxml,new RegExp(marker))
-  assert.match(wxml,/地图数据暂不可用，已切换为列表模式/)
-  assert.match(wxss,/\.map-stage\{[^}]*background:#0b1d2b/)
+  assert.doesNotMatch(wxml,/footprint-canvas|bindtap="toggleMode"|正在下载地图包/)
+  assert.match(wxml,/旅行足迹/)
+  assert.match(wxml,/class="list-mode"/)
 })
 
 test('mode switching keeps the selected hierarchy and filter',()=>{
@@ -48,7 +47,7 @@ test('returning to map mode reinitializes its Canvas node',()=>{
 
 test('hierarchy title and return action remain available in list mode',()=>{
   const wxml=fs.readFileSync(path.join(dir,'index.wxml'),'utf8')
-  assert.ok(wxml.indexOf('class="map-title"') < wxml.indexOf('class="map-mode"'))
+  assert.ok(wxml.indexOf('class="map-title"') < wxml.indexOf('class="list-mode"'))
   assert.match(wxml,/bindtap="backToCountry"/)
 })
 
