@@ -4,7 +4,7 @@
 
 **Goal:** 将收藏攻略详情页的操作按钮升级为横向等宽矩形主次操作。
 
-**Architecture:** 保留已有的 `.actions` 与按钮事件，只通过 WXSS 的网格布局和状态类区分视觉层级。测试读取视图源码，锁定关键布局与危险操作样式。
+**Architecture:** 保留已有的 `.actions` 与按钮事件，只通过 WXSS 的 Flex 布局和编辑态类区分视觉层级。测试读取视图源码，锁定关键布局与危险操作样式。
 
 **Tech Stack:** 微信小程序 WXML/WXSS、Node.js 内置测试运行器。
 
@@ -26,40 +26,40 @@
 - Consumes: `.actions`、`.primary`、`.danger` 与已有的 `bindtap` 事件。
 - Produces: 76rpx 高、两列等宽、Flex 居中且有明确主次层级的按钮。
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```js
 test('favorite guide actions use rectangular two-column primary and danger styles', () => {
   const css = fs.readFileSync(path.join(dir, 'index.wxss'), 'utf8')
-  assert.match(css, /\.actions\{[^}]*display:grid/)
-  assert.match(css, /\.actions\{[^}]*grid-template-columns:repeat\(2,1fr\)/)
+  assert.match(css, /\.actions\{[^}]*display:flex/)
   assert.match(css, /\.actions button\{[^}]*height:76rpx/)
+  assert.match(css, /\.actions button\{[^}]*flex:1/)
   assert.match(css, /\.actions \.danger\{[^}]*border:2rpx solid #d76060/)
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- tests/pages/favorite-guide-detail.test.js`
 
 Expected: failure because the old action layout is Flex with pill-shaped buttons.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 ```css
-.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:16rpx}
+.actions{display:flex;flex-wrap:wrap;gap:16rpx}
 .actions button{display:flex;align-items:center;justify-content:center;height:76rpx;border-radius:18rpx}
 .actions .primary{background:#1bb28a;color:#fff}
 .actions .danger{border:2rpx solid #d76060;background:#fff;color:#d76060}
 ```
 
-- [ ] **Step 4: Run focused and full tests**
+- [x] **Step 4: Run focused and full tests**
 
 Run: `npm test -- tests/pages/favorite-guide-detail.test.js && npm test`
 
 Expected: all tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add miniprogram/miniprogram/pages/favorite-guide-detail/index.wxss miniprogram/tests/pages/favorite-guide-detail.test.js
