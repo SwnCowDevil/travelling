@@ -26,7 +26,7 @@
 - Consumes: `.me-hero` 内既有的 `.avatar` 与 `.profile-copy` 结构。
 - Produces: 左侧头像、右侧 20rpx 间距且左对齐的资料文字。
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 ```js
 test('profile copy stays left aligned beside the avatar with a compact gap', () => {
@@ -37,32 +37,32 @@ test('profile copy stays left aligned beside the avatar with a compact gap', () 
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npm test -- tests/pages/me-view.test.js`
 
 Expected: failure because the current gap is `30rpx` and profile copy has no explicit compact left-alignment declarations.
 
-- [ ] **Step 3: Write minimal implementation**
+- [x] **Step 3: Write minimal implementation**
 
 ```css
 .me-hero{...;gap:20rpx;...}
 .profile-copy{...;min-width:0;flex:0 1 auto;text-align:left}
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npm test -- tests/pages/me-view.test.js`
 
 Expected: PASS.
 
-- [ ] **Step 5: Run the full mini-program suite**
+- [x] **Step 5: Run the full mini-program suite**
 
 Run: `npm test`
 
 Expected: all tests pass.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add miniprogram/miniprogram/pages/me/index.wxss miniprogram/tests/pages/me-view.test.js
