@@ -1,4 +1,3 @@
 <view class="loading {{compact ? 'compact' : ''}}">
-  <image class="loading-fox" src="/assets/images/loading-gray-fox.gif" mode="aspectFit"/>
   <text class="loading-copy">{{text}}</text>
 </view>
