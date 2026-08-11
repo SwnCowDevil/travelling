@@ -29,8 +29,11 @@ test('profile avatar keeps a non-shrinkable square geometry', () => {
 })
 
 test('profile copy stays left aligned beside the avatar with a compact gap', () => {
+  const wxml = fs.readFileSync(path.join(pageDir, 'index.wxml'), 'utf8')
   const wxss = fs.readFileSync(path.join(pageDir, 'index.wxss'), 'utf8')
-  assert.match(wxss, /\.me-hero\{[^}]*gap:20rpx/)
+  assert.match(wxml, /<view class="profile-head">\s*<button class="avatar"[\s\S]*?<view class="profile-copy">/)
+  assert.match(wxss, /\.profile-head\{[^}]*display:flex/)
+  assert.match(wxss, /\.profile-head\{[^}]*gap:20rpx/)
   assert.match(wxss, /\.profile-copy\{[^}]*flex:0 1 auto/)
   assert.match(wxss, /\.profile-copy\{[^}]*text-align:left/)
 })

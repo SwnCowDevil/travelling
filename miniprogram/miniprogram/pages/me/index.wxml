@@ -1,13 +1,15 @@
 <view class="me-page">
   <view id="me-hero" class="me-hero">
     <view class="me-orb"></view>
-    <button class="avatar" open-type="chooseAvatar" bind:chooseavatar="chooseAvatar">
-      <image wx:if="{{avatar}}" src="{{avatar}}" mode="aspectFill"/>
-      <text wx:else class="avatar-default">👤</text>
-    </button>
-    <view class="profile-copy">
-      <text class="profile-name">{{name}}</text>
-      <text class="profile-subtitle">{{subtitle}}</text>
+    <view class="profile-head">
+      <button class="avatar" open-type="chooseAvatar" bind:chooseavatar="chooseAvatar">
+        <image wx:if="{{avatar}}" src="{{avatar}}" mode="aspectFill"/>
+        <text wx:else class="avatar-default">👤</text>
+      </button>
+      <view class="profile-copy">
+        <text class="profile-name">{{name}}</text>
+        <text class="profile-subtitle">{{subtitle}}</text>
+      </view>
     </view>
   </view>
 
