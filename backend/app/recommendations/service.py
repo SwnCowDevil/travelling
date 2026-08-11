@@ -40,6 +40,7 @@ def _query(body: RecommendationCreate) -> RecommendationQuery:
     return RecommendationQuery(
         origin=Coordinates(body.origin_latitude, body.origin_longitude),
         month=body.month,
+        min_distance_km=body.min_distance_km,
         max_distance_km=body.max_distance_km,
         max_budget=body.max_budget,
         available_days=body.available_days,

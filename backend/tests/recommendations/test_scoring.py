@@ -77,6 +77,24 @@ def test_hard_filters_respect_budget_days_and_include_visited() -> None:
     assert [item.code for item in result] == ["fits", "visited"]
 
 
+def test_distance_range_includes_lower_bound_and_excludes_upper_bound() -> None:
+    origin = Coordinates(latitude=0, longitude=0)
+    places = [
+        candidate(code="below-range", coordinates=Coordinates(0, 0.5)),
+        candidate(code="at-lower-bound", coordinates=Coordinates(0, 1.0)),
+        candidate(code="inside-range", coordinates=Coordinates(0, 1.5)),
+        candidate(code="at-upper-bound", coordinates=Coordinates(0, 2.0)),
+    ]
+
+    result = filter_candidates(
+        query(origin=origin, min_distance_km=100, max_distance_km=200),
+        places,
+        statuses={},
+    )
+
+    assert [item.code for item in result] == ["at-lower-bound", "inside-range"]
+
+
 def test_score_breakdown_uses_declared_weights() -> None:
     breakdown = score_candidate(
         query(

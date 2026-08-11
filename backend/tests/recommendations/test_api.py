@@ -1,6 +1,8 @@
 from collections.abc import Iterator
 
+import pytest
 from fastapi.testclient import TestClient
+from pydantic import ValidationError
 
 from app.ai.router import get_current_user_id
 from app.db.session import get_db
@@ -8,6 +10,7 @@ from app.destinations.models import AdministrativeRegion, Destination
 from app.main import create_app
 from app.footprints.models import DestinationStatus
 from app.recommendations.router import get_reranker
+from app.recommendations.schemas import RecommendationCreate
 from app.users.models import User
 
 
@@ -114,3 +117,45 @@ def test_candidate_shortage_never_relaxes_distance_filter(db_session) -> None:
     assert response.status_code == 201
     assert 0 < len(response.json()["items"]) < 3
     assert all(item["distance_km"] <= 5 for item in response.json()["items"])
+
+
+def test_recommendation_respects_a_distance_range(db_session) -> None:
+    seed_destinations(db_session)
+
+    def override_db() -> Iterator:
+        yield db_session
+
+    app = create_app()
+    app.dependency_overrides[get_db] = override_db
+    app.dependency_overrides[get_current_user_id] = lambda: 21
+    app.dependency_overrides[get_reranker] = lambda: None
+
+    with TestClient(app) as client:
+        response = client.post("/recommendations", json={
+            "origin_latitude": 31.2304,
+            "origin_longitude": 121.4737,
+            "origin_name": "上海",
+            "month": 4,
+            "min_distance_km": 20,
+            "max_distance_km": 30,
+        })
+
+    assert response.status_code == 201
+    assert response.json()["items"]
+    assert all(20 <= item["distance_km"] < 30 for item in response.json()["items"])
+
+
+@pytest.mark.parametrize("payload", [
+    {"min_distance_km": -1},
+    {"min_distance_km": 200, "max_distance_km": 200},
+    {"min_distance_km": 300, "max_distance_km": 200},
+])
+def test_recommendation_rejects_invalid_distance_ranges(payload: dict) -> None:
+    with pytest.raises(ValidationError):
+        RecommendationCreate(
+            origin_latitude=31.2304,
+            origin_longitude=121.4737,
+            origin_name="上海",
+            month=4,
+            **payload,
+        )

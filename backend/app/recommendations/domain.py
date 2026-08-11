@@ -29,6 +29,7 @@ class Candidate:
 class RecommendationQuery:
     origin: Coordinates
     month: int
+    min_distance_km: float | None = None
     max_distance_km: float | None = None
     max_budget: int | None = None
     available_days: int | None = None

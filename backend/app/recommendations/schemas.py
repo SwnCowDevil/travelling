@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class RecommendationCreate(BaseModel):
@@ -9,6 +9,7 @@ class RecommendationCreate(BaseModel):
     origin_longitude: float = Field(ge=-180, le=180)
     origin_name: str = Field(min_length=1, max_length=100)
     month: int = Field(ge=1, le=12)
+    min_distance_km: float | None = Field(default=None, ge=0)
     max_distance_km: float | None = Field(default=None, gt=0)
     max_budget: int | None = Field(default=None, gt=0)
     available_days: int | None = Field(default=None, gt=0)
@@ -18,6 +19,16 @@ class RecommendationCreate(BaseModel):
     preferred_crowds: list[str] = Field(default_factory=list)
     preferred_transport: list[str] = Field(default_factory=list)
     sort_mode: Literal["recommended", "nearest", "farthest"] = "recommended"
+
+    @model_validator(mode="after")
+    def validate_distance_range(self) -> "RecommendationCreate":
+        if (
+            self.min_distance_km is not None
+            and self.max_distance_km is not None
+            and self.min_distance_km >= self.max_distance_km
+        ):
+            raise ValueError("min_distance_km must be less than max_distance_km")
+        return self
 
 
 class RecommendationItem(BaseModel):

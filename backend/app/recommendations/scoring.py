@@ -47,11 +47,17 @@ def filter_candidates(
         if query.available_days is not None and candidate.min_days is not None:
             if candidate.min_days > query.available_days:
                 continue
-        if query.max_distance_km is not None:
+        if query.min_distance_km is not None or query.max_distance_km is not None:
             if not candidate.coordinate_verified:
                 continue
-            if haversine_km(query.origin, candidate.coordinates) > query.max_distance_km:
+            distance = haversine_km(query.origin, candidate.coordinates)
+            if query.min_distance_km is not None and distance < query.min_distance_km:
                 continue
+            if query.max_distance_km is not None:
+                if query.min_distance_km is not None and distance >= query.max_distance_km:
+                    continue
+                if query.min_distance_km is None and distance > query.max_distance_km:
+                    continue
         result.append(candidate)
     return result
 
