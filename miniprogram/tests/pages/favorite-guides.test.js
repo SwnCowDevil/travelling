@@ -1,3 +1,4 @@
 const test=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path')
 const dir=path.join(__dirname,'../../miniprogram/pages/favorite-guides')
 test('favorite list page presents saved guide cards',()=>{const w=fs.readFileSync(path.join(dir,'index.wxml'),'utf8');assert.match(w,/收藏攻略/);assert.match(w,/wx:for/);assert.match(w,/bindtap="openFavorite"/)})
+test('favorite list uses compact fox loading without replacing empty or error copy',()=>{const config=JSON.parse(fs.readFileSync(path.join(dir,'index.json'),'utf8'));const w=fs.readFileSync(path.join(dir,'index.wxml'),'utf8');assert.equal(config.usingComponents&&config.usingComponents['loading-stage'],'/components/loading-stage/index');assert.match(w,/<loading-stage wx:if="\{\{loading\}\}" compact="\{\{true\}\}" text="正在加载收藏攻略…"\/>/);assert.match(w,/wx:elif="\{\{error\}\}"/);assert.match(w,/还没有收藏攻略/)})
