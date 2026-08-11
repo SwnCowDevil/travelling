@@ -19,3 +19,11 @@ test('profile page uses v4 gradient, cards, and motion', () => {
   assert.match(wxss, /linear-gradient/)
   assert.match(wxss, /@keyframes/)
 })
+
+test('profile avatar keeps a non-shrinkable square geometry', () => {
+  const wxss = fs.readFileSync(path.join(pageDir, 'index.wxss'), 'utf8')
+  assert.match(wxss, /\.avatar\{[^}]*flex:0 0 132rpx/)
+  assert.match(wxss, /\.avatar\{[^}]*min-width:132rpx/)
+  assert.match(wxss, /\.avatar\{[^}]*min-height:132rpx/)
+  assert.match(wxss, /\.avatar\{[^}]*box-sizing:border-box/)
+})

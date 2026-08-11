@@ -53,3 +53,12 @@ test('recommend more panel exposes the fixed distance range controls', () => {
   assert.match(wxml, /data-value="\{\{item\.value\}\}" bindtap="selectDistanceRange"/)
   assert.match(wxml, /filters\.distanceRange/)
 })
+
+test('filter action buttons use flex centering instead of line-height', () => {
+  const wxss = fs.readFileSync(path.join(pageDir, 'index.wxss'), 'utf8')
+  assert.match(wxss, /\.panel-actions button\{[^}]*display:flex/)
+  assert.match(wxss, /\.panel-actions button\{[^}]*align-items:center/)
+  assert.match(wxss, /\.panel-actions button\{[^}]*justify-content:center/)
+  assert.match(wxss, /\.panel-actions button\{[^}]*padding:0/)
+  assert.doesNotMatch(wxss, /\.panel-actions button\{[^}]*line-height:76rpx/)
+})
