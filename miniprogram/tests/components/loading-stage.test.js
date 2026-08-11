@@ -1,0 +1,21 @@
+const test=require('node:test')
+const assert=require('node:assert/strict')
+const fs=require('node:fs')
+const path=require('node:path')
+
+const componentDir=path.resolve(__dirname,'../../miniprogram/components/loading-stage')
+const read=name=>fs.readFileSync(path.join(componentDir,name),'utf8')
+
+test('loading stage renders the local gray fox gif and supports compact mode',()=>{
+  const js=read('index.js')
+  const wxml=read('index.wxml')
+  const wxss=read('index.wxss')
+  const asset=path.resolve(componentDir,'../../assets/images/loading-gray-fox.gif')
+  assert.match(js,/compact:\{type:Boolean,value:false\}/)
+  assert.match(wxml,/src="\/assets\/images\/loading-gray-fox\.gif"/)
+  assert.match(wxml,/class="loading \{\{compact \? 'compact' : ''\}\}"/)
+  assert.match(wxml,/class="loading-fox"/)
+  assert.match(wxml,/loading-copy/)
+  assert.match(wxss,/\.loading-fox/)
+  assert.equal(fs.readFileSync(asset).subarray(0,3).toString(),'GIF')
+})
