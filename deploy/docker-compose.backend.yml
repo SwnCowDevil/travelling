@@ -1,0 +1,12 @@
+services:
+  travel-api:
+    image: travel-api:local
+    container_name: travel-api
+    env_file:
+      - /etc/travelling/travel-api.env
+    volumes:
+      - /opt/travelling/backend:/app:ro
+      - /opt/travelling/backend/data:/app/data:rw
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
