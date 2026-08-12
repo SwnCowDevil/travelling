@@ -1,13 +1,18 @@
-FROM python:3.12-slim
+FROM registry.cn-hangzhou.aliyuncs.com/alinux/alinux3:latest
+
+COPY .runtime/python3.12 /opt/python3.12
+ENV PATH="/opt/python3.12/bin:${PATH}"
 
 WORKDIR /app
 
 COPY backend /build/backend
-RUN pip install --no-cache-dir /build/backend \
+RUN python3.12 -m pip install --no-cache-dir \
+      --index-url https://mirrors.aliyun.com/pypi/simple/ \
+      /build/backend \
     && rm -rf /build
 
 RUN groupadd --gid 10001 travel \
-    && useradd --uid 10001 --gid travel --create-home --shell /usr/sbin/nologin travel
+    && useradd --uid 10001 --gid travel --create-home --shell /sbin/nologin travel
 
 USER travel
 

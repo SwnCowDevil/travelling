@@ -7,3 +7,5 @@ backend/data
 backend/__pycache__
 backend/**/*.pyc
 miniprogram/node_modules
+.runtime/*
+!.runtime/python3.12
