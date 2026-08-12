@@ -1,14 +1,16 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
 
-test('local authentication can retry after the backend starts', async () => {
+test('trial authentication uses production config and can retry after the backend starts', async () => {
   let definition
   let attempts = 0
   const originalApp = global.App
   const originalWx = global.wx
   global.App = value => { definition = value }
   global.wx = {
+    getAccountInfoSync: () => ({ miniProgram: { envVersion: 'trial' } }),
     getStorageSync: () => '',
+    login: ({ success }) => success({ code: 'wx-code' }),
     setStorageSync() {},
     showToast() {},
     request(options) {
@@ -22,6 +24,8 @@ test('local authentication can retry after the backend starts', async () => {
 
   const app = { globalData: { ...definition.globalData }, ensureAuthenticated: definition.ensureAuthenticated }
   definition.onLaunch.call(app)
+  assert.equal(app.globalData.apiBaseUrl, 'https://api.sunks.cc')
+  assert.equal(app.globalData.useDevAuth, false)
   assert.equal(await app.globalData.authReady, false)
   assert.equal(await definition.ensureAuthenticated.call(app), true)
   assert.equal(attempts, 2)

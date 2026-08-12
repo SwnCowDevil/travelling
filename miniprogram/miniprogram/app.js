@@ -1,22 +1,26 @@
 const { createApiClient } = require('./services/api')
 const { login } = require('./services/auth')
-const localConfig = require('./config/local')
+const { getRuntimeConfig } = require('./config/runtime')
 
 App({
   globalData: {
-    apiBaseUrl: localConfig.apiBaseUrl,
+    apiBaseUrl: '',
+    useDevAuth: false,
     api: null,
     authReady: null
   },
   onLaunch() {
-    this.globalData.api = createApiClient(wx, this.globalData.apiBaseUrl)
+    const runtimeConfig = getRuntimeConfig(wx)
+    this.globalData.apiBaseUrl = runtimeConfig.apiBaseUrl
+    this.globalData.useDevAuth = runtimeConfig.useDevAuth
+    this.globalData.api = createApiClient(wx, runtimeConfig.apiBaseUrl)
     this.ensureAuthenticated()
   },
   ensureAuthenticated() {
-    const attempt = login(wx, this.globalData.api, { useDevAuth: localConfig.useDevAuth })
+    const attempt = login(wx, this.globalData.api, { useDevAuth: this.globalData.useDevAuth })
       .then(() => true)
       .catch(() => {
-        wx.showToast({ title: '本地登录失败', icon: 'none' })
+        wx.showToast({ title: this.globalData.useDevAuth ? '本地登录失败' : '微信登录失败', icon: 'none' })
         return false
       })
     this.globalData.authReady = attempt
