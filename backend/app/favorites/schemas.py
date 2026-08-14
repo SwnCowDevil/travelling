@@ -10,6 +10,7 @@ class FavoriteGuideCreate(BaseModel):
     destination_id: int | None = None
     custom_destination_id: int | None = None
     generation_mode: Literal["fast", "deep"]
+    source: Literal["ai", "rules"]
     payload: GuidePayload
 
     @model_validator(mode="after")
@@ -29,6 +30,8 @@ class FavoriteGuideResponse(BaseModel):
     custom_destination_id: int | None = None
     destination_type: str
     generation_mode: Literal["fast", "deep"]
+    source: Literal["ai", "rules", "unknown"]
+    user_edited: bool
     payload: GuidePayload
     destination_snapshot: dict[str, str] = Field(default_factory=dict)
     created_at: datetime

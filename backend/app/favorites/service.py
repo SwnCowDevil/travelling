@@ -8,7 +8,13 @@ from app.guides.schemas import GuidePayload
 
 
 def save_favorite(
-    session: Session, user_id: int, destination: Destination, payload: GuidePayload, generation_mode: str, destination_type: str = "public"
+    session: Session,
+    user_id: int,
+    destination: Destination,
+    payload: GuidePayload,
+    generation_mode: str,
+    destination_type: str = "public",
+    source: str = "unknown",
 ) -> tuple[FavoriteGuide, bool]:
     target_column = FavoriteGuide.custom_destination_id if destination_type == "custom" else FavoriteGuide.destination_id
     existing = session.scalar(select(FavoriteGuide).where(
@@ -22,6 +28,8 @@ def save_favorite(
         custom_destination_id=destination.id if destination_type == "custom" else None,
         destination_type=destination_type,
         generation_mode=generation_mode,
+        source=source,
+        user_edited=False,
         payload=payload.model_dump(mode="json"),
         destination_snapshot={"name": destination.name, "summary": destination.summary, "emoji": "🏞️"},
     )
@@ -60,6 +68,7 @@ def update_favorite(
         return None
     favorite.payload = payload.model_dump(mode="json")
     favorite.generation_mode = generation_mode
+    favorite.user_edited = True
     session.commit()
     session.refresh(favorite)
     return favorite

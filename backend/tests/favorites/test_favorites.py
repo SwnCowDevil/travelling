@@ -34,18 +34,20 @@ def payload() -> GuidePayload:
 
 def test_save_favorite_is_idempotent_per_user_and_destination(db_session) -> None:
     item = destination(db_session)
-    first, created = save_favorite(db_session, 1, item, payload(), "fast")
-    second, created_again = save_favorite(db_session, 1, item, payload(), "deep")
+    first, created = save_favorite(db_session, 1, item, payload(), "fast", source="ai")
+    second, created_again = save_favorite(db_session, 1, item, payload(), "deep", source="rules")
 
     assert created is True
     assert created_again is False
     assert first.id == second.id
     assert second.generation_mode == "fast"
+    assert second.source == "ai"
+    assert second.user_edited is False
 
 
 def test_update_favorite_changes_only_the_owners_copy(db_session) -> None:
     item = destination(db_session)
-    favorite, _ = save_favorite(db_session, 1, item, payload(), "fast")
+    favorite, _ = save_favorite(db_session, 1, item, payload(), "fast", source="ai")
     changed = payload()
     changed.highlights[0] = "编辑后的断桥玩法"
 
@@ -54,4 +56,17 @@ def test_update_favorite_changes_only_the_owners_copy(db_session) -> None:
 
     assert saved is not None
     assert saved.payload["highlights"][0] == "编辑后的断桥玩法"
+    assert saved.source == "ai"
+    assert saved.user_edited is True
     assert get_favorite(db_session, 2, favorite.id) is None
+
+
+def test_rule_favorite_preserves_rule_source(db_session) -> None:
+    item = destination(db_session)
+
+    favorite, _ = save_favorite(
+        db_session, 1, item, payload(), "fast", source="rules"
+    )
+
+    assert favorite.source == "rules"
+    assert favorite.user_edited is False

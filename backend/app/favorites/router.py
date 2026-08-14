@@ -15,6 +15,7 @@ router = APIRouter(prefix="/favorite-guides", tags=["favorite-guides"])
 def _response(value: FavoriteGuide) -> FavoriteGuideResponse:
     return FavoriteGuideResponse(
         id=value.id, destination_id=value.destination_id, custom_destination_id=value.custom_destination_id, destination_type=value.destination_type, generation_mode=value.generation_mode,
+        source=value.source, user_edited=value.user_edited,
         payload=value.payload, destination_snapshot=value.destination_snapshot,
         created_at=value.created_at, updated_at=value.updated_at,
     )
@@ -25,11 +26,11 @@ def create_favorite(body: FavoriteGuideCreate, user_id: int = Depends(get_curren
     if body.custom_destination_id is not None:
         destination = get_custom_destination(session, user_id, body.custom_destination_id)
         if destination is None: raise HTTPException(404, detail={"code": "CUSTOM_DESTINATION_NOT_FOUND"})
-        favorite, _created = save_favorite(session, user_id, destination, body.payload, body.generation_mode, destination_type="custom")
+        favorite, _created = save_favorite(session, user_id, destination, body.payload, body.generation_mode, destination_type="custom", source=body.source)
     else:
         destination = session.get(Destination, body.destination_id)
         if destination is None: raise HTTPException(404, detail={"code": "DESTINATION_NOT_FOUND"})
-        favorite, _created = save_favorite(session, user_id, destination, body.payload, body.generation_mode)
+        favorite, _created = save_favorite(session, user_id, destination, body.payload, body.generation_mode, source=body.source)
     return _response(favorite)
 
 

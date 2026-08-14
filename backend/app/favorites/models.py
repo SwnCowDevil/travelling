@@ -17,6 +17,8 @@ class FavoriteGuide(Base):
     custom_destination_id: Mapped[int | None] = mapped_column(ForeignKey("custom_destinations.id", ondelete="CASCADE"), nullable=True, index=True)
     destination_type: Mapped[str] = mapped_column(String(10), default="public")
     generation_mode: Mapped[str] = mapped_column(String(10))
+    source: Mapped[str] = mapped_column(String(10), default="unknown")
+    user_edited: Mapped[bool] = mapped_column(default=False)
     payload: Mapped[dict[str, Any]] = mapped_column(JSON)
     destination_snapshot: Mapped[dict[str, Any]] = mapped_column(JSON)
     created_at: Mapped[datetime] = mapped_column(DateTime(), server_default=func.now())
