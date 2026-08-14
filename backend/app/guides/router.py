@@ -103,6 +103,7 @@ def _guide_prompt(mode: str) -> str:
             "transport、weather 是非空字符串数组；packing 必须8至14项，cautions 和 highlights 各5至8项。"
             "foods 必须4至6个对象，每个含 name、description、area、average_price。"
             "itinerary 必须正好等于用户 days 天，从 day=1 连续编号；每项含 day、theme、morning、afternoon、evening、transport、caution。"
+            "theme、morning、afternoon、evening、transport、caution 都必须是字符串，不能是数组或对象。"
             "行程写真实点位和顺路安排，美食必须是真实当地美食。"
             "避免编造精确票价和开放时间，信息不确定时提示用户以官方渠道为准。"
         )
@@ -115,8 +116,9 @@ def _guide_prompt(mode: str) -> str:
                 "foods 为4至6个对象，每个严格包含 name、description、area、average_price，"
                 "必须是真实当地美食，不可使用占位名称；"
                 "itinerary 的天数必须与用户 days 完全一致，day 从1连续编号，每天严格包含"
-                "day、theme、morning、afternoon、evening、transport、caution。早中晚写真实点位、"
-                "建议时长、顺序和衔接，路线应可执行。不要编造精确票价、开放时间或临时政策，"
+                "day、theme、morning、afternoon、evening、transport、caution。"
+                "theme、morning、afternoon、evening、transport、caution 都必须是字符串，不能是数组或对象。"
+                "早中晚写真实点位、建议时长、顺序和衔接，路线应可执行。不要编造精确票价、开放时间或临时政策，"
                 "不确定的信息提醒用户出发前以官方信息为准。"
     )
 

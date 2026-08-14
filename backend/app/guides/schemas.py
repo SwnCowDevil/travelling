@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class GuideGenerationRequest(BaseModel):
@@ -27,6 +27,17 @@ class ItineraryDay(BaseModel):
     evening: str = Field(min_length=1, max_length=500)
     transport: str = Field(min_length=1, max_length=300)
     caution: str = Field(min_length=1, max_length=300)
+
+    @field_validator("transport", mode="before")
+    @classmethod
+    def normalize_transport_string_list(cls, value: object) -> object:
+        if (
+            isinstance(value, list)
+            and value
+            and all(isinstance(item, str) and item.strip() for item in value)
+        ):
+            return "；".join(item.strip() for item in value)
+        return value
 
 
 class GuidePayload(BaseModel):

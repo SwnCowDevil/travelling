@@ -11,7 +11,7 @@ from app.guides.schemas import (
     ItineraryDay,
 )
 from app.guides.service import GuideGenerationError, GuideService
-from app.guides.router import build_guide_client, guide_timeout_seconds
+from app.guides.router import _guide_prompt, build_guide_client, guide_timeout_seconds
 
 
 def seed_destination(db_session) -> Destination:
@@ -75,6 +75,25 @@ def test_guide_payload_rejects_non_consecutive_days() -> None:
     value["itinerary"][1]["day"] = 1
     with pytest.raises(ValidationError):
         GuidePayload.model_validate(value)
+
+
+def test_guide_payload_normalizes_daily_transport_string_list() -> None:
+    value = ai_payload().model_dump()
+    value["itinerary"][0]["transport"] = ["高铁", "景区公交"]
+
+    payload = GuidePayload.model_validate(value)
+
+    assert payload.itinerary[0].transport == "高铁；景区公交"
+
+
+@pytest.mark.parametrize("mode", ["fast", "deep"])
+def test_guide_prompt_requires_daily_itinerary_text_fields(mode: str) -> None:
+    prompt = _guide_prompt(mode)
+
+    assert (
+        "theme、morning、afternoon、evening、transport、caution 都必须是字符串，不能是数组或对象"
+        in prompt
+    )
 
 
 def test_personal_profile_timeout_is_extended_only_for_guides() -> None:
