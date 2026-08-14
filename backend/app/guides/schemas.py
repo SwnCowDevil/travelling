@@ -62,6 +62,33 @@ class GuidePayload(BaseModel):
     foods: list[FoodRecommendation] = Field(min_length=4, max_length=6)
     itinerary: list[ItineraryDay] = Field(min_length=1, max_length=7)
 
+    @field_validator("highlights", mode="before")
+    @classmethod
+    def normalize_highlight_objects(cls, value: object) -> object:
+        if not isinstance(value, list):
+            return value
+        normalized: list[object] = []
+        for item in value:
+            if not isinstance(item, dict):
+                normalized.append(item)
+                continue
+            name = item.get("name") or item.get("名称")
+            reason = (
+                item.get("reason")
+                or item.get("description")
+                or item.get("推荐理由")
+                or item.get("推荐原因")
+            )
+            if not (
+                isinstance(name, str)
+                and name.strip()
+                and isinstance(reason, str)
+                and reason.strip()
+            ):
+                return value
+            normalized.append(f"{name.strip()}：{reason.strip()}")
+        return normalized
+
     @model_validator(mode="after")
     def require_consecutive_itinerary_days(self) -> "GuidePayload":
         days = [item.day for item in self.itinerary]

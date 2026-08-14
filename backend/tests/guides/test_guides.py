@@ -95,12 +95,25 @@ def test_guide_payload_normalizes_numeric_food_average_price() -> None:
     assert payload.foods[0].average_price == "约20元/人"
 
 
+def test_guide_payload_normalizes_deep_highlight_object() -> None:
+    value = ai_payload().model_dump()
+    value["highlights"][0] = {
+        "名称": "圣母殿",
+        "推荐理由": "北宋木构建筑，也是晋祠核心看点",
+    }
+
+    payload = GuidePayload.model_validate(value)
+
+    assert payload.highlights[0] == "圣母殿：北宋木构建筑，也是晋祠核心看点"
+
+
 @pytest.mark.parametrize("mode", ["fast", "deep"])
 def test_guide_prompt_requires_daily_itinerary_text_fields(mode: str) -> None:
     prompt = _guide_prompt(mode)
 
     assert "JSON 顶层必须包含且不得遗漏 transport、weather、packing、cautions、highlights、foods、itinerary" in prompt
     assert "average_price 必须是带货币单位的字符串" in prompt
+    assert "highlights 每项必须是“景点或玩法名称：推荐理由”的单个字符串，不能是对象" in prompt
     assert (
         "theme、morning、afternoon、evening、transport、caution 都必须是字符串，不能是数组或对象"
         in prompt

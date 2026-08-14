@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Prevent valid DeepSeek guides from failing when daily transport or food prices use common alternate JSON types.
+**Goal:** Prevent valid DeepSeek guides from failing when daily transport, food prices, or deep-mode highlights use common alternate JSON types.
 
-**Architecture:** Normalize known provider variations at the relevant Pydantic schema boundaries while retaining all existing length and structure validation. Strengthen both guide prompts so the model is explicitly asked for all required top-level keys and string-valued itinerary and price fields.
+**Architecture:** Normalize known provider variations at the relevant Pydantic schema boundaries while retaining all existing length and structure validation. Strengthen both guide prompts so the model is explicitly asked for all required top-level keys and string-valued itinerary, highlight, and price fields.
 
 **Tech Stack:** Python 3.12, FastAPI, Pydantic 2, pytest
 
@@ -13,6 +13,7 @@
 - Top-level `GuidePayload.transport` remains `list[str]`.
 - Only a non-empty `list[str]` is normalized for `ItineraryDay.transport`.
 - Only a non-negative finite number is normalized for `FoodRecommendation.average_price`.
+- Only a highlight object with a non-empty name and recommendation reason is normalized.
 - Other invalid values continue to raise Pydantic validation errors.
 - No frontend or database migration changes.
 
@@ -29,11 +30,11 @@
 
 - [ ] **Step 1: Write a failing schema test**
 
-Add tests that normalize `["高铁", "景区公交"]` to `"高铁；景区公交"` and numeric price `20` to `"约20元/人"`.
+Add tests that normalize `["高铁", "景区公交"]` to `"高铁；景区公交"`, numeric price `20` to `"约20元/人"`, and a named highlight object to a single “名称：理由” string.
 
 - [ ] **Step 2: Write a failing prompt test**
 
-Assert that both fast and deep prompts list all required top-level keys and state that daily itinerary text fields and `average_price` must be strings.
+Assert that both fast and deep prompts list all required top-level keys and state that daily itinerary fields, highlights, and `average_price` must be strings.
 
 - [ ] **Step 3: Verify RED**
 
@@ -52,11 +53,11 @@ Expected: the transport-array test fails with a Pydantic string-type validation 
 
 - [ ] **Step 1: Add a pre-validation normalizer**
 
-Use Pydantic `field_validator`s that join a valid daily transport string list with `；` and convert a finite non-negative numeric average price to a display string; return all other values unchanged so existing validation rejects them.
+Use Pydantic `field_validator`s that join a valid daily transport string list with `；`, convert a finite non-negative numeric average price to a display string, and combine a valid highlight name and reason; return invalid values unchanged so existing validation rejects them.
 
 - [ ] **Step 2: Strengthen both prompts**
 
-List every required top-level field, state that `theme`, `morning`, `afternoon`, `evening`, `transport`, and `caution` must each be a string, and require a unit-bearing string for `average_price`.
+List every required top-level field, state that `theme`, `morning`, `afternoon`, `evening`, `transport`, and `caution` must each be a string, require string highlights rather than objects, and require a unit-bearing string for `average_price`.
 
 - [ ] **Step 3: Verify GREEN**
 
