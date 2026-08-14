@@ -208,3 +208,43 @@ test('late automatic location cannot overwrite a manual origin', async () => {
   global.Page = originalPage
   global.wx = originalWx
 })
+
+test('recommend and next keep AI and rule notices mutually exclusive', async () => {
+  let definition
+  const originalPage = global.Page
+  const originalWx = global.wx
+  const originalGetApp = global.getApp
+  const responses = [
+    { items: [{ code: 'ai' }], session_id: 9, has_more: true, source: 'ai' },
+    { items: [{ code: 'rules' }], has_more: false, source: 'rules' }
+  ]
+  global.Page = value => { definition = value }
+  global.wx = { showToast() {} }
+  global.getApp = () => ({ globalData: {
+    authReady: Promise.resolve(true),
+    api: { request: async () => responses.shift() }
+  } })
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+
+  const page = {
+    data: {
+      ...definition.data,
+      origin: { name: '北京', latitude: 39.9, longitude: 116.4 },
+      filters: defaultFilters(new Date('2026-08-07'))
+    },
+    setData(value) { Object.assign(this.data, value) },
+    closeFilters: definition.closeFilters
+  }
+
+  await definition.recommend.call(page)
+  assert.equal(page.data.aiGenerated, true)
+  assert.equal(page.data.fallback, false)
+  await definition.next.call(page)
+  assert.equal(page.data.aiGenerated, false)
+  assert.equal(page.data.fallback, true)
+
+  global.Page = originalPage
+  global.wx = originalWx
+  global.getApp = originalGetApp
+})

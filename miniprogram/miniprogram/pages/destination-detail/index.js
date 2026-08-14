@@ -42,7 +42,8 @@ Page({
     this.setData({savingFavorite:true})
     try{
       const target=this.guideContext.isCustom?{custom_destination_id:Number(this.guideContext.id)}:{destination_id:Number(this.guideContext.id)}
-      const favorite=await this.guideContext.api.request({method:'POST',path:'/favorite-guides',data:{...target,generation_mode:this.data.generationMode,payload:this.guideResponse.payload}})
+      const source=this.guideResponse.source==='ai'?'ai':'rules'
+      const favorite=await this.guideContext.api.request({method:'POST',path:'/favorite-guides',data:{...target,generation_mode:this.data.generationMode,source,payload:this.guideResponse.payload}})
       this.setData({favoriteId:favorite.id})
       wx.showToast({title:'攻略已收藏'})
     }catch(error){

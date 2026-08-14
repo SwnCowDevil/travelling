@@ -22,6 +22,9 @@ test('recommend page contains the complete v4 structure', () => {
   assert.match(wxml, /origin\.name/)
   assert.match(wxml, /正在识别地点/)
   assert.match(wxml, /AI 未参与，已使用可靠规则推荐/)
+  assert.match(wxml, /AI 生成建议/)
+  assert.match(wxml, /行程与实时信息请核验/)
+  assert.match(wxml, /wx:if="\{\{aiGenerated\}\}"/)
   assert.doesNotMatch(wxml, /<origin-picker/)
 })
 
@@ -31,6 +34,7 @@ test('recommend page uses v4 color tokens and supported animations', () => {
   assert.match(wxss, /#ff9f43/i)
   assert.match(wxss, /@keyframes/)
   assert.doesNotMatch(wxss, /prefers-reduced-motion/)
+  assert.match(wxss, /\.ai-notice/)
 })
 
 test('recommend entry cards share a white card treatment and compact loading state', () => {

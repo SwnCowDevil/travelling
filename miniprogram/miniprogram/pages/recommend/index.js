@@ -32,6 +32,7 @@ Page({
     sessionId: null,
     hasMore: false,
     fallback: false,
+    aiGenerated: false,
     pendingRecommend: false,
     resolvingOrigin: false, customKeyword:'', customCandidates:[], searchingCustom:false, customSearchMessage:''
   },
@@ -166,7 +167,8 @@ Page({
         items: data.items,
         sessionId: data.session_id,
         hasMore: Boolean(data.has_more),
-        fallback: data.source === 'rules'
+        fallback: data.source === 'rules',
+        aiGenerated: data.source === 'ai'
       })
     } catch (error) {
       wx.showToast({ title: error.message || '推荐请求失败', icon: 'none' })
@@ -183,7 +185,7 @@ Page({
         method: 'POST',
         path: `/recommendations/${this.data.sessionId}/next`
       })
-      this.setData({ items: data.items, hasMore: Boolean(data.has_more), fallback: data.source === 'rules' })
+      this.setData({ items: data.items, hasMore: Boolean(data.has_more), fallback: data.source === 'rules', aiGenerated: data.source === 'ai' })
     } catch (error) {
       wx.showToast({ title: error.message || '换一批失败', icon: 'none' })
     } finally {

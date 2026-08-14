@@ -7,6 +7,7 @@
   <block wx:else>
     <view class="hero"><text class="emoji">{{view.emoji}}</text><text class="title">{{view.name}}</text><text class="summary">{{view.summary}}</text><text class="rating">{{view.ratingText}} 推荐指数</text></view>
     <view class="meta"><view><text>最佳季节</text><text class="bold">{{view.bestSeason}}</text></view><view><text>建议天数</text><text class="bold">{{view.daysText}}</text></view><view><text>人均预算</text><text class="bold">{{view.budgetText}}</text></view><view><text>来源</text><text class="bold green">{{view.guideSourceLabel}}</text></view></view>
+    <view class="source-notice {{view.isAIGenerated?'is-ai':'is-rules'}}">{{view.sourceNotice}}</view>
     <view class="regenerate-card">
       <view><text class="regenerate-title">{{generationMode==='fast'?'快速 AI 攻略':'深度 AI 攻略'}}</text><text class="regenerate-desc">快速模式更快；深度模式更完整，约 1 分钟</text></view>
       <loading-stage wx:if="{{regenerating}}" compact="{{true}}" text="{{generationMode==='deep'?'正在深度生成攻略…':'正在快速生成攻略…'}}"/>

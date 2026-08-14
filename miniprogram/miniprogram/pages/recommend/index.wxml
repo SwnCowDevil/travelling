@@ -75,6 +75,7 @@
 
   <view id="recommend-results" class="recommend-results">
     <view class="results-title"><text>为你推荐</text><text class="results-basis">· 基于 {{filters.month}}月 / {{origin.name || '未选出发地'}}</text></view>
+    <view wx:if="{{aiGenerated}}" class="ai-notice"><text class="notice-title">AI 生成建议</text><text class="notice-copy">行程与实时信息请核验</text></view>
     <view wx:if="{{fallback}}" class="fallback-notice">AI 未参与，已使用可靠规则推荐</view>
     <loading-stage wx:if="{{loading}}" text="{{stage}}"/>
     <view wx:if="{{loading}}" class="skeleton-list"><view class="skeleton-card"></view><view class="skeleton-card"></view><view class="skeleton-card"></view></view>

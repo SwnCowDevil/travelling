@@ -12,6 +12,15 @@ test('structured guide renders foods and exact daily itinerary without object st
   )
   assert.equal(view.foods[0].averagePrice,'约80元/人')
   assert.equal(view.itinerary[0].morning,'抵达')
-  assert.equal(view.guideSourceLabel,'AI 攻略')
+  assert.equal(view.guideSourceLabel,'AI 生成')
+  assert.equal(view.isAIGenerated,true)
+  assert.equal(view.sourceNotice,'AI 生成内容｜景区开放、票价、交通和天气请以官方信息为准')
   assert.ok(!JSON.stringify(view).includes('[object Object]'))
+})
+
+test('rule guide is never labeled as AI generated',()=>{
+  const view=buildDetailView({name:'测试目的地'},{},{source:'rules',payload:{}},{days:2})
+  assert.equal(view.guideSourceLabel,'规则参考')
+  assert.equal(view.isAIGenerated,false)
+  assert.equal(view.sourceNotice,'规则参考内容｜AI 未参与')
 })

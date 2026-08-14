@@ -1,5 +1,13 @@
 const test=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path')
 const dir=path.join(__dirname,'../../miniprogram/pages/favorite-guide-detail')
+const {favoriteSourceLabel}=require('../../miniprogram/utils/guide-source')
 test('favorite detail exposes edit save and delete controls',()=>{const w=fs.readFileSync(path.join(dir,'index.wxml'),'utf8');for(const text of ['编辑攻略','保存修改','删除收藏','当地美食','按天攻略'])assert.match(w,new RegExp(text));assert.match(w,/bindtap="save"/)})
 test('favorite detail uses compact fox loading and keeps native save loading',()=>{const config=JSON.parse(fs.readFileSync(path.join(dir,'index.json'),'utf8'));const w=fs.readFileSync(path.join(dir,'index.wxml'),'utf8');assert.equal(config.usingComponents&&config.usingComponents['loading-stage'],'/components/loading-stage/index');assert.match(w,/<loading-stage wx:if="\{\{loading\}\}" compact="\{\{true\}\}" text="正在加载攻略详情…"\/>/);assert.match(w,/loading="\{\{saving\}\}"/);assert.match(w,/wx:elif="\{\{error\}\}"/)})
 test('favorite guide actions use rectangular two-column primary and danger styles',()=>{const css=fs.readFileSync(path.join(dir,'index.wxss'),'utf8');assert.match(css,/\.actions\{[^}]*display:flex/);assert.match(css,/\.actions button\{[^}]*height:76rpx/);assert.match(css,/\.actions button\{[^}]*flex:1/);assert.match(css,/\.actions \.danger\{[^}]*border:2rpx solid #d76060/)})
+test('favorite source labels preserve AI provenance and edit state',()=>{
+  assert.equal(favoriteSourceLabel('ai',false),'AI 生成')
+  assert.equal(favoriteSourceLabel('ai',true),'AI 生成 · 已编辑')
+  assert.equal(favoriteSourceLabel('rules',true),'规则参考')
+  assert.equal(favoriteSourceLabel('unknown',false),'历史收藏 · 来源未标记')
+})
+test('favorite detail renders a persistent source disclosure',()=>{const w=fs.readFileSync(path.join(dir,'index.wxml'),'utf8');assert.match(w,/sourceLabel/);assert.match(w,/source-notice/)})
