@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     jwt_secret: str = LOCAL_JWT_SECRET
     wechat_app_id: str = ""
     wechat_app_secret: str = ""
-    ai_base_url: str = "https://www.packyapi.ai/v1"
+    ai_base_url: str = "https://api.deepseek.com"
     ai_model: str = "deepseek-v4-pro"
     ai_fast_model: str = "deepseek-v4-flash"
     ai_api_key: str | None = None

@@ -15,7 +15,7 @@ from app.guides.schemas import (
 )
 
 GuideGenerator = Callable[..., Awaitable[GuidePayload]]
-GUIDE_CONTENT_VERSION = "rich-v2"
+GUIDE_CONTENT_VERSION = "rich-v3-deepseek-policy"
 
 
 class GuideGenerationError(RuntimeError):

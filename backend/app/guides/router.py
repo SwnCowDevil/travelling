@@ -3,6 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.ai.client import AIClient
+from app.ai.policy import request_policy
 from app.ai.crypto import TokenCipher
 from app.ai.models import AIProfile
 from app.ai.router import get_current_user_id
@@ -30,6 +31,26 @@ def guide_model_for_mode(profile: AIProfile | None, mode: str) -> str:
     return profile.model if profile is not None else settings.ai_model
 
 
+def build_guide_client(
+    base_url: str,
+    token: str,
+    model: str,
+    timeout_seconds: int,
+    mode: str,
+) -> AIClient:
+    policy = request_policy(
+        base_url, "guide_fast" if mode == "fast" else "guide_deep"
+    )
+    return AIClient(
+        base_url,
+        token,
+        model,
+        timeout_seconds=timeout_seconds,
+        thinking_enabled=policy.thinking_enabled,
+        max_tokens=policy.max_tokens,
+    )
+
+
 def get_guide_service(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_db),
@@ -53,11 +74,12 @@ def get_guide_service(
         return GuideService()
 
     async def generate(*, destination: Destination, request: GuideGenerationRequest) -> GuidePayload:
-        client = AIClient(
+        client = build_guide_client(
             base_url,
             token,
             guide_model_for_mode(profile, request.generation_mode),
-            timeout_seconds=guide_timeout_seconds(profile, request.generation_mode),
+            guide_timeout_seconds(profile, request.generation_mode),
+            request.generation_mode,
         )
         payload = await client.complete_json(
             _guide_prompt(request.generation_mode),

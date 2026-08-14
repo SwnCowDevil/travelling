@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.ai.client import AIClient
+from app.ai.policy import request_policy
 from app.ai.crypto import TokenCipher
 from app.ai.models import AIProfile
 from app.ai.router import get_current_user_id
@@ -24,6 +25,20 @@ from app.recommendations.service import (
 router = APIRouter(prefix="/recommendations", tags=["recommendations"])
 
 
+def build_rerank_client(
+    base_url: str, token: str, model: str, timeout_seconds: int = 20
+) -> AIClient:
+    policy = request_policy(base_url, "rerank")
+    return AIClient(
+        base_url,
+        token,
+        model,
+        timeout_seconds=timeout_seconds,
+        thinking_enabled=policy.thinking_enabled,
+        max_tokens=policy.max_tokens,
+    )
+
+
 def get_reranker(
     user_id: int = Depends(get_current_user_id),
     session: Session = Depends(get_db),
@@ -38,16 +53,18 @@ def get_reranker(
             )
         except Exception:
             return None
-        client = AIClient(
+        client = build_rerank_client(
             profile.base_url,
             token,
             profile.model,
-            timeout_seconds=profile.timeout_seconds,
+            profile.timeout_seconds,
         )
         return client.rerank
     if not settings.ai_api_key:
         return None
-    return AIClient(settings.ai_base_url, settings.ai_api_key, settings.ai_model).rerank
+    return build_rerank_client(
+        settings.ai_base_url, settings.ai_api_key, settings.ai_model
+    ).rerank
 
 
 @router.post("", response_model=RecommendationResponse, status_code=status.HTTP_201_CREATED)

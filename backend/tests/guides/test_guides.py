@@ -11,7 +11,7 @@ from app.guides.schemas import (
     ItineraryDay,
 )
 from app.guides.service import GuideGenerationError, GuideService
-from app.guides.router import guide_timeout_seconds
+from app.guides.router import build_guide_client, guide_timeout_seconds
 
 
 def seed_destination(db_session) -> Destination:
@@ -79,6 +79,18 @@ def test_guide_payload_rejects_non_consecutive_days() -> None:
 
 def test_personal_profile_timeout_is_extended_only_for_guides() -> None:
     assert guide_timeout_seconds(SimpleNamespace(timeout_seconds=20)) == 90
+
+
+def test_official_deepseek_guide_clients_split_fast_and_deep() -> None:
+    fast = build_guide_client(
+        "https://api.deepseek.com", "sk-test", "deepseek-v4-flash", 45, "fast"
+    )
+    deep = build_guide_client(
+        "https://api.deepseek.com", "sk-test", "deepseek-v4-pro", 90, "deep"
+    )
+
+    assert (fast.thinking_enabled, fast.max_tokens) == (False, 6000)
+    assert (deep.thinking_enabled, deep.max_tokens) == (True, 12000)
 
 
 @pytest.mark.asyncio
