@@ -50,3 +50,19 @@
 - 推荐结果、目的地详情和收藏攻略已按真实来源显示“AI 生成”或“规则参考”；用户编辑 AI 攻略后显示“AI 生成 · 已编辑”。
 - 正式上线前，向 DeepSeek 或实际模型服务商获取需展示的模型备案号/上线编号，并根据小程序实际服务形式核对是否需要履行生成式 AI 应用登记。
 - 该清单是产品与技术核对材料，不替代法律意见或微信审核结论。
+
+## 七、DeepSeek 官方 Key 安全配置
+
+不要把 Key 发到聊天、提交到 Git 或写进小程序前端。使用项目脚本在终端中隐藏输入：
+
+```bash
+# 本地
+./scripts/configure-deepseek.sh backend/.env
+
+# 服务器（代码已同步到 /opt/travelling 后）
+/opt/travelling/scripts/configure-deepseek.sh /etc/travelling/travel-api.env
+/opt/travelling/scripts/restart-backend.sh
+curl -fsS http://127.0.0.1:8000/health
+```
+
+脚本会先备份原配置，再写入官方地址、Pro/Flash 模型和 Key，验证输出不显示 Key 原文。
