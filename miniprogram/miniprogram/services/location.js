@@ -1,9 +1,10 @@
 const ORIGIN_KEY = 'travel_recent_origin'
+const { ensurePrivacyAuthorized } = require('./privacy')
 
 function classifyLocationFailure(error = {}) {
   const message = String(error.errMsg || error.message || '').toLowerCase()
   if (message.includes('cancel')) return 'cancel'
-  if (message.includes('auth deny') || message.includes('authorize') || message.includes('permission')) return 'permission'
+  if (message.includes('auth deny') || message.includes('privacy deny') || message.includes('authorize') || message.includes('permission')) return 'permission'
   return 'unavailable'
 }
 
@@ -51,8 +52,22 @@ async function resolveSelectedOrigin(api, selected) {
 }
 
 function createLocationService(wxApi) {
+  function savedOrManualOrigin() {
+    const saved = wxApi.getStorageSync && wxApi.getStorageSync(ORIGIN_KEY)
+    if (!saved) return { type: 'manual_required' }
+    const repaired = {
+      ...saved,
+      name: manualOriginName(saved.name, saved.address, saved.latitude, saved.longitude)
+    }
+    if (repaired.name !== saved.name && wxApi.setStorageSync) {
+      wxApi.setStorageSync(ORIGIN_KEY, repaired)
+    }
+    return repaired
+  }
+
   return {
-    resolveOrigin() {
+    async resolveOrigin() {
+      if (!await ensurePrivacyAuthorized(wxApi)) return savedOrManualOrigin()
       return new Promise(resolve => {
         wxApi.getLocation({
           type: 'gcj02',
@@ -60,24 +75,15 @@ function createLocationService(wxApi) {
             type: 'gps', name: '当前位置', latitude, longitude
           }),
           fail: () => {
-            const saved = wxApi.getStorageSync(ORIGIN_KEY)
-            if (!saved) {
-              resolve({ type: 'manual_required' })
-              return
-            }
-            const repaired = {
-              ...saved,
-              name: manualOriginName(saved.name, saved.address, saved.latitude, saved.longitude)
-            }
-            if (repaired.name !== saved.name && wxApi.setStorageSync) {
-              wxApi.setStorageSync(ORIGIN_KEY, repaired)
-            }
-            resolve(repaired)
+            resolve(savedOrManualOrigin())
           }
         })
       })
     },
-    chooseManualOrigin() {
+    async chooseManualOrigin() {
+      if (!await ensurePrivacyAuthorized(wxApi)) {
+        throw { errMsg: 'chooseLocation:fail privacy deny' }
+      }
       return new Promise((resolve, reject) => {
         wxApi.chooseLocation({
           success: ({ name, address, latitude, longitude }) => {

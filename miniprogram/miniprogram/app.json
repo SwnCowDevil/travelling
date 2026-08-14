@@ -21,6 +21,7 @@
     }
   },
   "requiredPrivateInfos": ["getLocation", "chooseLocation"],
+  "__usePrivacyCheck__": true,
   "tabBar": {
     "color": "#708078",
     "selectedColor": "#16845B",

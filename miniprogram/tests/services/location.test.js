@@ -106,3 +106,42 @@ test('legacy saved origin with an empty name is repaired when reused', async () 
   assert.equal(result.name, '地图选点 39.9219, 116.4436')
   assert.deepEqual(repaired, result)
 })
+
+test('denied privacy authorization never invokes getLocation', async () => {
+  let locationCalls = 0
+  const wx = {
+    getPrivacySetting: options => options.success({ needAuthorization: true }),
+    requirePrivacyAuthorize: options => options.fail({ errMsg: 'privacy deny' }),
+    getStorageSync: () => null,
+    getLocation: () => { locationCalls += 1 }
+  }
+  const result = await createLocationService(wx).resolveOrigin()
+  assert.deepEqual(result, { type: 'manual_required' })
+  assert.equal(locationCalls, 0)
+})
+
+test('authorized privacy flow invokes getLocation exactly once', async () => {
+  let locationCalls = 0
+  const wx = {
+    getPrivacySetting: options => options.success({ needAuthorization: true }),
+    requirePrivacyAuthorize: options => options.success(),
+    getLocation: options => { locationCalls += 1; options.success({ latitude: 30, longitude: 120 }) }
+  }
+  const result = await createLocationService(wx).resolveOrigin()
+  assert.equal(result.type, 'gps')
+  assert.equal(locationCalls, 1)
+})
+
+test('denied privacy authorization never invokes chooseLocation', async () => {
+  let chooseCalls = 0
+  const wx = {
+    getPrivacySetting: options => options.success({ needAuthorization: true }),
+    requirePrivacyAuthorize: options => options.fail({ errMsg: 'privacy deny' }),
+    chooseLocation: () => { chooseCalls += 1 }
+  }
+  await assert.rejects(
+    createLocationService(wx).chooseManualOrigin(),
+    error => /privacy deny/.test(error.errMsg)
+  )
+  assert.equal(chooseCalls, 0)
+})
