@@ -105,3 +105,51 @@ async def test_rerank_rejects_unknown_destination_id() -> None:
         client = AIClient("https://provider.example/v1", "sk-test", "model", http=http)
         with pytest.raises(InvalidAIResponse):
             await client.rerank(rerank_request())
+
+
+@pytest.mark.asyncio
+async def test_client_sends_configured_thinking_and_max_tokens() -> None:
+    seen: dict = {}
+
+    async def handler(request: httpx.Request) -> httpx.Response:
+        seen.update(json.loads(request.content))
+        return httpx.Response(
+            200, json={"choices": [{"message": {"content": "{}"}}]}
+        )
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+        await AIClient(
+            "https://api.deepseek.com",
+            "sk-test",
+            "deepseek-v4-flash",
+            thinking_enabled=False,
+            max_tokens=6000,
+            http=http,
+        ).complete_json("system", "user")
+
+    assert seen["thinking"] == {"type": "disabled"}
+    assert seen["max_tokens"] == 6000
+
+
+@pytest.mark.asyncio
+async def test_client_omits_thinking_when_policy_is_none() -> None:
+    seen: dict = {}
+
+    async def handler(request: httpx.Request) -> httpx.Response:
+        seen.update(json.loads(request.content))
+        return httpx.Response(
+            200, json={"choices": [{"message": {"content": "{}"}}]}
+        )
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+        await AIClient(
+            "https://provider.example/v1",
+            "sk-test",
+            "model",
+            thinking_enabled=None,
+            max_tokens=6000,
+            http=http,
+        ).complete_json("system", "user")
+
+    assert "thinking" not in seen
+    assert seen["max_tokens"] == 6000

@@ -20,12 +20,16 @@ class AIClient:
         model: str,
         *,
         timeout_seconds: int = 20,
+        thinking_enabled: bool | None = None,
+        max_tokens: int | None = None,
         http: httpx.AsyncClient | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.api_key = api_key
         self.model = model
         self.timeout_seconds = timeout_seconds
+        self.thinking_enabled = thinking_enabled
+        self.max_tokens = max_tokens
         self._http = http
 
     async def rerank(self, request: RerankRequest) -> RerankResult:
@@ -43,7 +47,7 @@ class AIClient:
                 {"role": "user", "content": request.model_dump_json()},
             ],
         }
-        response = await self._post(payload)
+        response = await self._post(self._apply_generation_options(payload))
         try:
             content = response["choices"][0]["message"]["content"]
             result = RerankResult.model_validate(json.loads(content))
@@ -63,14 +67,14 @@ class AIClient:
         await self._post(payload)
 
     async def complete_json(self, system_prompt: str, user_payload: str) -> dict[str, Any]:
-        response = await self._post({
+        response = await self._post(self._apply_generation_options({
             "model": self.model,
             "response_format": {"type": "json_object"},
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_payload},
             ],
-        })
+        }))
         try:
             content = response["choices"][0]["message"]["content"]
             value = json.loads(content)
@@ -79,6 +83,16 @@ class AIClient:
         if not isinstance(value, dict):
             raise InvalidAIResponse("AI JSON root must be an object")
         return value
+
+    def _apply_generation_options(self, payload: dict[str, Any]) -> dict[str, Any]:
+        configured = dict(payload)
+        if self.max_tokens is not None:
+            configured["max_tokens"] = self.max_tokens
+        if self.thinking_enabled is not None:
+            configured["thinking"] = {
+                "type": "enabled" if self.thinking_enabled else "disabled"
+            }
+        return configured
 
     async def _post(self, payload: dict[str, Any]) -> dict[str, Any]:
         headers = {"Authorization": f"Bearer {self.api_key}"}
