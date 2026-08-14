@@ -1,5 +1,7 @@
 .DS_Store
 .env
+.env.before-deepseek-*
+.travel-api-env.*
 *.sqlite3
 *.db
 __pycache__/

@@ -109,6 +109,11 @@ Page({
         this.onOriginCancel()
         return
       }
+      if (reason === 'privacy') {
+        wx.showToast({ title: '请同意隐私保护指引后再选择地点', icon: 'none' })
+        this.onOriginCancel()
+        return
+      }
       if (reason === 'permission') {
         const confirmed = await new Promise(resolve => {
           wx.showModal({

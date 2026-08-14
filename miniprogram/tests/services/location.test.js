@@ -10,6 +10,7 @@ const {
 test('location failures distinguish cancellation from permission denial', () => {
   assert.equal(classifyLocationFailure({ errMsg: 'chooseLocation:fail cancel' }), 'cancel')
   assert.equal(classifyLocationFailure({ errMsg: 'getLocation:fail auth deny' }), 'permission')
+  assert.equal(classifyLocationFailure({ errMsg: 'chooseLocation:fail privacy deny' }), 'privacy')
   assert.equal(classifyLocationFailure({ errMsg: 'chooseLocation:fail system error' }), 'unavailable')
 })
 

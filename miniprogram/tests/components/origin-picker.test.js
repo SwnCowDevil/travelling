@@ -71,3 +71,31 @@ test('permission denial offers to open settings', async () => {
   global.Component = originalComponent
   global.wx = originalWx
 })
+
+test('privacy denial explains the retry without opening system settings', async () => {
+  let definition
+  let toast
+  let opened = false
+  let event
+  const originalComponent = global.Component
+  const originalWx = global.wx
+  global.Component = value => { definition = value }
+  global.wx = {
+    getPrivacySetting: options => options.success({ needAuthorization: true }),
+    requirePrivacyAuthorize: options => options.fail({ errMsg: 'privacy deny' }),
+    chooseLocation: () => { throw new Error('must not call chooseLocation') },
+    showToast: options => { toast = options },
+    showModal() { throw new Error('must not show permission modal') },
+    openSetting: () => { opened = true }
+  }
+  delete require.cache[require.resolve('../../miniprogram/components/origin-picker/index')]
+  require('../../miniprogram/components/origin-picker/index')
+
+  await definition.methods.choose.call({ triggerEvent: name => { event = name } })
+
+  assert.match(toast.title, /隐私保护/)
+  assert.equal(opened, false)
+  assert.equal(event, 'cancel')
+  global.Component = originalComponent
+  global.wx = originalWx
+})

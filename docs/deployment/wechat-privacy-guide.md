@@ -65,4 +65,4 @@
 curl -fsS http://127.0.0.1:8000/health
 ```
 
-脚本会先备份原配置，再写入官方地址、Pro/Flash 模型和 Key，验证输出不显示 Key 原文。
+脚本会先将原配置以 `0600` 权限备份到 `~/.travelling-config-backups/`（不放在 Git 仓库），再写入官方地址、Pro/Flash 模型和 Key，验证输出不显示 Key 原文。

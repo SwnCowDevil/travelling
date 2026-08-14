@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+umask 077
 
 travel_env_file="${1:-}"
 if [[ -z "$travel_env_file" ]]; then
@@ -19,8 +20,12 @@ if [[ ${#travel_deepseek_key} -lt 20 ]]; then
   exit 1
 fi
 
-travel_backup_file="${travel_env_file}.before-deepseek-$(date +%Y%m%d-%H%M%S)"
-cp -a "$travel_env_file" "$travel_backup_file"
+travel_backup_dir="${TRAVEL_CONFIG_BACKUP_DIR:-${HOME}/.travelling-config-backups}"
+mkdir -p "$travel_backup_dir"
+chmod 700 "$travel_backup_dir"
+travel_backup_file="${travel_backup_dir}/$(basename "$travel_env_file").before-deepseek-$(date +%Y%m%d-%H%M%S)"
+cp "$travel_env_file" "$travel_backup_file"
+chmod 600 "$travel_backup_file"
 travel_env_dir="$(dirname "$travel_env_file")"
 travel_env_tmp="$(mktemp "${travel_env_dir}/.travel-api-env.XXXXXX")"
 trap 'unset travel_deepseek_key; [[ -z "${travel_env_tmp:-}" ]] || rm -f "$travel_env_tmp"' EXIT
@@ -37,7 +42,9 @@ printf '%s\n' 'TRAVEL_AI_MODEL=deepseek-v4-pro' >> "$travel_env_tmp"
 printf '%s\n' 'TRAVEL_AI_FAST_MODEL=deepseek-v4-flash' >> "$travel_env_tmp"
 printf 'TRAVEL_AI_API_KEY=%s\n' "$travel_deepseek_key" >> "$travel_env_tmp"
 chmod 600 "$travel_env_tmp"
-mv -f "$travel_env_tmp" "$travel_env_file"
+cp "$travel_env_tmp" "$travel_env_file"
+chmod 600 "$travel_env_file"
+rm -f "$travel_env_tmp"
 travel_env_tmp=''
 unset travel_deepseek_key
 

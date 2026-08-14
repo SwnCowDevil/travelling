@@ -3,6 +3,7 @@ import pytest
 from app.destinations.models import AdministrativeRegion, Destination
 from app.guides.schemas import FoodRecommendation, GuidePayload, ItineraryDay
 from app.favorites.service import get_favorite, save_favorite, update_favorite
+from app.favorites.schemas import FavoriteGuideCreate
 from app.users.models import User
 
 
@@ -70,3 +71,13 @@ def test_rule_favorite_preserves_rule_source(db_session) -> None:
 
     assert favorite.source == "rules"
     assert favorite.user_edited is False
+
+
+def test_legacy_favorite_request_without_source_remains_compatible() -> None:
+    request = FavoriteGuideCreate(
+        destination_id=1,
+        generation_mode="fast",
+        payload=payload(),
+    )
+
+    assert request.source == "unknown"

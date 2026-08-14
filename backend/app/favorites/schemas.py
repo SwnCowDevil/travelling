@@ -10,7 +10,7 @@ class FavoriteGuideCreate(BaseModel):
     destination_id: int | None = None
     custom_destination_id: int | None = None
     generation_mode: Literal["fast", "deep"]
-    source: Literal["ai", "rules"]
+    source: Literal["ai", "rules", "unknown"] = "unknown"
     payload: GuidePayload
 
     @model_validator(mode="after")

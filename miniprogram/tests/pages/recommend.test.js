@@ -248,3 +248,34 @@ test('recommend and next keep AI and rule notices mutually exclusive', async () 
   global.wx = originalWx
   global.getApp = originalGetApp
 })
+
+test('manual origin privacy denial does not redirect to system settings', async () => {
+  let definition
+  let toast
+  let opened = false
+  const originalPage = global.Page
+  const originalWx = global.wx
+  global.Page = value => { definition = value }
+  global.wx = {
+    getPrivacySetting: options => options.success({ needAuthorization: true }),
+    requirePrivacyAuthorize: options => options.fail({ errMsg: 'privacy deny' }),
+    chooseLocation: () => { throw new Error('must not call chooseLocation') },
+    showToast: options => { toast = options },
+    showModal() { throw new Error('must not show permission modal') },
+    openSetting: () => { opened = true }
+  }
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+  const page = {
+    data: { resolvingOrigin: false },
+    setData(value) { Object.assign(this.data, value) },
+    onOriginCancel: definition.onOriginCancel
+  }
+
+  await definition.chooseOrigin.call(page)
+
+  assert.match(toast.title, /隐私保护/)
+  assert.equal(opened, false)
+  global.Page = originalPage
+  global.wx = originalWx
+})

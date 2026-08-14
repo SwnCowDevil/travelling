@@ -4,7 +4,8 @@ const { ensurePrivacyAuthorized } = require('./privacy')
 function classifyLocationFailure(error = {}) {
   const message = String(error.errMsg || error.message || '').toLowerCase()
   if (message.includes('cancel')) return 'cancel'
-  if (message.includes('auth deny') || message.includes('privacy deny') || message.includes('authorize') || message.includes('permission')) return 'permission'
+  if (message.includes('privacy deny')) return 'privacy'
+  if (message.includes('auth deny') || message.includes('authorize') || message.includes('permission')) return 'permission'
   return 'unavailable'
 }
 
