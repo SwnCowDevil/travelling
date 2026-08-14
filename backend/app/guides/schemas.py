@@ -1,3 +1,4 @@
+from math import isfinite
 from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -17,6 +18,18 @@ class FoodRecommendation(BaseModel):
     description: str = Field(min_length=1, max_length=300)
     area: str = Field(min_length=1, max_length=120)
     average_price: str = Field(min_length=1, max_length=80)
+
+    @field_validator("average_price", mode="before")
+    @classmethod
+    def normalize_numeric_average_price(cls, value: object) -> object:
+        if (
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and isfinite(value)
+            and value >= 0
+        ):
+            return f"约{value:g}元/人"
+        return value
 
 
 class ItineraryDay(BaseModel):

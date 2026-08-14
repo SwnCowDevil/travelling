@@ -86,10 +86,21 @@ def test_guide_payload_normalizes_daily_transport_string_list() -> None:
     assert payload.itinerary[0].transport == "高铁；景区公交"
 
 
+def test_guide_payload_normalizes_numeric_food_average_price() -> None:
+    value = ai_payload().model_dump()
+    value["foods"][0]["average_price"] = 20
+
+    payload = GuidePayload.model_validate(value)
+
+    assert payload.foods[0].average_price == "约20元/人"
+
+
 @pytest.mark.parametrize("mode", ["fast", "deep"])
 def test_guide_prompt_requires_daily_itinerary_text_fields(mode: str) -> None:
     prompt = _guide_prompt(mode)
 
+    assert "JSON 顶层必须包含且不得遗漏 transport、weather、packing、cautions、highlights、foods、itinerary" in prompt
+    assert "average_price 必须是带货币单位的字符串" in prompt
     assert (
         "theme、morning、afternoon、evening、transport、caution 都必须是字符串，不能是数组或对象"
         in prompt

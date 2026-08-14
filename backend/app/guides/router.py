@@ -100,8 +100,9 @@ def _guide_prompt(mode: str) -> str:
     if mode == "fast":
         return (
             "你是中国境内旅行规划师。只返回 JSON 对象，不要 Markdown。"
+            "JSON 顶层必须包含且不得遗漏 transport、weather、packing、cautions、highlights、foods、itinerary。"
             "transport、weather 是非空字符串数组；packing 必须8至14项，cautions 和 highlights 各5至8项。"
-            "foods 必须4至6个对象，每个含 name、description、area、average_price。"
+            "foods 必须4至6个对象，每个含 name、description、area、average_price，average_price 必须是带货币单位的字符串。"
             "itinerary 必须正好等于用户 days 天，从 day=1 连续编号；每项含 day、theme、morning、afternoon、evening、transport、caution。"
             "theme、morning、afternoon、evening、transport、caution 都必须是字符串，不能是数组或对象。"
             "行程写真实点位和顺路安排，美食必须是真实当地美食。"
@@ -109,12 +110,13 @@ def _guide_prompt(mode: str) -> str:
         )
     return (
                 "你是严谨的中国境内旅行规划师。只返回 JSON 对象，不要 Markdown。"
+                "JSON 顶层必须包含且不得遗漏 transport、weather、packing、cautions、highlights、foods、itinerary。"
                 "transport、weather、packing、cautions、highlights 都是非空字符串数组；"
                 "packing 按证件/电子/衣物/天气/目的地特殊装备组织，共8至14项；"
                 "cautions 为5至8条具体提醒，覆盖预约、交通、天气、安全和当地习俗；"
                 "highlights 为5至8条真实景点或玩法，每条含名称与推荐理由；"
                 "foods 为4至6个对象，每个严格包含 name、description、area、average_price，"
-                "必须是真实当地美食，不可使用占位名称；"
+                "average_price 必须是带货币单位的字符串，必须是真实当地美食，不可使用占位名称；"
                 "itinerary 的天数必须与用户 days 完全一致，day 从1连续编号，每天严格包含"
                 "day、theme、morning、afternoon、evening、transport、caution。"
                 "theme、morning、afternoon、evening、transport、caution 都必须是字符串，不能是数组或对象。"
