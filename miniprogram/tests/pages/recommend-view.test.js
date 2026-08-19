@@ -64,6 +64,10 @@ test('recommend more panel exposes play days quick options', () => {
   assert.match(wxml, /wx:for="\{\{filterOptions\.days\}\}"/)
   assert.match(wxml, /data-days="\{\{item\.value\}\}" bindtap="selectDays"/)
   assert.match(wxml, /不选时攻略默认2天/)
+  assert.match(wxml, /bindtap="openCustomDays"/)
+  assert.match(wxml, /wx:if="\{\{customDaysVisible\}\}"/)
+  assert.match(wxml, /bindinput="inputCustomDays"/)
+  assert.match(wxml, /bindtap="confirmCustomDays"/)
 })
 
 test('recommend filter panel remains scrollable on short screens', () => {

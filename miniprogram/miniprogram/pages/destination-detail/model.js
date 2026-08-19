@@ -1,5 +1,6 @@
 function weatherLabel(v={}){return v.kind==='forecast'?'实时预报':v.kind==='climate_reference'?'历史气候参考':'本地气候参考'}
 function canSetRevisit(count){return count>0}
+function normalizeGuideDays(value){const days=Number(value);return Number.isFinite(days)?Math.min(15,Math.max(1,Math.trunc(days))):2}
 function text(v,fallback='暂无'){const value=String(v||'').trim();return value||fallback}
 function budget(d){if(d.min_budget&&d.max_budget)return `¥${d.min_budget}–${d.max_budget}`;return '预算待估'}
 function season(months=[]){return months.length?months.map(v=>`${v}月`).join('、'):'四季皆宜'}
@@ -16,4 +17,4 @@ function buildDetailView(destination={},weather={},guide={},context={}){
     itinerary:(payload.itinerary||[]).map(v=>({day:Number(v.day)||1,theme:text(v.theme),morning:text(v.morning),afternoon:text(v.afternoon),evening:text(v.evening),transport:text(v.transport),caution:text(v.caution)}))
   }
 }
-module.exports={weatherLabel,canSetRevisit,buildDetailView}
+module.exports={weatherLabel,canSetRevisit,normalizeGuideDays,buildDetailView}

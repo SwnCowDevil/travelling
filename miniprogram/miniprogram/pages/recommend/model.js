@@ -52,6 +52,13 @@ function setDays(filters, value) {
   return { ...filters, days: filters.days === days ? null : days }
 }
 
+function parseCustomDays(value) {
+  const input = String(value ?? '').trim()
+  if (!/^\d+$/.test(input)) return null
+  const days = Number(input)
+  return Number.isInteger(days) && days >= 1 && days <= 15 ? days : null
+}
+
 function setDistanceRange(filters, value) {
   return { ...filters, distanceRange: value || null }
 }
@@ -96,6 +103,7 @@ function filterOptions(filters) {
     preferences: make('preferences', FILTER_GROUPS.preferences),
     categories: make('categories', FILTER_GROUPS.categories),
     days: DAY_OPTIONS.map(value => ({ value, selected: value === filters.days })),
+    customDaysSelected: Boolean(filters.days && !DAY_OPTIONS.includes(filters.days)),
     distance: DISTANCE_RANGES.map(item => ({
       ...item,
       selected: item.value === (filters.distanceRange || null)
@@ -141,6 +149,7 @@ module.exports = {
   toggleFilter,
   setMonth,
   setDays,
+  parseCustomDays,
   setDistanceRange,
   resetOptionalFilters,
   filterSummary,

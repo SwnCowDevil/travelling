@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 class GuideGenerationRequest(BaseModel):
     month: int = Field(ge=1, le=12)
-    days: int = Field(default=2, ge=1, le=7)
+    days: int = Field(default=2, ge=1, le=15)
     origin_name: str = Field(min_length=1, max_length=100)
     preferences: list[str] = Field(default_factory=list)
     generation_mode: Literal["fast", "deep"] = "fast"
@@ -33,7 +33,7 @@ class FoodRecommendation(BaseModel):
 
 
 class ItineraryDay(BaseModel):
-    day: int = Field(ge=1, le=7)
+    day: int = Field(ge=1, le=15)
     theme: str = Field(min_length=1, max_length=120)
     morning: str = Field(min_length=1, max_length=500)
     afternoon: str = Field(min_length=1, max_length=500)
@@ -60,7 +60,7 @@ class GuidePayload(BaseModel):
     cautions: list[str] = Field(min_length=5, max_length=8)
     highlights: list[str] = Field(min_length=5, max_length=8)
     foods: list[FoodRecommendation] = Field(min_length=4, max_length=6)
-    itinerary: list[ItineraryDay] = Field(min_length=1, max_length=7)
+    itinerary: list[ItineraryDay] = Field(min_length=1, max_length=15)
 
     @field_validator("highlights", mode="before")
     @classmethod

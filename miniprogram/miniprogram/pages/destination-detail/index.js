@@ -1,8 +1,8 @@
-const {buildDetailView}=require('./model')
+const {buildDetailView,normalizeGuideDays}=require('./model')
 Page({
   data:{view:{weatherDays:[],transport:[],weatherNotes:[],packing:[],cautions:[],highlights:[],foods:[],itinerary:[]},loading:true,regenerating:false,savingFavorite:false,favoriteId:0,generationMode:'fast',error:''},
   async onLoad(q){
-    const api=getApp().globalData.api,isCustom=Boolean(q.custom_id),id=isCustom?q.custom_id:q.id,month=Math.min(12,Math.max(1,Number(q.month)||new Date().getMonth()+1)),days=Math.min(7,Math.max(1,Number(q.days)||2)),originName=decodeURIComponent(q.origin_name||'当前位置')
+    const api=getApp().globalData.api,isCustom=Boolean(q.custom_id),id=isCustom?q.custom_id:q.id,month=Math.min(12,Math.max(1,Number(q.month)||new Date().getMonth()+1)),days=normalizeGuideDays(q.days),originName=decodeURIComponent(q.origin_name||'当前位置')
     let preferences=[];try{preferences=JSON.parse(decodeURIComponent(q.preferences||'[]'))}catch(_){preferences=[]}
     this.guideContext={api,id,isCustom,month,days,originName,preferences}
     try{

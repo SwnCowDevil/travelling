@@ -77,6 +77,21 @@ def test_guide_payload_rejects_non_consecutive_days() -> None:
         GuidePayload.model_validate(value)
 
 
+def test_guide_contract_accepts_fifteen_days_and_rejects_sixteen() -> None:
+    request = GuideGenerationRequest(month=8, days=15, origin_name="北京")
+    value = ai_payload().model_dump()
+    template = value["itinerary"][0]
+    value["itinerary"] = [dict(template, day=day) for day in range(1, 16)]
+
+    payload = GuidePayload.model_validate(value)
+
+    assert request.days == 15
+    assert len(payload.itinerary) == 15
+    assert payload.itinerary[-1].day == 15
+    with pytest.raises(ValidationError):
+        GuideGenerationRequest(month=8, days=16, origin_name="北京")
+
+
 def test_guide_payload_normalizes_daily_transport_string_list() -> None:
     value = ai_payload().model_dump()
     value["itinerary"][0]["transport"] = ["高铁", "景区公交"]

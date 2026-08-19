@@ -8,11 +8,21 @@ const {
   toggleFilter,
   setMonth,
   setDays,
+  parseCustomDays,
   setDistanceRange,
   resetOptionalFilters,
   filterSummary,
   filterOptions
 } = require('../../miniprogram/pages/recommend/model')
+
+test('custom days accepts only integer values from one through fifteen', () => {
+  assert.equal(parseCustomDays('1'), 1)
+  assert.equal(parseCustomDays('8'), 8)
+  assert.equal(parseCustomDays('15'), 15)
+  for (const value of ['', '0', '16', '1.5', 'abc']) {
+    assert.equal(parseCustomDays(value), null)
+  }
+})
 
 test('days filter toggles one quick option and maps it to recommendation context', () => {
   let filters = defaultFilters(new Date('2026-08-07'))
@@ -147,6 +157,7 @@ test('page selects and clears the days filter', () => {
   let refreshed
   const page = {
     data: { filters: defaultFilters(new Date('2026-08-07')) },
+    setData(value) { Object.assign(this.data, value) },
     refreshFilterView(filters) { refreshed = filters }
   }
 
@@ -157,6 +168,40 @@ test('page selects and clears the days filter', () => {
   definition.removeSummary.call(page, { currentTarget: { dataset: { key: 'days', value: 5 } } })
   assert.equal(refreshed.days, null)
   global.Page = originalPage
+})
+
+test('page applies a valid custom day count and rejects an invalid value', () => {
+  let definition
+  let toast
+  const originalPage = global.Page
+  const originalWx = global.wx
+  global.Page = value => { definition = value }
+  global.wx = { showToast: options => { toast = options } }
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+  const page = {
+    data: {
+      filters: defaultFilters(new Date('2026-08-07')),
+      customDaysInput: '15',
+      customDaysVisible: true
+    },
+    setData(value) { Object.assign(this.data, value) },
+    refreshFilterView(filters) { this.data.filters = filters }
+  }
+
+  definition.confirmCustomDays.call(page)
+  assert.equal(page.data.filters.days, 15)
+  assert.equal(page.data.customDaysVisible, false)
+
+  page.data.customDaysInput = '16'
+  page.data.customDaysVisible = true
+  definition.confirmCustomDays.call(page)
+  assert.equal(page.data.filters.days, 15)
+  assert.equal(page.data.customDaysVisible, true)
+  assert.equal(toast.title, '请输入 1–15 天')
+
+  global.Page = originalPage
+  global.wx = originalWx
 })
 
 test('normal recommendation details inherit selected days and default to two', () => {

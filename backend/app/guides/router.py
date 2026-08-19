@@ -141,7 +141,7 @@ def _destination_or_404(session: Session, destination_id: int) -> Destination:
 async def get_guide(
     destination_id: int,
     month: int = Query(ge=1, le=12),
-    days: int = Query(default=2, ge=1, le=7),
+    days: int = Query(default=2, ge=1, le=15),
     origin_name: str = Query(min_length=1, max_length=100),
     generation_mode: str = Query(default="fast", pattern="^(fast|deep)$"),
     session: Session = Depends(get_db),
