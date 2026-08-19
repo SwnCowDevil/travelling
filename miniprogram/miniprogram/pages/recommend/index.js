@@ -10,6 +10,7 @@ const {
   loadingStages,
   toggleFilter,
   setMonth,
+  setDays,
   setDistanceRange,
   resetOptionalFilters,
   filterSummary,
@@ -58,6 +59,10 @@ Page({
     this.refreshFilterView(setMonth(this.data.filters, event.currentTarget.dataset.month))
   },
 
+  selectDays(event) {
+    this.refreshFilterView(setDays(this.data.filters, event.currentTarget.dataset.days))
+  },
+
   toggleOption(event) {
     const { group, value } = event.currentTarget.dataset
     this.refreshFilterView(toggleFilter(this.data.filters, group, value))
@@ -80,6 +85,10 @@ Page({
     }
     if (key === 'distanceRange') {
       this.refreshFilterView(setDistanceRange(this.data.filters, null))
+      return
+    }
+    if (key === 'days') {
+      this.refreshFilterView({ ...this.data.filters, days: null })
       return
     }
     this.refreshFilterView(toggleFilter(this.data.filters, key, value))
@@ -221,6 +230,6 @@ Page({
   },
 
   openDetail(event) {
-    wx.navigateTo({ url: `/pages/destination-detail/index?id=${event.detail.id}` })
+    wx.navigateTo({ url: `/pages/destination-detail/index?id=${event.detail.id}&days=${this.data.filters.days || 2}` })
   }
 })

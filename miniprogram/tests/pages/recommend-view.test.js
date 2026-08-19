@@ -58,6 +58,20 @@ test('recommend more panel exposes the fixed distance range controls', () => {
   assert.match(wxml, /filters\.distanceRange/)
 })
 
+test('recommend more panel exposes play days quick options', () => {
+  const wxml = fs.readFileSync(path.join(pageDir, 'index.wxml'), 'utf8')
+  assert.match(wxml, /游玩天数/)
+  assert.match(wxml, /wx:for="\{\{filterOptions\.days\}\}"/)
+  assert.match(wxml, /data-days="\{\{item\.value\}\}" bindtap="selectDays"/)
+  assert.match(wxml, /不选时攻略默认2天/)
+})
+
+test('recommend filter panel remains scrollable on short screens', () => {
+  const wxss = fs.readFileSync(path.join(pageDir, 'index.wxss'), 'utf8')
+  assert.match(wxss, /\.filter-panel\{[^}]*max-height:/)
+  assert.match(wxss, /\.filter-panel\{[^}]*overflow-y:auto/)
+})
+
 test('filter action buttons use flex centering instead of line-height', () => {
   const wxss = fs.readFileSync(path.join(pageDir, 'index.wxss'), 'utf8')
   assert.match(wxss, /\.panel-actions button\{[^}]*display:flex/)

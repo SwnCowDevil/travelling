@@ -1,16 +1,43 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
 const {
+  DAY_OPTIONS,
   defaultFilters,
   buildRequest,
   loadingStages,
   toggleFilter,
   setMonth,
+  setDays,
   setDistanceRange,
   resetOptionalFilters,
   filterSummary,
   filterOptions
 } = require('../../miniprogram/pages/recommend/model')
+
+test('days filter toggles one quick option and maps it to recommendation context', () => {
+  let filters = defaultFilters(new Date('2026-08-07'))
+  assert.deepEqual(DAY_OPTIONS, [1, 2, 3, 5, 7])
+
+  filters = setDays(filters, 3)
+  assert.equal(filters.days, 3)
+  assert.deepEqual(
+    filterOptions(filters).days.filter(item => item.selected).map(item => item.value),
+    [3]
+  )
+  assert.match(filterSummary(filters).map(item => item.label).join(','), /3天/)
+  assert.equal(
+    buildRequest(filters, { name: '上海', latitude: 31.2, longitude: 121.4 }).available_days,
+    3
+  )
+
+  filters = setDays(filters, 3)
+  assert.equal(filters.days, null)
+  assert.equal(
+    buildRequest(filters, { name: '上海', latitude: 31.2, longitude: 121.4 }).available_days,
+    undefined
+  )
+  assert.equal(resetOptionalFilters(setDays(filters, 5)).days, null)
+})
 
 test('defaults to current month and optional filters can be cleared', () => {
   const filters = defaultFilters(new Date('2026-08-06'))
@@ -109,6 +136,48 @@ test('page selects and clears the distance range filter', () => {
   definition.removeSummary.call(page, { currentTarget: { dataset: { key: 'distanceRange', value: '100-200' } } })
   assert.equal(refreshed.distanceRange, null)
   global.Page = originalPage
+})
+
+test('page selects and clears the days filter', () => {
+  let definition
+  const originalPage = global.Page
+  global.Page = value => { definition = value }
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+  let refreshed
+  const page = {
+    data: { filters: defaultFilters(new Date('2026-08-07')) },
+    refreshFilterView(filters) { refreshed = filters }
+  }
+
+  definition.selectDays.call(page, { currentTarget: { dataset: { days: 5 } } })
+  assert.equal(refreshed.days, 5)
+
+  page.data.filters = refreshed
+  definition.removeSummary.call(page, { currentTarget: { dataset: { key: 'days', value: 5 } } })
+  assert.equal(refreshed.days, null)
+  global.Page = originalPage
+})
+
+test('normal recommendation details inherit selected days and default to two', () => {
+  let definition
+  let navigatedUrl
+  const originalPage = global.Page
+  const originalWx = global.wx
+  global.Page = value => { definition = value }
+  global.wx = { navigateTo: ({ url }) => { navigatedUrl = url } }
+  delete require.cache[require.resolve('../../miniprogram/pages/recommend/index')]
+  require('../../miniprogram/pages/recommend/index')
+  const page = { data: { filters: { ...defaultFilters(new Date('2026-08-07')), days: 5 } } }
+
+  definition.openDetail.call(page, { detail: { id: 20 } })
+  assert.match(navigatedUrl, /days=5/)
+
+  page.data.filters.days = null
+  definition.openDetail.call(page, { detail: { id: 20 } })
+  assert.match(navigatedUrl, /days=2/)
+  global.Page = originalPage
+  global.wx = originalWx
 })
 
 test('recommendation waits for a missing origin and resumes after selection', async () => {

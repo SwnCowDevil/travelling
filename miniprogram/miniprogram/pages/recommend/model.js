@@ -17,6 +17,8 @@ const DISTANCE_RANGES = [
   { value: 'over-500', label: '>500km', min: 500 }
 ]
 
+const DAY_OPTIONS = [1, 2, 3, 5, 7]
+
 function defaultFilters(now = new Date()) {
   return {
     month: now.getMonth() + 1,
@@ -45,6 +47,11 @@ function setMonth(filters, month) {
   return { ...filters, month: Number(month) }
 }
 
+function setDays(filters, value) {
+  const days = Number(value)
+  return { ...filters, days: filters.days === days ? null : days }
+}
+
 function setDistanceRange(filters, value) {
   return { ...filters, distanceRange: value || null }
 }
@@ -67,6 +74,7 @@ function resetOptionalFilters(filters) {
 
 function filterSummary(filters) {
   const items = [{ key: 'month', value: filters.month, label: `${filters.month}月` }]
+  if (filters.days) items.push({ key: 'days', value: filters.days, label: `${filters.days}天` })
   ;['seasons', 'crowd', 'preferences', 'categories', 'transport'].forEach(key => {
     const values = Array.isArray(filters[key]) ? filters[key] : []
     values.forEach(value => items.push({ key, value, label: value }))
@@ -87,6 +95,7 @@ function filterOptions(filters) {
     crowd: make('crowd', FILTER_GROUPS.crowd),
     preferences: make('preferences', FILTER_GROUPS.preferences),
     categories: make('categories', FILTER_GROUPS.categories),
+    days: DAY_OPTIONS.map(value => ({ value, selected: value === filters.days })),
     distance: DISTANCE_RANGES.map(item => ({
       ...item,
       selected: item.value === (filters.distanceRange || null)
@@ -126,10 +135,12 @@ function buildRequest(filters, origin) {
 module.exports = {
   FILTER_GROUPS,
   DISTANCE_RANGES,
+  DAY_OPTIONS,
   loadingStages,
   defaultFilters,
   toggleFilter,
   setMonth,
+  setDays,
   setDistanceRange,
   resetOptionalFilters,
   filterSummary,
