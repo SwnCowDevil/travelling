@@ -25,6 +25,7 @@ docker run -d \
   travel-api:local >/dev/null
 
 docker exec travel-api alembic upgrade head
+docker exec travel-api /opt/python3.12/bin/python3.12 -m app.destinations.seed_command
 
 attempt=0
 until curl -fsS http://127.0.0.1:8000/health; do
