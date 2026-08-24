@@ -65,7 +65,7 @@ def get_reranker(
     return build_rerank_client(
         settings.ai_base_url,
         settings.ai_api_key,
-        settings.ai_model,
+        settings.ai_fast_model,
         settings.ai_recommendation_timeout_seconds,
     ).rerank
 
