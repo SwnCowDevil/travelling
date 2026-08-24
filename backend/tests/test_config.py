@@ -8,6 +8,7 @@ def test_settings_have_safe_local_defaults() -> None:
     assert settings.ai_base_url == "https://api.deepseek.com"
     assert settings.ai_model == "deepseek-v4-pro"
     assert settings.ai_fast_model == "deepseek-v4-flash"
+    assert settings.ai_recommendation_timeout_seconds == 45
     assert settings.ai_api_key is None
     assert settings.amap_key is None
 

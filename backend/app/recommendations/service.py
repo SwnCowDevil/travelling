@@ -1,3 +1,4 @@
+import logging
 from collections.abc import Awaitable, Callable, Sequence
 
 from sqlalchemy import select
@@ -16,6 +17,7 @@ from app.recommendations.schemas import (
 from app.recommendations.scoring import filter_candidates, score_candidate
 
 Reranker = Callable[[RerankRequest], Awaitable[RerankResult]]
+logger = logging.getLogger(__name__)
 
 
 def _candidate(destination: Destination) -> Candidate:
@@ -90,7 +92,7 @@ async def _select_batch(
             reasons = {item.destination_id: item.reason for item in result.items}
             return [lookup[item.destination_id] for item in result.items], "ai", reasons
         except Exception:
-            pass
+            logger.exception("AI recommendation rerank failed; using rule fallback")
     return candidates[:3], "rules", reasons
 
 

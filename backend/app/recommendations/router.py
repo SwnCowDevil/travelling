@@ -26,7 +26,7 @@ router = APIRouter(prefix="/recommendations", tags=["recommendations"])
 
 
 def build_rerank_client(
-    base_url: str, token: str, model: str, timeout_seconds: int = 20
+    base_url: str, token: str, model: str, timeout_seconds: int = 45
 ) -> AIClient:
     policy = request_policy(base_url, "rerank")
     return AIClient(
@@ -63,7 +63,10 @@ def get_reranker(
     if not settings.ai_api_key:
         return None
     return build_rerank_client(
-        settings.ai_base_url, settings.ai_api_key, settings.ai_model
+        settings.ai_base_url,
+        settings.ai_api_key,
+        settings.ai_model,
+        settings.ai_recommendation_timeout_seconds,
     ).rerank
 
 

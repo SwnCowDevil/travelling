@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     ai_model: str = "deepseek-v4-pro"
     ai_fast_model: str = "deepseek-v4-flash"
     ai_api_key: str | None = None
+    ai_recommendation_timeout_seconds: int = 45
     ai_guide_timeout_seconds: int = 90
     ai_fast_guide_timeout_seconds: int = 45
     ai_encryption_key: str | None = None

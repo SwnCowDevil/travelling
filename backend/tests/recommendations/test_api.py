@@ -53,7 +53,7 @@ def seed_destinations(db_session) -> None:
     db_session.commit()
 
 
-def test_recommendation_falls_back_rotates_and_preserves_hard_filters(db_session) -> None:
+def test_recommendation_falls_back_rotates_and_preserves_hard_filters(db_session, caplog) -> None:
     seed_destinations(db_session)
     avoided = db_session.query(Destination).filter_by(code="near-1").one()
     db_session.add(DestinationStatus(user_id=21, destination_id=avoided.id, status="avoid"))
@@ -92,6 +92,7 @@ def test_recommendation_falls_back_rotates_and_preserves_hard_filters(db_session
     assert "far-away" not in first_codes | second_codes
     assert "near-1" not in first_codes | second_codes
     assert history.json()["items"][0]["session_id"] == first.json()["session_id"]
+    assert "AI recommendation rerank failed" in caplog.text
 
 
 def test_candidate_shortage_never_relaxes_distance_filter(db_session) -> None:
