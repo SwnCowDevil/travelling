@@ -2,10 +2,10 @@ const test = require('node:test')
 const assert = require('node:assert/strict')
 const { resolveRuntimeConfig, getRuntimeConfig } = require('../../miniprogram/config/runtime')
 
-test('develop uses the local API and development authentication', () => {
+test('develop uses the production API and real WeChat authentication', () => {
   assert.deepEqual(resolveRuntimeConfig('develop'), {
-    apiBaseUrl: 'http://127.0.0.1:8000',
-    useDevAuth: true
+    apiBaseUrl: 'https://api.sunks.cc',
+    useDevAuth: false
   })
 })
 
@@ -18,10 +18,10 @@ test('trial and release use the production API and real authentication', () => {
   }
 })
 
-test('missing, unknown, and unreadable environments fall back to develop', () => {
-  assert.equal(resolveRuntimeConfig().apiBaseUrl, 'http://127.0.0.1:8000')
-  assert.equal(resolveRuntimeConfig('unknown').useDevAuth, true)
-  assert.equal(getRuntimeConfig({ getAccountInfoSync() { throw new Error('unavailable') } }).useDevAuth, true)
+test('missing, unknown, and unreadable environments safely use production', () => {
+  assert.equal(resolveRuntimeConfig().apiBaseUrl, 'https://api.sunks.cc')
+  assert.equal(resolveRuntimeConfig('unknown').useDevAuth, false)
+  assert.equal(getRuntimeConfig({ getAccountInfoSync() { throw new Error('unavailable') } }).useDevAuth, false)
 })
 
 test('runtime configuration exposes no credential fields', () => {

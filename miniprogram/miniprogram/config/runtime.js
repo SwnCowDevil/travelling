@@ -1,6 +1,6 @@
 const DEVELOP_CONFIG = Object.freeze({
-  apiBaseUrl: 'http://127.0.0.1:8000',
-  useDevAuth: true
+  apiBaseUrl: 'https://api.sunks.cc',
+  useDevAuth: false
 })
 
 const PRODUCTION_CONFIG = Object.freeze({
