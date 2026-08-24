@@ -47,12 +47,21 @@ class AIClient:
                 {"role": "user", "content": request.model_dump_json()},
             ],
         }
-        response = await self._post(self._apply_generation_options(payload))
-        try:
-            content = response["choices"][0]["message"]["content"]
-            result = RerankResult.model_validate(json.loads(content))
-        except (KeyError, IndexError, TypeError, json.JSONDecodeError, ValidationError) as exc:
-            raise InvalidAIResponse("AI returned an invalid structured response") from exc
+        configured_payload = self._apply_generation_options(payload)
+        result: RerankResult | None = None
+        last_error: Exception | None = None
+        for attempt in range(2):
+            response = await self._post(configured_payload)
+            try:
+                content = response["choices"][0]["message"]["content"]
+                result = RerankResult.model_validate(json.loads(content))
+                break
+            except (KeyError, IndexError, TypeError, json.JSONDecodeError, ValidationError) as exc:
+                last_error = exc
+                if attempt == 0:
+                    await asyncio.sleep(0.2)
+        if result is None:
+            raise InvalidAIResponse("AI returned an invalid structured response") from last_error
         allowed = set(request.candidate_ids)
         if any(item.destination_id not in allowed for item in result.items):
             raise InvalidAIResponse("AI returned a destination outside the candidate set")

@@ -91,6 +91,39 @@ async def test_rerank_accepts_exactly_three_known_candidates() -> None:
 
 
 @pytest.mark.asyncio
+async def test_rerank_retries_one_empty_structured_response(monkeypatch) -> None:
+    calls = 0
+
+    async def handler(_request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return httpx.Response(200, json={"choices": [{"message": {"content": ""}}]})
+        return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps({
+            "items": [
+                {"destination_id": "suzhou", "reason": "园林正当时"},
+                {"destination_id": "hangzhou", "reason": "春色很好"},
+                {"destination_id": "nanjing", "reason": "人文丰富"},
+            ]
+        }, ensure_ascii=False)}}]})
+
+    async def no_sleep(_seconds):
+        pass
+
+    monkeypatch.setattr(asyncio, "sleep", no_sleep)
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+        result = await AIClient(
+            "https://api.deepseek.com",
+            "sk-test",
+            "deepseek-v4-flash",
+            http=http,
+        ).rerank(rerank_request())
+
+    assert calls == 2
+    assert len(result.items) == 3
+
+
+@pytest.mark.asyncio
 async def test_rerank_rejects_unknown_destination_id() -> None:
     async def handler(_request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={
